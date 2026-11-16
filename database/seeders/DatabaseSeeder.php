@@ -35,11 +35,11 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        // 3. Influencer & Buzz Ops
+        // 3. Media & Humas Operator
         User::updateOrCreate(
             ['email' => 'influencer@radar.com'],
             [
-                'name' => 'Influencer Studio Operator',
+                'name' => 'Media & Press Operator',
                 'password' => Hash::make('password'),
                 'role' => 'influencer',
                 'email_verified_at' => now(),

@@ -193,7 +193,7 @@ export default function TargetSetupIndex({ targetSetup, recentFeeds = [], totalF
                                     </span>
                                 </div>
                                 <p className="text-[11px] text-slate-300">
-                                    Mesin pencari feed dan crawler akan menyaring berita/media sosial yang memuat nama tokoh, lembaga, atau isu spesifik ini.
+                                    Mesin pencari feed dan crawler akan menyaring artikel berita portal online yang memuat nama tokoh, lembaga, atau isu spesifik ini.
                                 </p>
 
                                 {/* Interactive Tag Box */}

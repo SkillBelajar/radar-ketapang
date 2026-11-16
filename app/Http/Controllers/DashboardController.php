@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\FetchNewsFeedJob;
 use App\Models\NewsFeed;
 use App\Models\TargetSetup;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -11,7 +13,7 @@ use Inertia\Response;
 class DashboardController extends Controller
 {
     /**
-     * Tampilkan halaman Dasbor Analisis (Radar Politik & AI Output).
+     * Tampilkan halaman Dasbor Analisis (Radar Politik & AI Output Berita Pers).
      */
     public function index(Request $request): Response
     {
@@ -98,5 +100,18 @@ class DashboardController extends Controller
                 'persona' => $targetSetup->persona ?? '',
             ] : null,
         ]);
+    }
+
+    /**
+     * Tarik berita portal online aktual secara langsung (Live News Fetch).
+     */
+    public function triggerFetch(Request $request): RedirectResponse
+    {
+        try {
+            (new FetchNewsFeedJob())->handle();
+            return redirect()->back()->with('success', 'Berhasil menarik 3 berita portal online terkini ke sistem radar.');
+        } catch (\Throwable $e) {
+            return redirect()->back()->with('error', 'Gagal menarik berita aktual: ' . $e->getMessage());
+        }
     }
 }

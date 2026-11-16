@@ -10,12 +10,12 @@ use Inertia\Response;
 class StudioController extends Controller
 {
     /**
-     * Tampilkan halaman 1-Click Influencer Studio.
-     * Difokuskan untuk Role 'influencer' dan 'timses'.
+     * Tampilkan halaman Media & Press Response Studio (Pusat Klarifikasi & Respon Berita Pers).
+     * Fokus pada perumusan Siaran Pers Resmi, Pernyataan Juru Bicara, dan Lembar Hak Jawab Redaksi.
      */
     public function index(Request $request): Response
     {
-        $platform = $request->query('platform', 'all'); // all, tiktok, x, instagram
+        $platform = $request->query('platform', 'all'); // all, press_release, spokesperson, editorial_reply
         $sentimentFilter = $request->query('sentiment', 'all'); // all, negative, positive, neutral
 
         $query = NewsFeed::where('ai_status', 'success')

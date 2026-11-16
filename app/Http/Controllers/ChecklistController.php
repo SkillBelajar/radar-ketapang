@@ -113,13 +113,13 @@ class ChecklistController extends Controller
             [
                 'key' => 'step_7_content_studio',
                 'slice' => 'Slice 6',
-                'category' => 'Content Studio',
-                'title' => '7. 1-Click Influencer Content Studio & Salin Clipboard',
-                'summary' => 'Menguji ketersediaan naskah multi-platform (TikTok, X, Instagram) dan tombol salin 2 detik feedback.',
+                'category' => 'Press & Media Response',
+                'title' => '7. Media & Press Response Studio & Salin Clipboard',
+                'summary' => 'Menguji ketersediaan naskah respon pers (Siaran Pers, Juru Bicara, Hak Jawab Redaksi) dan verifikasi tautan portal berita asli.',
                 'steps' => [
-                    'Buka menu "CONTENT STUDIO" (/studio).',
-                    'Pilih tab isu (misal: Isu Karhutla untuk Defensive Reframing atau Isu Jembatan Sandai untuk Proactive Framing).',
-                    'Amati 3 kartu platform: TikTok (Gaya Kasual & Hook Cepat), X/Twitter (Faktual & Thread), Instagram (Storytelling & Hashtag).',
+                    'Buka menu "MEDIA RESPONSE" (/studio).',
+                    'Pilih artikel berita isu terkini dan klik tombol "Buka Berita Asli" untuk memverifikasi tautan portal berita asli.',
+                    'Amati 3 format draf respon pers: Siaran Pers Resmi (Lead 5W+1H), Pernyataan Juru Bicara (Doorstop), dan Lembar Hak Jawab Redaksi.',
                     'Klik tombol "SALIN NASKAH". Pastikan tombol berubah warna menjadi hijau dengan tulisan "Copied! ✅" selama 2 detik.',
                 ],
                 'target_url' => '/studio',
@@ -223,15 +223,15 @@ class ChecklistController extends Controller
                 ],
                 [
                     'role' => 'influencer',
-                    'label' => 'Studio Operator (Influencer)',
+                    'label' => 'Tim Media & Pers (Humas)',
                     'email' => 'influencer@radar.com',
                     'password' => 'password',
-                    'access' => 'Content Studio, Radar, Analytics (Target Setup Ditolak/403)',
+                    'access' => 'Media Response Studio, Radar Krisis, Analytics (Target Setup Ditolak/403)',
                 ],
             ],
             'sample_curl' => [
                 'fetch' => 'curl -s http://localhost:8282/api/v1/hermes/fetch-news -H "Accept: application/json" -H "Authorization: Bearer ' . $envToken . '"',
-                'webhook' => 'curl -X POST http://localhost:8282/api/v1/hermes/webhook -H "Content-Type: application/json" -H "Authorization: Bearer ' . $envToken . '" -d \'{"news_id":1,"status":"success","velocity_score":90,"sentiment":"negative","fact_anchor":{"claim":"Isu tuduhan hoax","fact":"Fakta penanganan resmi di lapangan"},"scripts":{"tiktok":"Naskah klarifikasi cepat tiktok","twitter":"Tweet fakta resmi #Ketapang","instagram":"Caption edukasi IG"}}\'',
+                'webhook' => 'curl -X POST http://localhost:8282/api/v1/hermes/webhook -H "Content-Type: application/json" -H "Authorization: Bearer ' . $envToken . '" -d \'{"news_id":1,"status":"success","velocity_score":90,"sentiment":"negative","fact_anchor":{"claim":"Isu tuduhan sepihak di artikel berita","fact":"Fakta penanganan resmi di lapangan berdasarkan rujukan resmi Pusdalops"},"scripts":{"press_release":"Siaran pers resmi klarifikasi tanggap darurat Matan Hilir","spokesperson":"Poin juru bicara: Satgas 12 regu telah diterjunkan sejak subuh","editorial_reply":"Lembar fakta & permohonan hak jawab redaksi sesuai UU Pers"}}\'',
             ],
         ];
 

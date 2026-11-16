@@ -40,13 +40,13 @@ class HermesGatewayController extends Controller
             'guidelines' => [
                 'defensive_reframing' => [
                     'sentiment_trigger' => 'negative',
-                    'strategy' => 'Defensive Reframing',
-                    'action' => 'Klarifikasi taktis, redam isu provokatif, sajikan fakta sanggahan objektif, pisahkan opini vs data, dan arahkan narasi ke komitmen perbaikan nyata tokoh.',
+                    'strategy' => 'Defensive Reframing Media Pers',
+                    'action' => 'Klarifikasi taktis atas artikel berita negatif, pisahkan opini sepihak vs data rujukan resmi, dan susun 3 draf respon: Siaran Pers Resmi, Poin Juru Bicara (Doorstop Wartawan), dan Lembar Hak Jawab Redaksi.',
                 ],
                 'proactive_framing' => [
                     'sentiment_trigger' => 'neutral / positive',
-                    'strategy' => 'Proactive Framing',
-                    'action' => 'Amplifikasi capaian dan sentimen publik yang positif, tonjolkan kedekatan tokoh dengan rakyat Ketapang, serta ajak kolaborasi komunitas.',
+                    'strategy' => 'Proactive Amplification Media Pers',
+                    'action' => 'Amplifikasi capaian positif dalam artikel berita pers, susun Siaran Pers Capaian, Talking Points Juru Bicara, dan Media Fact Sheet.',
                 ],
             ],
             'target_parameters' => [

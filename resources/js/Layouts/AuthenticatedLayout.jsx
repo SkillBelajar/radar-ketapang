@@ -77,8 +77,8 @@ export default function AuthenticatedLayout({ header, children }) {
                 };
             case 'influencer':
                 return {
-                    label: 'INFLUENCER',
-                    code: 'STUDIO OPS',
+                    label: 'TIM MEDIA & PERS',
+                    code: 'MEDIA CENTER',
                     bg: 'bg-teal-950/70 text-teal-300 border-teal-500/50',
                     dot: 'bg-teal-400',
                 };
@@ -150,7 +150,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                     }`}
                                 >
                                     <Share2 className="w-3.5 h-3.5 text-cyan-400" />
-                                    <span>CONTENT STUDIO (S6)</span>
+                                    <span>MEDIA RESPONSE (S6)</span>
                                 </Link>
 
                                 {/* Slice 7: Modul Evaluasi (Analytics & Audit) */}
@@ -438,7 +438,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                 }`}
                             >
                                 <Share2 className="w-3.5 h-3.5 inline mr-2 text-cyan-400" />
-                                Content Studio (Slice 6)
+                                Media Response Studio (Slice 6)
                             </Link>
 
                             <Link

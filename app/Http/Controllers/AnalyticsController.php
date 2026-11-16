@@ -113,17 +113,18 @@ class AnalyticsController extends Controller
                 } elseif ($f->sentiment === 'negative' && !empty($f->scripts)) {
                     $actionType = 'DEFENSIVE_REFRAME';
                     $actionLabel = 'Defensive Reframing';
-                    $impact = 'Naskah counter-isu siap di TikTok, X, & Instagram';
+                    $impact = 'Draf Siaran Pers & Pernyataan Juru Bicara Siap';
                 } elseif ($f->sentiment === 'positive' && !empty($f->scripts)) {
                     $actionType = 'PROACTIVE_AMPLIFY';
                     $actionLabel = 'Proactive Amplification';
-                    $impact = 'Amplifikasi capaian positif untuk penguatan elektabilitas';
+                    $impact = 'Amplifikasi rilis pers capaian positif & lembar fakta';
                 }
 
                 return [
                     'id' => $f->id,
                     'title' => $f->title,
                     'source' => $f->source,
+                    'url' => $f->url,
                     'sentiment' => $f->sentiment,
                     'velocity_score' => $f->velocity_score,
                     'ai_status' => $f->ai_status,

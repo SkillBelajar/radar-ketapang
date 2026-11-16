@@ -93,7 +93,7 @@ export default function UserGuide() {
                                     : 'text-slate-400 hover:text-slate-200'
                             }`}
                         >
-                            Influencer {userRole === 'influencer' && '★'}
+                            Tim Media & Pers {userRole === 'influencer' && '★'}
                         </button>
                     </div>
                 </div>
@@ -114,8 +114,8 @@ export default function UserGuide() {
                                         Panduan Setup Keyword & Manajemen Tim
                                     </h2>
                                     <p className="text-sm text-slate-300 max-w-2xl">
-                                        Sebagai Administrator Utama, Anda memegang kendali penuh atas parameter crawling media sosial, 
-                                        database target politik Kabupaten Ketapang, serta distribusi hak akses tim relawan & analis.
+                                        Sebagai Administrator Utama, Anda memegang kendali penuh atas parameter pemantauan portal berita online, 
+                                        database target politik Kabupaten Ketapang, serta distribusi hak akses tim relawan & analis pers.
                                     </p>
                                 </div>
                                 <div className="w-12 h-12 rounded-xl bg-red-950/80 border border-red-500/60 flex items-center justify-center shrink-0">
@@ -234,7 +234,7 @@ export default function UserGuide() {
                                     <span>Membaca Sinyal Radar</span>
                                 </h3>
                                 <p className="text-xs text-slate-400 leading-relaxed">
-                                    Perhatikan lonjakan volume penyebutan tokoh di media online lokal dan media sosial. Titik merah mengindikasikan serangan isu negatif, titik hijau menunjukkan sentimen apresiasi publik.
+                                    Perhatikan lonjakan volume pemberitaan tokoh di portal berita online lokal. Titik merah mengindikasikan serangan isu kritis di media massa, titik hijau menunjukkan sentimen positif pencapaian.
                                 </p>
                                 <div className="pt-2 text-[11px] font-mono text-emerald-400">
                                     Skala Sentimen: -100 s/d +100
@@ -310,14 +310,14 @@ export default function UserGuide() {
                             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                                 <div className="space-y-1">
                                     <span className="px-2.5 py-0.5 rounded text-[10px] font-mono bg-teal-950 text-teal-400 border border-teal-800 uppercase font-bold">
-                                        AKSES INFLUENCER & BUZZ STUDIO
+                                        AKSES TIM MEDIA & OPERATOR PERS
                                     </span>
                                     <h2 className="text-2xl sm:text-3xl font-black text-white font-mono tracking-tight">
-                                        Panduan Eksekusi Skrip 1-Click Studio
+                                        Panduan Eksekusi Respon Media & Pers Studio
                                     </h2>
                                     <p className="text-sm text-slate-300 max-w-2xl">
-                                        Panduan untuk content creator, influencer relawan, dan buzzer resmi dalam mengeksekusi 
-                                        skrip narasi yang dihasilkan AI secara terukur, konsisten, dan siap disebarkan dalam 1 klik.
+                                        Panduan untuk tim media center dan juru bicara pers dalam mendistribusikan 
+                                        siaran pers resmi, poin bicara doorstop, dan lembar hak jawab redaksi dalam 1 klik.
                                     </p>
                                 </div>
                                 <div className="w-12 h-12 rounded-xl bg-teal-950/80 border border-teal-500/60 flex items-center justify-center shrink-0">
@@ -334,13 +334,13 @@ export default function UserGuide() {
                                 </div>
                                 <h3 className="text-base font-bold text-white font-mono flex items-center gap-2">
                                     <FileText className="w-4 h-4 text-teal-400" />
-                                    <span>Pilih Nada & Gaya Bahasa</span>
+                                    <span>Pilih Format Respon Pers</span>
                                 </h3>
                                 <p className="text-xs text-slate-400 leading-relaxed">
-                                    Pilih template gaya bicara: 'Santai & Jenaka' (untuk TikTok/Reels), 'Empatik & Solutif' (untuk Facebook emak-emak), atau 'Tegas & Berdata' (untuk platform X/Twitter).
+                                    Pilih format komunikasi: 'Siaran Pers Resmi' (untuk rilis ke wartawan), 'Pernyataan Juru Bicara' (untuk wawancara doorstop), atau 'Hak Jawab Redaksi' (UU Pers No. 40/1999).
                                 </p>
                                 <div className="pt-2 text-[11px] font-mono text-teal-400">
-                                    3 Tone Profilers
+                                    3 Standar Respon Pers
                                 </div>
                             </div>
 
@@ -350,13 +350,13 @@ export default function UserGuide() {
                                 </div>
                                 <h3 className="text-base font-bold text-white font-mono flex items-center gap-2">
                                     <Zap className="w-4 h-4 text-teal-400" />
-                                    <span>1-Click Copy Skrip Siap Rilis</span>
+                                    <span>1-Click Copy Naskah Pers</span>
                                 </h3>
                                 <p className="text-xs text-slate-400 leading-relaxed">
-                                    Klik tombol 'Salin Skrip' untuk mendapatkan caption lengkap beserta hashtag strategi pemilu daerah Ketapang yang sudah dioptimasi untuk mendongkrak algoritma engagement.
+                                    Klik tombol 'Salin Siaran Pers' atau 'Salin Semua' untuk mengambil naskah berstruktur 5W+1H lengkap dengan kutipan resmi dan kontak narahubung media center.
                                 </p>
                                 <div className="pt-2 text-[11px] font-mono text-teal-400">
-                                    Hashtag Generator Terintegrasi
+                                    Lead 5W+1H & Fact-Anchor
                                 </div>
                             </div>
 
@@ -366,13 +366,13 @@ export default function UserGuide() {
                                 </div>
                                 <h3 className="text-base font-bold text-white font-mono flex items-center gap-2">
                                     <Share2 className="w-4 h-4 text-teal-400" />
-                                    <span>Lapor Distribusi & Jangkauan</span>
+                                    <span>Verifikasi Tautan Berita Asli</span>
                                 </h3>
                                 <p className="text-xs text-slate-400 leading-relaxed">
-                                    Setelah posting konten di medsos, masukkan tautan postingan ke kolom verifikasi untuk mencatat metrik impresi dan memastikan pesan utama tersampaikan tanpa distorsi.
+                                    Gunakan tombol 'Buka Sumber Asli' untuk membaca konteks pemberitaan langsung di portal asalnya sebelum merilis sanggahan atau hak jawab redaksi.
                                 </p>
                                 <div className="pt-2 text-[11px] font-mono text-teal-400">
-                                    Tracking Link & Reach
+                                    Audit Tautan Pers Valid
                                 </div>
                             </div>
                         </div>
@@ -381,20 +381,20 @@ export default function UserGuide() {
                         <div className="p-6 rounded-xl bg-slate-900/60 border border-slate-800 font-mono text-xs text-slate-300">
                             <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-4 flex items-center gap-2">
                                 <Terminal className="w-4 h-4 text-teal-400" />
-                                <span>Etika & Doktrin Penyebaran Konten Influencer</span>
+                                <span>Etika & Doktrin Komunikasi Media Pers Resmi</span>
                             </h3>
                             <ul className="space-y-2.5">
                                 <li className="flex items-center gap-2">
                                     <span className="w-1.5 h-1.5 rounded-full bg-teal-400"></span>
-                                    <span>Dilarang menyebarkan hoaks atau ujaran kebencian berbasis SARA. Selalu reframing isu dengan fakta pembangunan.</span>
+                                    <span>Seluruh rilis wajib berlandaskan fakta lapangan terverifikasi dan dokumen rujukan resmi.</span>
                                 </li>
                                 <li className="flex items-center gap-2">
                                     <span className="w-1.5 h-1.5 rounded-full bg-teal-400"></span>
-                                    <span>Gunakan visual asli daerah Kabupaten Ketapang untuk meningkatkan kedekatan emosional konstituen.</span>
+                                    <span>Hak jawab redaksi disusun secara santun dan profesional sesuai pedoman UU Pers No. 40 Tahun 1999.</span>
                                 </li>
                                 <li className="flex items-center gap-2">
                                     <span className="w-1.5 h-1.5 rounded-full bg-teal-400"></span>
-                                    <span>Posting serentak pada 'Golden Hours' (pukul 12.00 - 13.00 WIB dan 19.30 - 21.00 WIB).</span>
+                                    <span>Prioritaskan respon cepat doorstop pada isu dengan skor Velocity ≥ 75% dalam 1 jam pertama.</span>
                                 </li>
                             </ul>
                         </div>

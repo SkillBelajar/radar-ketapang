@@ -5,7 +5,8 @@ import {
     Activity, ShieldAlert, ShieldCheck, AlertTriangle, Flame, Clock, 
     ExternalLink, Copy, Check, Filter, ArrowUpDown, Layers, Sparkles, 
     Info, Eye, Radio, RefreshCw, Terminal, CheckCircle2, ChevronRight,
-    Share2, X, MessageSquare, AlertOctagon, Zap, BarChart3
+    Share2, X, MessageSquare, AlertOctagon, Zap, BarChart3, Newspaper,
+    FileText, Mic, Scale, ArrowUpRight
 } from 'lucide-react';
 
 /**
@@ -81,7 +82,19 @@ function ScriptChannelBox({ channel, title, content, modeLabel, modeColor }) {
 
     const handleCopy = () => {
         if (!content) return;
-        navigator.clipboard.writeText(content);
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(content);
+        } else {
+            const ta = document.createElement('textarea');
+            ta.value = content;
+            ta.style.position = 'fixed';
+            ta.style.left = '-9999px';
+            document.body.appendChild(ta);
+            ta.focus();
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+        }
         setCopied(true);
         setTimeout(() => setCopied(false), 2500);
     };
@@ -117,7 +130,7 @@ function ScriptChannelBox({ channel, title, content, modeLabel, modeColor }) {
                 </button>
             </div>
 
-            <p className="text-xs text-slate-200 leading-relaxed font-sans bg-slate-900/60 rounded-lg p-2.5 border border-slate-800/60 select-all">
+            <p className="text-xs text-slate-200 leading-relaxed font-sans bg-slate-900/60 rounded-lg p-2.5 border border-slate-800/60 select-all whitespace-pre-wrap">
                 {content}
             </p>
         </div>
@@ -127,6 +140,27 @@ function ScriptChannelBox({ channel, title, content, modeLabel, modeColor }) {
 export default function Dashboard({ feeds = [], stats = {}, filters = {}, targetSetup = {} }) {
     const [selectedFeedForModal, setSelectedFeedForModal] = useState(null);
     const [activeTabPerCard, setActiveTabPerCard] = useState({});
+    const [fetchingNews, setFetchingNews] = useState(false);
+
+    const PRESS_FORMATS = [
+        { id: 'press_release', label: 'Siaran Pers', title: 'Draf Siaran Pers Resmi (5W+1H)' },
+        { id: 'spokesperson', label: 'Juru Bicara', title: 'Poin Pernyataan Juru Bicara (Doorstop)' },
+        { id: 'editorial_reply', label: 'Hak Jawab', title: 'Lembar Hak Jawab Redaksi (UU Pers)' },
+    ];
+
+    const getScriptForFormat = (scripts, formatId) => {
+        if (!scripts) return '';
+        if (formatId === 'press_release') {
+            return scripts.press_release || scripts.instagram || scripts.x || scripts.tiktok || '';
+        }
+        if (formatId === 'spokesperson') {
+            return scripts.spokesperson || scripts.x || scripts.tiktok || '';
+        }
+        if (formatId === 'editorial_reply') {
+            return scripts.editorial_reply || scripts.tiktok || scripts.instagram || '';
+        }
+        return scripts[formatId] || '';
+    };
 
     const handleFilterChange = (key, value) => {
         const newFilters = { ...filters, [key]: value };
@@ -135,6 +169,14 @@ export default function Dashboard({ feeds = [], stats = {}, filters = {}, target
             if (!newFilters[k]) delete newFilters[k];
         });
         router.get('/dashboard', newFilters, { preserveState: true, preserveScroll: true });
+    };
+
+    const handleFetchNews = () => {
+        setFetchingNews(true);
+        router.post('/dashboard/fetch', {}, {
+            preserveScroll: true,
+            onFinish: () => setFetchingNews(false)
+        });
     };
 
     const getSentimentBadge = (sentiment) => {
@@ -169,45 +211,55 @@ export default function Dashboard({ feeds = [], stats = {}, filters = {}, target
 
             <div className="space-y-6">
                 {/* Tactical Command Banner */}
-                <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-900 via-slate-900/90 to-rose-950/30 border border-rose-500/30 p-5 md:p-6 shadow-2xl">
-                    <div className="absolute top-0 right-0 w-96 h-96 bg-rose-500/5 rounded-full blur-3xl -z-10 pointer-events-none"></div>
+                <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-900 via-slate-900/90 to-cyan-950/40 border border-cyan-500/30 p-5 md:p-6 shadow-2xl">
+                    <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl -z-10 pointer-events-none"></div>
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                         <div className="space-y-1.5">
                             <div className="flex items-center gap-2">
-                                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-rose-950 text-rose-300 border border-rose-500/40 text-[11px] font-mono font-bold">
-                                    <Activity className="w-3 h-3 text-rose-400 animate-pulse" />
-                                    SLICE 5: CRISIS VELOCITY RADAR
+                                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-cyan-950 text-cyan-300 border border-cyan-500/40 text-[11px] font-mono font-bold">
+                                    <Activity className="w-3 h-3 text-cyan-400 animate-pulse" />
+                                    SLICE 5: PORTAL BERITA & CRISIS VELOCITY RADAR
                                 </span>
                                 <span className="text-slate-400 text-xs font-mono">
-                                    Status: <strong className="text-emerald-400">REAL-TIME MONITORING</strong>
+                                    Sumber Data: <strong className="text-cyan-400">100% PORTAL BERITA AKTUAL</strong>
                                 </span>
                             </div>
                             <h1 className="text-xl md:text-2xl font-black text-white tracking-wide font-mono">
-                                Radar Politik & AI Output Intelligence
+                                Radar Politik & AI Intelligence Pers
                             </h1>
                             <p className="text-slate-300 text-xs md:text-sm max-w-2xl">
-                                Deteksi kecepatan eskalasi isu politik di Kabupaten Ketapang, validasi fakta lapangan (fact-anchor), dan generator naskah counter-narasi otomatis oleh Hermes AI Engine.
+                                Monitoring kecepatan eskalasi pemberitaan media online di Kabupaten Ketapang dan Kalbar. Dilengkapi tautan artikel sumber asli, klarifikasi fact-anchor, dan draf respon pers resmi.
                             </p>
                         </div>
 
-                        {/* Top Action Quick Buttons */}
-                        <div className="flex items-center gap-2 font-mono text-xs">
-                            <Link
-                                href="/target-setup"
-                                className="px-3 py-2 rounded-xl bg-slate-900 hover:bg-cyan-950/80 text-cyan-300 border border-cyan-500/40 font-bold flex items-center gap-1.5 transition-all shadow-[0_0_10px_rgba(6,182,212,0.15)]"
-                            >
-                                <Radio className="w-3.5 h-3.5 text-cyan-400" />
-                                <span>Target Setup (S3)</span>
-                            </Link>
+                        {/* Top Action Buttons */}
+                        <div className="flex flex-wrap items-center gap-2.5 self-start md:self-center font-mono text-xs">
                             <button
                                 type="button"
-                                onClick={() => router.reload({ preserveScroll: true })}
-                                className="px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700 flex items-center gap-1.5 transition-all cursor-pointer"
-                                title="Segarkan Data"
+                                onClick={handleFetchNews}
+                                disabled={fetchingNews}
+                                className="px-3.5 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold flex items-center gap-1.5 shadow-[0_0_15px_rgba(6,182,212,0.4)] transition-all cursor-pointer disabled:opacity-50"
+                                title="Tarik berita online terbaru secara aktual"
                             >
-                                <RefreshCw className="w-3.5 h-3.5" />
-                                <span>Segarkan</span>
+                                <RefreshCw className={`w-3.5 h-3.5 ${fetchingNews ? 'animate-spin' : ''}`} />
+                                <span>{fetchingNews ? 'Menarik Berita...' : '⚡ Tarik Berita Aktual'}</span>
                             </button>
+
+                            <Link
+                                href="/studio"
+                                className="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-cyan-300 border border-cyan-500/40 flex items-center gap-1.5 font-bold transition-all shadow-sm"
+                            >
+                                <Share2 className="w-3.5 h-3.5 text-cyan-400" />
+                                <span>Media Studio (S6)</span>
+                            </Link>
+
+                            <Link
+                                href="/target-setup"
+                                className="px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700 flex items-center gap-1.5 transition-all"
+                            >
+                                <Radio className="w-3.5 h-3.5 text-slate-400" />
+                                <span>Target Setup (S3)</span>
+                            </Link>
                         </div>
                     </div>
                 </div>
@@ -223,7 +275,7 @@ export default function Dashboard({ feeds = [], stats = {}, filters = {}, target
                         <div className="text-xl font-black text-white mt-1">
                             {stats.total_monitored || 0}
                         </div>
-                        <div className="text-[10px] text-slate-400 mt-0.5">Terkumpul di DB</div>
+                        <div className="text-[10px] text-slate-400 mt-0.5">Portal Berita Online</div>
                     </div>
 
                     {/* 2. Total Analyzed */}
@@ -235,7 +287,7 @@ export default function Dashboard({ feeds = [], stats = {}, filters = {}, target
                         <div className="text-xl font-black text-cyan-300 mt-1">
                             {stats.total_analyzed || 0}
                         </div>
-                        <div className="text-[10px] text-emerald-400 mt-0.5">Siap diolah tim</div>
+                        <div className="text-[10px] text-emerald-400 mt-0.5">Respon Pers Siap</div>
                     </div>
 
                     {/* 3. Critical Danger (>=75) */}
@@ -283,7 +335,7 @@ export default function Dashboard({ feeds = [], stats = {}, filters = {}, target
                         <div className="text-xl font-black text-red-400 mt-1">
                             {stats.integrity_alert_count || 0}
                         </div>
-                        <div className="text-[10px] text-red-300/80 mt-0.5">Black campaign/Hoaks</div>
+                        <div className="text-[10px] text-red-300/80 mt-0.5">Penolakan Mesin AI</div>
                     </div>
                 </div>
 
@@ -394,20 +446,20 @@ export default function Dashboard({ feeds = [], stats = {}, filters = {}, target
                 {/* Analyzed Feeds Grid */}
                 {feeds.length === 0 ? (
                     <div className="p-12 text-center rounded-2xl bg-slate-900/60 border border-slate-800 font-mono space-y-3">
-                        <Clock className="w-10 h-10 text-slate-600 mx-auto animate-pulse" />
-                        <h3 className="text-base font-bold text-white">Belum Ada Isu Teranalisis AI</h3>
+                        <Newspaper className="w-10 h-10 text-slate-600 mx-auto animate-pulse" />
+                        <h3 className="text-base font-bold text-white">Belum Ada Berita Portal Teranalisis</h3>
                         <p className="text-xs text-slate-400 max-w-md mx-auto leading-relaxed">
-                            Semua artikel berita saat ini masih berada dalam status pending atau belum memenuhi kriteria filter. 
-                            Gunakan REST API Hermes Gateway (<code className="text-cyan-300">/api/v1/hermes/fetch-news</code>) untuk memproses feed.
+                            Semua artikel berita portal saat ini masih dalam proses penarikan atau belum memenuhi kriteria filter aktif.
                         </p>
                         <div className="pt-2">
-                            <Link
-                                href="/target-setup"
-                                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-cyan-950 hover:bg-cyan-900 border border-cyan-500/40 text-cyan-300 text-xs font-bold transition-all"
+                            <button
+                                type="button"
+                                onClick={handleFetchNews}
+                                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold transition-all shadow-lg cursor-pointer"
                             >
-                                <Radio className="w-3.5 h-3.5" />
-                                <span>Buka Feed Hub & Tarik Berita Baru</span>
-                            </Link>
+                                <RefreshCw className="w-3.5 h-3.5" />
+                                <span>Tarik Berita Aktual Sekarang</span>
+                            </button>
                         </div>
                     </div>
                 ) : (
@@ -415,9 +467,9 @@ export default function Dashboard({ feeds = [], stats = {}, filters = {}, target
                         {feeds.map((feed) => {
                             const sentimentInfo = getSentimentBadge(feed.sentiment);
                             const isIntegrityAlert = feed.ai_status === 'integrity_alert';
-                            const factAnchor = feed.fact_anchor || {};
-                            const scripts = feed.scripts || {};
-                            const activeTab = activeTabPerCard[feed.id] || 'tiktok';
+                            const factAnchor = typeof feed.fact_anchor === 'string' ? JSON.parse(feed.fact_anchor || '{}') : (feed.fact_anchor || {});
+                            const scripts = typeof feed.scripts === 'string' ? JSON.parse(feed.scripts || '{}') : (feed.scripts || {});
+                            const activeTab = activeTabPerCard[feed.id] || 'press_release';
 
                             return (
                                 <div 
@@ -435,7 +487,7 @@ export default function Dashboard({ feeds = [], stats = {}, filters = {}, target
                                         <div className="flex flex-wrap items-center justify-between gap-2 font-mono text-xs">
                                             <div className="flex items-center gap-2">
                                                 <span className="px-2.5 py-1 rounded-md bg-slate-950 border border-slate-700/80 text-cyan-300 font-bold text-[10px]">
-                                                    {feed.source}
+                                                    {feed.source || 'Portal Pers'}
                                                 </span>
                                                 <span className={`px-2.5 py-1 rounded-md text-[10px] font-bold border ${sentimentInfo.bg}`}>
                                                     {sentimentInfo.label}
@@ -461,8 +513,8 @@ export default function Dashboard({ feeds = [], stats = {}, filters = {}, target
                                             <VelocityIndicator score={feed.velocity_score} />
                                         </div>
 
-                                        {/* News Title */}
-                                        <div>
+                                        {/* News Title with External Link and Direct Action */}
+                                        <div className="space-y-2">
                                             <a
                                                 href={feed.url}
                                                 target="_blank"
@@ -472,6 +524,20 @@ export default function Dashboard({ feeds = [], stats = {}, filters = {}, target
                                                 <span>{feed.title}</span>
                                                 <ExternalLink className="w-4 h-4 text-slate-400 group-hover:text-cyan-300 shrink-0 mt-1" />
                                             </a>
+
+                                            {/* Prominent Direct Source Link Badge */}
+                                            <div className="flex items-center gap-2 pt-1 font-mono">
+                                                <a
+                                                    href={feed.url}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-cyan-950/70 hover:bg-cyan-900 border border-cyan-500/40 text-cyan-300 text-[11px] font-bold transition shadow-sm"
+                                                >
+                                                    <Newspaper className="w-3 h-3 text-cyan-400" />
+                                                    <span>Buka Berita Asli ({feed.source || 'Portal Online'})</span>
+                                                    <ArrowUpRight className="w-3 h-3 text-cyan-400" />
+                                                </a>
+                                            </div>
                                         </div>
 
                                         {/* 1. INTEGRITY ALERT BANNER (If ai_status == 'integrity_alert') */}
@@ -520,7 +586,7 @@ export default function Dashboard({ feeds = [], stats = {}, filters = {}, target
                                                                 Tuduhan / Isu Miring:
                                                             </div>
                                                             <p className="text-xs text-rose-200/90 font-sans leading-relaxed bg-rose-950/30 p-2.5 rounded-lg border border-rose-900/40">
-                                                                {factAnchor.tuduhan || 'Belum ada tuduhan spesifik tercatat.'}
+                                                                {factAnchor.tuduhan || factAnchor.claim || 'Belum ada tuduhan spesifik tercatat.'}
                                                             </p>
                                                         </div>
 
@@ -531,27 +597,27 @@ export default function Dashboard({ feeds = [], stats = {}, filters = {}, target
                                                                 Fakta Kejadian Lapangan:
                                                             </div>
                                                             <p className="text-xs text-emerald-200/90 font-sans leading-relaxed bg-emerald-950/30 p-2.5 rounded-lg border border-emerald-900/40">
-                                                                {factAnchor.fakta_lapangan || 'Data fakta lapangan telah dikompilasi.'}
+                                                                {factAnchor.fakta_lapangan || factAnchor.fakta || factAnchor.fact || 'Data fakta lapangan telah dikompilasi.'}
                                                             </p>
                                                         </div>
                                                     </div>
 
                                                     {/* Dokumen Rujukan Footer */}
-                                                    {factAnchor.dokumen_rujukan && (
+                                                    {(factAnchor.dokumen_rujukan || factAnchor.reference) && (
                                                         <div className="px-3.5 py-2 bg-slate-900/40 border-t border-slate-800/80 text-[11px] text-slate-400 flex items-center gap-1.5">
                                                             <Info className="w-3 h-3 text-cyan-400 shrink-0" />
-                                                            <span>Rujukan: <strong className="text-slate-300">{factAnchor.dokumen_rujukan}</strong></span>
+                                                            <span>Rujukan: <strong className="text-slate-300">{factAnchor.dokumen_rujukan || factAnchor.reference}</strong></span>
                                                         </div>
                                                     )}
                                                 </div>
 
-                                                {/* Narrative Builder (Proactive & Defensive Scripts) */}
+                                                {/* Narrative Builder (Press & Media Response Formats) */}
                                                 <div className="space-y-2.5">
                                                     <div className="flex items-center justify-between font-mono">
                                                         <div className="flex items-center gap-2">
                                                             <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
                                                             <span className="text-xs font-bold text-white uppercase">
-                                                                Narrative Builder
+                                                                Draf Respon Media & Pers
                                                             </span>
                                                         </div>
 
@@ -567,30 +633,37 @@ export default function Dashboard({ feeds = [], stats = {}, filters = {}, target
 
                                                     {/* Channel Selector Tabs */}
                                                     <div className="flex items-center gap-1 p-1 rounded-xl bg-slate-950 border border-slate-800 font-mono text-xs">
-                                                        {['tiktok', 'x', 'instagram'].map((ch) => (
+                                                        {PRESS_FORMATS.map((fmt) => (
                                                             <button
-                                                                key={ch}
+                                                                key={fmt.id}
                                                                 type="button"
-                                                                onClick={() => setActiveTabPerCard({ ...activeTabPerCard, [feed.id]: ch })}
+                                                                onClick={() => setActiveTabPerCard({ ...activeTabPerCard, [feed.id]: fmt.id })}
                                                                 className={`flex-1 py-1.5 px-2 rounded-lg text-center font-bold text-[11px] uppercase transition-all cursor-pointer ${
-                                                                    activeTab === ch
+                                                                    activeTab === fmt.id
                                                                         ? 'bg-cyan-950 text-cyan-300 border border-cyan-500/50 shadow-sm'
                                                                         : 'text-slate-400 hover:text-white hover:bg-slate-900'
                                                                 }`}
                                                             >
-                                                                {ch === 'x' ? 'X (Twitter)' : ch}
+                                                                {fmt.label}
                                                             </button>
                                                         ))}
                                                     </div>
 
                                                     {/* Active Script Content */}
-                                                    <ScriptChannelBox
-                                                        channel={activeTab === 'x' ? 'X (Twitter)' : activeTab.toUpperCase()}
-                                                        title={`Naskah Publikasi ${activeTab.toUpperCase()}`}
-                                                        content={scripts[activeTab] || 'Draf naskah belum dikompilasi oleh mesin AI.'}
-                                                        modeLabel={sentimentInfo.mode}
-                                                        modeColor={sentimentInfo.modeColor}
-                                                    />
+                                                    {(() => {
+                                                        const activeFmt = PRESS_FORMATS.find(f => f.id === activeTab) || PRESS_FORMATS[0];
+                                                        const scriptText = getScriptForFormat(scripts, activeFmt.id);
+
+                                                        return (
+                                                            <ScriptChannelBox
+                                                                channel={activeFmt.label.toUpperCase()}
+                                                                title={activeFmt.title}
+                                                                content={scriptText || 'Draf naskah respon belum dikompilasi oleh mesin AI.'}
+                                                                modeLabel={sentimentInfo.mode}
+                                                                modeColor={sentimentInfo.modeColor}
+                                                            />
+                                                        );
+                                                    })()}
                                                 </div>
                                             </div>
                                         )}
@@ -624,18 +697,31 @@ export default function Dashboard({ feeds = [], stats = {}, filters = {}, target
                         <div className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl bg-slate-900 border border-cyan-500/50 p-6 shadow-2xl space-y-6">
                             {/* Modal Header */}
                             <div className="flex items-start justify-between border-b border-slate-800 pb-4">
-                                <div className="space-y-1">
+                                <div className="space-y-1 flex-1 pr-4">
                                     <div className="flex items-center gap-2 font-mono text-xs">
                                         <span className="px-2.5 py-0.5 rounded bg-slate-950 border border-slate-700 text-cyan-300 font-bold">
-                                            {selectedFeedForModal.source}
+                                            {selectedFeedForModal.source || 'Portal Berita'}
                                         </span>
                                         <span className="text-slate-400">
                                             ID #{selectedFeedForModal.id}
                                         </span>
                                     </div>
-                                    <h2 className="text-lg font-bold text-white font-sans">
+                                    <h2 className="text-lg font-bold text-white font-sans leading-snug">
                                         {selectedFeedForModal.title}
                                     </h2>
+
+                                    {/* Direct Link to News in Modal */}
+                                    <div className="pt-2">
+                                        <a
+                                            href={selectedFeedForModal.url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-cyan-950 hover:bg-cyan-900 border border-cyan-500/50 text-cyan-300 font-mono text-xs font-bold transition"
+                                        >
+                                            <ExternalLink className="w-3.5 h-3.5" />
+                                            <span>Buka Sumber Artikel ({selectedFeedForModal.source})</span>
+                                        </a>
+                                    </div>
                                 </div>
                                 <button
                                     type="button"
@@ -681,7 +767,7 @@ export default function Dashboard({ feeds = [], stats = {}, filters = {}, target
                                                     Klaim / Tuduhan Isu:
                                                 </div>
                                                 <div className="text-rose-100 leading-relaxed">
-                                                    {selectedFeedForModal.fact_anchor?.tuduhan || 'Tidak ada data tuduhan.'}
+                                                    {selectedFeedForModal.fact_anchor?.tuduhan || selectedFeedForModal.fact_anchor?.claim || 'Tidak ada data tuduhan.'}
                                                 </div>
                                             </div>
                                             <div className="p-3.5 rounded-xl bg-emerald-950/40 border border-emerald-900/50 space-y-1">
@@ -689,7 +775,7 @@ export default function Dashboard({ feeds = [], stats = {}, filters = {}, target
                                                     Fakta Lapangan Terverifikasi:
                                                 </div>
                                                 <div className="text-emerald-100 leading-relaxed">
-                                                    {selectedFeedForModal.fact_anchor?.fakta_lapangan || 'Tidak ada data fakta lapangan.'}
+                                                    {selectedFeedForModal.fact_anchor?.fakta_lapangan || selectedFeedForModal.fact_anchor?.fakta || 'Tidak ada data fakta lapangan.'}
                                                 </div>
                                             </div>
                                         </div>
@@ -697,17 +783,17 @@ export default function Dashboard({ feeds = [], stats = {}, filters = {}, target
 
                                     {/* All Scripts Multi-Channel */}
                                     <div className="space-y-3 font-mono">
-                                        <h3 className="text-xs font-bold text-amber-300 uppercase flex items-center gap-1.5">
-                                            <Sparkles className="w-4 h-4 text-amber-400" />
-                                            Draf Naskah Multi-Kanal (TikTok, X, Instagram)
+                                        <h3 className="text-xs font-bold text-cyan-300 uppercase flex items-center gap-1.5">
+                                            <Sparkles className="w-4 h-4 text-cyan-400" />
+                                            Draf Respon Media & Komunikasi Pers Resmi
                                         </h3>
                                         <div className="space-y-3">
-                                            {['tiktok', 'x', 'instagram'].map((ch) => (
+                                            {PRESS_FORMATS.map((fmt) => (
                                                 <ScriptChannelBox
-                                                    key={ch}
-                                                    channel={ch === 'x' ? 'X (TWITTER)' : ch.toUpperCase()}
-                                                    title={`Naskah Media ${ch.toUpperCase()}`}
-                                                    content={selectedFeedForModal.scripts?.[ch] || ''}
+                                                    key={fmt.id}
+                                                    channel={fmt.label.toUpperCase()}
+                                                    title={fmt.title}
+                                                    content={getScriptForFormat(selectedFeedForModal.scripts, fmt.id)}
                                                 />
                                             ))}
                                         </div>

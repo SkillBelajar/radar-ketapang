@@ -19,8 +19,9 @@ Route::get('/', function () {
 })->name('welcome');
 
 Route::middleware(['auth'])->group(function () {
-    // Slice 5: Dasbor Analisis (Radar Politik & AI Output)
+    // Slice 5: Dasbor Analisis (Radar Politik & AI Output Berita Pers)
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::post('/dashboard/fetch', [DashboardController::class, 'triggerFetch'])->name('dashboard.fetch');
 
     // Slice 6: 1-Click Influencer Content Studio
     Route::get('/studio', [StudioController::class, 'index'])->name('studio.index');
