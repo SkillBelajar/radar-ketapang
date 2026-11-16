@@ -7,7 +7,8 @@ import {
 } from 'lucide-react';
 
 export default function AuthenticatedLayout({ header, children }) {
-    const { auth, appName = 'Radar Politik', appVersion = '0.13' } = usePage().props;
+    const { auth, appName = 'Radar Politik', appVersion = '0.14' } = usePage().props;
+    const { url } = usePage();
     const user = auth.user;
     const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
@@ -84,11 +85,27 @@ export default function AuthenticatedLayout({ header, children }) {
                             </Link>
 
                             {/* Desktop Nav Items */}
-                            <nav className="hidden md:flex items-center space-x-1 ml-6 font-mono text-xs">
+                            <nav className="hidden md:flex items-center space-x-1.5 ml-6 font-mono text-xs">
+                                <Link
+                                    href="/dashboard"
+                                    className={`px-3 py-1.5 rounded-lg flex items-center gap-1.5 font-bold transition-all ${
+                                        url.startsWith('/dashboard')
+                                            ? 'bg-rose-950/80 text-rose-300 border border-rose-500/50 shadow-[0_0_12px_rgba(244,63,94,0.25)]'
+                                            : 'text-slate-300 hover:text-white hover:bg-slate-900 border border-slate-800'
+                                    }`}
+                                >
+                                    <Activity className="w-3.5 h-3.5 text-rose-400" />
+                                    <span>RADAR KRISIS (S5)</span>
+                                </Link>
+
                                 {['admin', 'timses'].includes(user?.role) && (
                                     <Link
                                         href="/target-setup"
-                                        className="px-3 py-1.5 rounded-lg bg-cyan-950/80 text-cyan-300 border border-cyan-500/40 flex items-center gap-1.5 font-bold shadow-[0_0_10px_rgba(6,182,212,0.15)] hover:bg-cyan-900/80 transition-all"
+                                        className={`px-3 py-1.5 rounded-lg flex items-center gap-1.5 font-bold transition-all ${
+                                            url.startsWith('/target-setup')
+                                                ? 'bg-cyan-950/80 text-cyan-300 border border-cyan-500/50 shadow-[0_0_12px_rgba(6,182,212,0.25)]'
+                                                : 'text-slate-300 hover:text-white hover:bg-slate-900 border border-slate-800'
+                                        }`}
                                     >
                                         <Radio className="w-3.5 h-3.5 text-cyan-400" />
                                         <span>TARGET SETUP (S3)</span>
@@ -97,9 +114,13 @@ export default function AuthenticatedLayout({ header, children }) {
 
                                 <Link
                                     href="/user-guide"
-                                    className="px-3 py-1.5 rounded-lg text-slate-300 hover:text-cyan-300 hover:bg-slate-900 border border-slate-800 flex items-center gap-1.5 font-bold transition-all"
+                                    className={`px-3 py-1.5 rounded-lg flex items-center gap-1.5 font-bold transition-all ${
+                                        url.startsWith('/user-guide')
+                                            ? 'bg-amber-950/80 text-amber-300 border border-amber-500/50 shadow-[0_0_12px_rgba(245,158,11,0.25)]'
+                                            : 'text-slate-300 hover:text-white hover:bg-slate-900 border border-slate-800'
+                                    }`}
                                 >
-                                    <BookOpen className="w-3.5 h-3.5 text-cyan-400" />
+                                    <BookOpen className="w-3.5 h-3.5 text-amber-400" />
                                     <span>PANDUAN OPERASIONAL</span>
                                 </Link>
 
@@ -173,21 +194,41 @@ export default function AuthenticatedLayout({ header, children }) {
                         </div>
 
                         <div className="space-y-1">
+                            <Link
+                                href="/dashboard"
+                                className={`block px-3 py-2 rounded-lg font-bold ${
+                                    url.startsWith('/dashboard')
+                                        ? 'bg-rose-950 text-rose-300 border border-rose-500/50'
+                                        : 'text-slate-300 hover:bg-slate-900 border border-slate-800'
+                                }`}
+                            >
+                                <Activity className="w-3.5 h-3.5 inline mr-2 text-rose-400" />
+                                Radar Krisis (Slice 5)
+                            </Link>
+
                             {['admin', 'timses'].includes(user?.role) && (
                                 <Link
                                     href="/target-setup"
-                                    className="block px-3 py-2 rounded-lg bg-cyan-950 text-cyan-300 border border-cyan-500/50 font-bold"
+                                    className={`block px-3 py-2 rounded-lg font-bold ${
+                                        url.startsWith('/target-setup')
+                                            ? 'bg-cyan-950 text-cyan-300 border border-cyan-500/50'
+                                            : 'text-slate-300 hover:bg-slate-900 border border-slate-800'
+                                    }`}
                                 >
-                                    <Radio className="w-3.5 h-3.5 inline mr-2" />
+                                    <Radio className="w-3.5 h-3.5 inline mr-2 text-cyan-400" />
                                     Target Setup (Slice 3)
                                 </Link>
                             )}
 
                             <Link
                                 href="/user-guide"
-                                className="block px-3 py-2 rounded-lg text-slate-300 hover:bg-slate-900 border border-slate-800 font-bold"
+                                className={`block px-3 py-2 rounded-lg font-bold ${
+                                    url.startsWith('/user-guide')
+                                        ? 'bg-amber-950 text-amber-300 border border-amber-500/50'
+                                        : 'text-slate-300 hover:bg-slate-900 border border-slate-800'
+                                }`}
                             >
-                                <BookOpen className="w-3.5 h-3.5 inline mr-2" />
+                                <BookOpen className="w-3.5 h-3.5 inline mr-2 text-amber-400" />
                                 Panduan Operasional
                             </Link>
 
@@ -234,13 +275,13 @@ export default function AuthenticatedLayout({ header, children }) {
                             <span>RADAR POLITIK KETAPANG // MIL-SPEC OPS</span>
                         </div>
 
-                        {/* CRITICAL: Prominent Version 0.11 Display */}
+                        {/* CRITICAL: Prominent Version 0.14 Display */}
                         <div className="flex items-center space-x-3">
                             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900 border border-cyan-500/60 shadow-[0_0_12px_rgba(6,182,212,0.25)] text-cyan-300 text-xs font-semibold tracking-wider">
                                 <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
                                 <span className="text-slate-400">SISTEM:</span>
                                 <span className="text-white font-bold tracking-widest bg-cyan-950/80 px-2 py-0.5 rounded border border-cyan-500/30">
-                                    Versi: {appVersion}
+                                    Versi: 0.14
                                 </span>
                             </div>
                         </div>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TargetSetupController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -9,14 +10,13 @@ Route::get('/', function () {
     return Inertia::render('Welcome', [
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
-        'appVersion' => config('app.version', '0.13'),
+        'appVersion' => config('app.version', '0.14'),
     ]);
 })->name('welcome');
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard', function () {
-        return redirect()->route('target-setup.index');
-    })->name('dashboard');
+    // Slice 5: Dasbor Analisis (Radar Politik & AI Output)
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/user-guide', function () {
         return Inertia::render('UserGuide');

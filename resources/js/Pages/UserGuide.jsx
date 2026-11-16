@@ -8,7 +8,7 @@ import {
 } from 'lucide-react';
 
 export default function UserGuide() {
-    const { auth, appVersion = '0.13' } = usePage().props;
+    const { auth, appVersion = '0.14' } = usePage().props;
     const userRole = auth.user?.role || 'timses';
     
     // Tab selector so user can easily review their role guide, or preview others

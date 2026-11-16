@@ -55,7 +55,7 @@ class HermesGatewayController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'app_version' => config('app.version', '0.13'),
+            'app_version' => config('app.version', '0.14'),
             'total_pending' => $newsFeeds->count(),
             'instructions' => $dualModeInstruction,
             'data' => $newsFeeds->map(function ($feed) {

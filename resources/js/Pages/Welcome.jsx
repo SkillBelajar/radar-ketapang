@@ -6,7 +6,7 @@ import {
     Lock, ArrowRight, Zap, Eye, CheckCircle2, Terminal
 } from 'lucide-react';
 
-export default function Welcome({ appVersion = '0.13', laravelVersion, phpVersion }) {
+export default function Welcome({ appVersion = '0.14', laravelVersion, phpVersion }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [submitted, setSubmitted] = useState(false);
