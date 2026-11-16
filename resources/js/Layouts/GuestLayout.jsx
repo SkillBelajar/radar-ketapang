@@ -81,7 +81,7 @@ export default function GuestLayout({ children, title }) {
                         <div className="flex items-center justify-between py-2 border-b border-slate-800">
                             <span className="text-slate-400">RELEASE BUILD</span>
                             <span className="px-2 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-500/50 font-bold">
-                                Versi: 0.15
+                                Versi: 0.16
                             </span>
                         </div>
                         <div className="pt-2">
@@ -122,7 +122,7 @@ export default function GuestLayout({ children, title }) {
                                 <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
                                 <span className="text-slate-400">SISTEM:</span>
                                 <span className="text-white font-bold tracking-widest bg-cyan-950/80 px-2 py-0.5 rounded border border-cyan-500/30">
-                                    Versi: 0.15
+                                    Versi: 0.16
                                 </span>
                             </div>
                         </div>

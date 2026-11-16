@@ -4,11 +4,11 @@ import {
     Radio, Shield, Terminal, LogOut, User, Menu, X, 
     BookOpen, Activity, Compass, Cpu, Bell, CheckCircle2,
     Sliders, FileText, Share2, Flame, AlertTriangle, ExternalLink,
-    Check, Sparkles
+    Check, Sparkles, BarChart3
 } from 'lucide-react';
 
 export default function AuthenticatedLayout({ header, children }) {
-    const { auth, appName = 'Radar Politik', appVersion = '0.15', notifications = { unread_count: 0, recent: [] } } = usePage().props;
+    const { auth, appName = 'Radar Politik', appVersion = '0.16', notifications = { unread_count: 0, recent: [] } } = usePage().props;
     const { url } = usePage();
     const user = auth?.user;
     const [mobileNavOpen, setMobileNavOpen] = useState(false);
@@ -151,6 +151,19 @@ export default function AuthenticatedLayout({ header, children }) {
                                 >
                                     <Share2 className="w-3.5 h-3.5 text-cyan-400" />
                                     <span>CONTENT STUDIO (S6)</span>
+                                </Link>
+
+                                {/* Slice 7: Modul Evaluasi (Analytics & Audit) */}
+                                <Link
+                                    href="/analytics"
+                                    className={`px-3 py-1.5 rounded-lg flex items-center gap-1.5 font-bold transition-all ${
+                                        url.startsWith('/analytics')
+                                            ? 'bg-purple-950/80 text-purple-300 border border-purple-500/50 shadow-[0_0_12px_rgba(168,85,247,0.25)]'
+                                            : 'text-slate-300 hover:text-white hover:bg-slate-900 border border-slate-800'
+                                    }`}
+                                >
+                                    <BarChart3 className="w-3.5 h-3.5 text-purple-400" />
+                                    <span>ANALYTICS & AUDIT (S7)</span>
                                 </Link>
 
                                 {['admin', 'timses'].includes(user?.role) && (
@@ -415,6 +428,18 @@ export default function AuthenticatedLayout({ header, children }) {
                                 Content Studio (Slice 6)
                             </Link>
 
+                            <Link
+                                href="/analytics"
+                                className={`block px-3 py-2 rounded-lg font-bold ${
+                                    url.startsWith('/analytics')
+                                        ? 'bg-purple-950 text-purple-300 border border-purple-500/50'
+                                        : 'text-slate-300 hover:bg-slate-900 border border-slate-800'
+                                }`}
+                            >
+                                <BarChart3 className="w-3.5 h-3.5 inline mr-2 text-purple-400" />
+                                Analytics & Audit (Slice 7)
+                            </Link>
+
                             {['admin', 'timses'].includes(user?.role) && (
                                 <Link
                                     href="/target-setup"
@@ -479,13 +504,13 @@ export default function AuthenticatedLayout({ header, children }) {
                             <span>RADAR POLITIK KETAPANG // MIL-SPEC OPS</span>
                         </div>
 
-                        {/* CRITICAL: Prominent Version 0.15 Display */}
+                        {/* CRITICAL: Prominent Version 0.16 Display */}
                         <div className="flex items-center space-x-3">
                             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900 border border-cyan-500/60 shadow-[0_0_12px_rgba(6,182,212,0.25)] text-cyan-300 text-xs font-semibold tracking-wider">
                                 <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
                                 <span className="text-slate-400">SISTEM:</span>
                                 <span className="text-white font-bold tracking-widest bg-cyan-950/80 px-2 py-0.5 rounded border border-cyan-500/30">
-                                    Versi: 0.15
+                                    Versi: 0.16
                                 </span>
                             </div>
                         </div>

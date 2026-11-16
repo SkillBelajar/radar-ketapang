@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\StudioController;
@@ -12,7 +13,7 @@ Route::get('/', function () {
     return Inertia::render('Welcome', [
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
-        'appVersion' => config('app.version', '0.15'),
+        'appVersion' => config('app.version', '0.16'),
     ]);
 })->name('welcome');
 
@@ -22,6 +23,9 @@ Route::middleware(['auth'])->group(function () {
 
     // Slice 6: 1-Click Influencer Content Studio
     Route::get('/studio', [StudioController::class, 'index'])->name('studio.index');
+
+    // Slice 7: Modul Evaluasi (Analytics & Audit)
+    Route::get('/analytics', [AnalyticsController::class, 'index'])->name('analytics.index');
 
     // Slice 6: In-App Notifications
     Route::post('/notifications/{id}/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
