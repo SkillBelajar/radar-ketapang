@@ -44,10 +44,13 @@ export default function GuestLayout({ children, title }) {
                                 <Cpu className="w-3.5 h-3.5 text-cyan-400" />
                                 <span>OCTANE: HIGH SPEED</span>
                             </div>
-                            <div className="flex items-center space-x-2 px-3 py-1 rounded bg-slate-900/90 border border-slate-700 text-slate-300">
-                                <Lock className="w-3.5 h-3.5 text-slate-400" />
-                                <span>AES-256</span>
-                            </div>
+                            <a
+                                href="/login"
+                                className="flex items-center space-x-2 px-3.5 py-1.5 rounded bg-cyan-950/80 hover:bg-cyan-900 border border-cyan-500/60 text-cyan-300 hover:text-white font-bold transition-all shadow-[0_0_12px_rgba(6,182,212,0.25)]"
+                            >
+                                <Lock className="w-3.5 h-3.5 text-cyan-400" />
+                                <span>PORTAL LOGIN</span>
+                            </a>
                         </div>
 
                         {/* Mobile Menu Toggle Button */}
@@ -75,11 +78,20 @@ export default function GuestLayout({ children, title }) {
                             <span className="text-slate-400">ENGINE RUNTIME</span>
                             <span className="text-cyan-400 font-bold">LARAVEL 13 OCTANE</span>
                         </div>
-                        <div className="flex items-center justify-between py-2">
+                        <div className="flex items-center justify-between py-2 border-b border-slate-800">
                             <span className="text-slate-400">RELEASE BUILD</span>
                             <span className="px-2 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-500/50 font-bold">
-                                Versi: 0.10
+                                Versi: 0.11
                             </span>
+                        </div>
+                        <div className="pt-2">
+                            <a
+                                href="/login"
+                                className="w-full flex items-center justify-center gap-2 py-2.5 rounded bg-cyan-500 text-slate-950 font-bold tracking-wider hover:bg-cyan-400 transition-colors"
+                            >
+                                <Lock className="w-4 h-4" />
+                                <span>AKSES PORTAL LOGIN</span>
+                            </a>
                         </div>
                     </div>
                 )}
@@ -110,7 +122,7 @@ export default function GuestLayout({ children, title }) {
                                 <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
                                 <span className="text-slate-400">SISTEM:</span>
                                 <span className="text-white font-bold tracking-widest bg-cyan-950/80 px-2 py-0.5 rounded border border-cyan-500/30">
-                                    Versi: 0.10
+                                    Versi: 0.11
                                 </span>
                             </div>
                         </div>

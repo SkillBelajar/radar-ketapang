@@ -1,6 +1,28 @@
 {
+  "_GuestLayout-CaXMYW1V.js": {
+    "file": "assets/GuestLayout-CaXMYW1V.js",
+    "name": "GuestLayout",
+    "imports": [
+      "_x-yLS5CTVJ.js",
+      "resources/js/app.jsx"
+    ]
+  },
+  "_x-yLS5CTVJ.js": {
+    "file": "assets/x-yLS5CTVJ.js",
+    "name": "x",
+    "imports": [
+      "resources/js/app.jsx"
+    ]
+  },
+  "_zap-D8J3SKHx.js": {
+    "file": "assets/zap-D8J3SKHx.js",
+    "name": "zap",
+    "imports": [
+      "_x-yLS5CTVJ.js"
+    ]
+  },
   "resources/css/app.css": {
-    "file": "assets/app-p0shz9uC.css",
+    "file": "assets/app-C7lXTu3N.css",
     "src": "resources/css/app.css",
     "isEntry": true,
     "name": "app",
@@ -8,28 +30,61 @@
       "app.css"
     ]
   },
+  "resources/js/Pages/Auth/Login.jsx": {
+    "file": "assets/Login-DBSQLTXY.js",
+    "name": "Login",
+    "src": "resources/js/Pages/Auth/Login.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_GuestLayout-CaXMYW1V.js",
+      "_x-yLS5CTVJ.js"
+    ],
+    "css": [
+      "assets/app-C7lXTu3N.css"
+    ]
+  },
+  "resources/js/Pages/UserGuide.jsx": {
+    "file": "assets/UserGuide-DhFtglGr.js",
+    "name": "UserGuide",
+    "src": "resources/js/Pages/UserGuide.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_x-yLS5CTVJ.js",
+      "_zap-D8J3SKHx.js"
+    ],
+    "css": [
+      "assets/app-C7lXTu3N.css"
+    ]
+  },
   "resources/js/Pages/Welcome.jsx": {
-    "file": "assets/Welcome-BhQeLXDd.js",
+    "file": "assets/Welcome-BW1b05s9.js",
     "name": "Welcome",
     "src": "resources/js/Pages/Welcome.jsx",
     "isDynamicEntry": true,
     "imports": [
-      "resources/js/app.jsx"
+      "resources/js/app.jsx",
+      "_GuestLayout-CaXMYW1V.js",
+      "_x-yLS5CTVJ.js",
+      "_zap-D8J3SKHx.js"
     ],
     "css": [
-      "assets/app-p0shz9uC.css"
+      "assets/app-C7lXTu3N.css"
     ]
   },
   "resources/js/app.jsx": {
-    "file": "assets/app-BuFJFyFi.js",
+    "file": "assets/app-DUPKFZ3k.js",
     "name": "app",
     "src": "resources/js/app.jsx",
     "isEntry": true,
     "dynamicImports": [
+      "resources/js/Pages/Auth/Login.jsx",
+      "resources/js/Pages/UserGuide.jsx",
       "resources/js/Pages/Welcome.jsx"
     ],
     "css": [
-      "assets/app-p0shz9uC.css"
+      "assets/app-C7lXTu3N.css"
     ]
   }
 }

@@ -6,7 +6,7 @@ import {
     Lock, ArrowRight, Zap, Eye, CheckCircle2, Terminal
 } from 'lucide-react';
 
-export default function Welcome({ appVersion = '0.10', laravelVersion, phpVersion }) {
+export default function Welcome({ appVersion = '0.11', laravelVersion, phpVersion }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [submitted, setSubmitted] = useState(false);
@@ -132,13 +132,13 @@ export default function Welcome({ appVersion = '0.10', laravelVersion, phpVersio
                                 </div>
 
                                 <div className="pt-2">
-                                    <button
-                                        type="submit"
+                                    <a
+                                        href="/login"
                                         className="w-full py-3 px-4 rounded-lg bg-gradient-to-r from-cyan-500 to-teal-500 hover:from-cyan-400 hover:to-teal-400 text-slate-950 font-bold font-mono text-sm tracking-wider flex items-center justify-center gap-2 transition-all shadow-[0_0_20px_rgba(6,182,212,0.4)] active:scale-[0.99] cursor-pointer"
                                     >
-                                        <span>AKSES COMMAND CENTER</span>
+                                        <span>BUKA PORTAL LOGIN EKSKLUSIF</span>
                                         <ArrowRight className="w-4 h-4" />
-                                    </button>
+                                    </a>
                                 </div>
                             </form>
 
@@ -163,15 +163,15 @@ export default function Welcome({ appVersion = '0.10', laravelVersion, phpVersio
                             </h3>
                         </div>
                         <div className="text-xs font-mono text-cyan-400">
-                            Current Stage: <span className="text-emerald-400 font-bold">Slice 1 Selesai</span>
+                            Current Stage: <span className="text-emerald-400 font-bold">Slice 2 Selesai</span>
                         </div>
                     </div>
 
                     <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2 font-mono text-[11px]">
                         {[
                             { id: 1, name: 'Fondasi & Memori', status: 'done' },
-                            { id: 2, name: 'Auth Command', status: 'next' },
-                            { id: 3, name: 'Target Tracker', status: 'pending' },
+                            { id: 2, name: 'Auth Command', status: 'done' },
+                            { id: 3, name: 'Target Tracker', status: 'next' },
                             { id: 4, name: 'Autopilot Crawl', status: 'pending' },
                             { id: 5, name: 'Hermes AI', status: 'pending' },
                             { id: 6, name: 'In-App Alert', status: 'pending' },
