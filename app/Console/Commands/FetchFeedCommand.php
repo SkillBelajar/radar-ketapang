@@ -28,7 +28,7 @@ class FetchFeedCommand extends Command
     public function handle(): int
     {
         $this->info('====================================================');
-        $this->info('  RADAR POLITIK KETAPANG // CREDIBLE FEED HUB v0.16 ');
+        $this->info('  RADAR POLITIK KETAPANG // CREDIBLE FEED HUB v1.0 (Release Candidate) ');
         $this->info('====================================================');
         
         $initialCount = NewsFeed::count();

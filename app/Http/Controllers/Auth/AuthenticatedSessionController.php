@@ -20,7 +20,7 @@ class AuthenticatedSessionController extends Controller
         return Inertia::render('Auth/Login', [
             'status' => session('status'),
             'canResetPassword' => false,
-            'appVersion' => config('app.version', '0.16'),
+            'appVersion' => config('app.version', '1.0 (Release Candidate)'),
         ]);
     }
 

@@ -35,7 +35,7 @@ class HandleInertiaRequests extends Middleware
                 'user' => $request->user(),
             ],
             'appName' => config('app.name', 'Radar Politik & Manajemen Reputasi'),
-            'appVersion' => config('app.version', '0.16'),
+            'appVersion' => config('app.version', '1.0 (Release Candidate)'),
             'notifications' => fn () => $request->user() ? [
                 'unread_count' => $request->user()->unreadNotifications()->count(),
                 'recent' => $request->user()->notifications()->latest()->take(10)->get()->map(function ($n) {

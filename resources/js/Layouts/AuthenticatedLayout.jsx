@@ -8,7 +8,7 @@ import {
 } from 'lucide-react';
 
 export default function AuthenticatedLayout({ header, children }) {
-    const { auth, appName = 'Radar Politik', appVersion = '0.16', notifications = { unread_count: 0, recent: [] } } = usePage().props;
+    const { auth, appName = 'Radar Politik', appVersion = '1.0 (Release Candidate)', notifications = { unread_count: 0, recent: [] } } = usePage().props;
     const { url } = usePage();
     const user = auth?.user;
     const [mobileNavOpen, setMobileNavOpen] = useState(false);
@@ -95,7 +95,7 @@ export default function AuthenticatedLayout({ header, children }) {
     const roleInfo = getRoleBadge(user?.role);
 
     return (
-        <div className="min-h-screen bg-slate-950 text-slate-100 cyber-grid flex flex-col relative selection:bg-cyan-500 selection:text-slate-950">
+        <div className="min-h-screen bg-slate-950 text-slate-100 cyber-grid flex flex-col relative selection:bg-cyan-500 selection:text-slate-950 overflow-x-hidden w-full max-w-full">
             {/* Ambient Cyber Aura Glows */}
             <div className="fixed top-0 left-1/4 w-96 h-96 bg-cyan-600/10 rounded-full blur-3xl pointer-events-none -z-0"></div>
             <div className="fixed bottom-0 right-1/4 w-96 h-96 bg-emerald-600/10 rounded-full blur-3xl pointer-events-none -z-0"></div>
@@ -504,13 +504,13 @@ export default function AuthenticatedLayout({ header, children }) {
                             <span>RADAR POLITIK KETAPANG // MIL-SPEC OPS</span>
                         </div>
 
-                        {/* CRITICAL: Prominent Version 0.16 Display */}
+                        {/* CRITICAL: Prominent Version 1.0 (Release Candidate) Display */}
                         <div className="flex items-center space-x-3">
                             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900 border border-cyan-500/60 shadow-[0_0_12px_rgba(6,182,212,0.25)] text-cyan-300 text-xs font-semibold tracking-wider">
                                 <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
                                 <span className="text-slate-400">SISTEM:</span>
                                 <span className="text-white font-bold tracking-widest bg-cyan-950/80 px-2 py-0.5 rounded border border-cyan-500/30">
-                                    Versi: 0.16
+                                    Versi: 1.0 (Release Candidate)
                                 </span>
                             </div>
                         </div>

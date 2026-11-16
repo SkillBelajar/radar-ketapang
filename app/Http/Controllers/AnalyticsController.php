@@ -152,7 +152,7 @@ class AnalyticsController extends Controller
         return Inertia::render('Analytics/Index', [
             'sentimentTrend' => $sentimentTrend,
             'auditLogs' => $auditLogs,
-            'appVersion' => config('app.version', '0.16'),
+            'appVersion' => config('app.version', '1.0 (Release Candidate)'),
         ]);
     }
 }

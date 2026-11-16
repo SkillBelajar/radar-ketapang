@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 
 export default function AnalyticsIndex({ sentimentTrend = [], auditLogs = {} }) {
-    const { appVersion = '0.16' } = usePage().props;
+    const { appVersion = '1.0 (Release Candidate)' } = usePage().props;
 
     // Chart mode toggle: 'line' vs 'bar' vs 'area'
     const [chartMode, setChartMode] = useState('line');

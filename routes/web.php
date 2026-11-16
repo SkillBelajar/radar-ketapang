@@ -13,7 +13,7 @@ Route::get('/', function () {
     return Inertia::render('Welcome', [
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
-        'appVersion' => config('app.version', '0.16'),
+        'appVersion' => config('app.version', '1.0 (Release Candidate)'),
     ]);
 })->name('welcome');
 

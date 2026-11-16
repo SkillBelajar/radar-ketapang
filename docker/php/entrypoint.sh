@@ -34,9 +34,18 @@ echo "Koneksi database MySQL berhasil!"
 php artisan migrate --force --no-interaction || true
 
 # Bersihkan cache agar konfigurasi env terbaru langsung aktif
-php artisan config:clear
-php artisan route:clear
-php artisan view:clear
+php artisan optimize:clear || true
 
-echo "Memulai Laravel Octane (FrankenPHP) di 0.0.0.0:8000..."
-exec php artisan octane:start --server=frankenphp --host=0.0.0.0 --port=8000
+if [ "$APP_ENV" = "production" ]; then
+    echo "Mode Produksi Terdeteksi: Melakukan caching konfigurasi, rute, dan tampilan..."
+    php artisan config:cache || true
+    php artisan route:cache || true
+    php artisan view:cache || true
+fi
+
+OCTANE_SERVER_BIN=${OCTANE_SERVER:-frankenphp}
+OCTANE_WORKERS_VAL=${OCTANE_WORKERS:-auto}
+OCTANE_MAX_REQ_VAL=${OCTANE_MAX_REQUESTS:-500}
+
+echo "Memulai Laravel Octane ($OCTANE_SERVER_BIN) dengan workers=$OCTANE_WORKERS_VAL max-requests=$OCTANE_MAX_REQ_VAL di 0.0.0.0:8000..."
+exec php artisan octane:start --server="$OCTANE_SERVER_BIN" --host=0.0.0.0 --port=8000 --workers="$OCTANE_WORKERS_VAL" --max-requests="$OCTANE_MAX_REQ_VAL"

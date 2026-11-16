@@ -5,7 +5,7 @@ export default function GuestLayout({ children, title }) {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
     return (
-        <div className="min-h-screen bg-slate-950 text-slate-100 cyber-grid flex flex-col relative selection:bg-cyan-500 selection:text-slate-950 font-sans">
+        <div className="min-h-screen bg-slate-950 text-slate-100 cyber-grid flex flex-col relative selection:bg-cyan-500 selection:text-slate-950 font-sans overflow-x-hidden w-full max-w-full">
             {/* Top Security & Status Ticker Bar */}
             <div className="border-b border-cyan-900/40 bg-slate-950/80 backdrop-blur-md sticky top-0 z-50">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -81,7 +81,7 @@ export default function GuestLayout({ children, title }) {
                         <div className="flex items-center justify-between py-2 border-b border-slate-800">
                             <span className="text-slate-400">RELEASE BUILD</span>
                             <span className="px-2 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-500/50 font-bold">
-                                Versi: 0.16
+                                Versi: 1.0 (Release Candidate)
                             </span>
                         </div>
                         <div className="pt-2">
@@ -122,7 +122,7 @@ export default function GuestLayout({ children, title }) {
                                 <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
                                 <span className="text-slate-400">SISTEM:</span>
                                 <span className="text-white font-bold tracking-widest bg-cyan-950/80 px-2 py-0.5 rounded border border-cyan-500/30">
-                                    Versi: 0.16
+                                    Versi: 1.0 (Release Candidate)
                                 </span>
                             </div>
                         </div>

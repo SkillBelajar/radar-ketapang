@@ -26,7 +26,7 @@ import {
 } from 'lucide-react';
 
 export default function StudioIndex({ newsFeeds = [], stats = {}, filters = {}, currentUserRole = 'influencer' }) {
-    const { appVersion = '0.16' } = usePage().props;
+    const { appVersion = '1.0 (Release Candidate)' } = usePage().props;
 
     // Filter states
     const [selectedPlatform, setSelectedPlatform] = useState(filters.platform || 'all');

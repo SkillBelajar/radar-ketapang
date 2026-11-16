@@ -6,7 +6,7 @@ import {
     ShieldCheck, Terminal, UserCheck, Eye, EyeOff, Radio, Cpu
 } from 'lucide-react';
 
-export default function Login({ status, appVersion = '0.16' }) {
+export default function Login({ status, appVersion = '1.0 (Release Candidate)' }) {
     const [showPassword, setShowPassword] = useState(false);
 
     const { data, setData, post, processing, errors, reset } = useForm({
