@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AnalyticsController;
+use App\Http\Controllers\ChecklistController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\StudioController;
@@ -26,6 +27,13 @@ Route::middleware(['auth'])->group(function () {
 
     // Slice 7: Modul Evaluasi (Analytics & Audit)
     Route::get('/analytics', [AnalyticsController::class, 'index'])->name('analytics.index');
+
+    // UAT Checklist & Pengujian Mandiri Step-by-Step
+    Route::get('/checklist', [ChecklistController::class, 'index'])->name('checklist.index');
+    Route::post('/checklist/toggle', [ChecklistController::class, 'toggle'])->name('checklist.toggle');
+    Route::post('/checklist/save', [ChecklistController::class, 'batchSave'])->name('checklist.save');
+    Route::post('/checklist/reset', [ChecklistController::class, 'reset'])->name('checklist.reset');
+    Route::post('/checklist/seed-demo', [ChecklistController::class, 'seedDemoData'])->name('checklist.seed-demo');
 
     // Slice 6: In-App Notifications
     Route::post('/notifications/{id}/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');

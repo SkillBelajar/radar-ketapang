@@ -4,7 +4,7 @@ import {
     Radio, Shield, Terminal, LogOut, User, Menu, X, 
     BookOpen, Activity, Compass, Cpu, Bell, CheckCircle2,
     Sliders, FileText, Share2, Flame, AlertTriangle, ExternalLink,
-    Check, Sparkles, BarChart3
+    Check, Sparkles, BarChart3, ClipboardCheck
 } from 'lucide-react';
 
 export default function AuthenticatedLayout({ header, children }) {
@@ -164,6 +164,19 @@ export default function AuthenticatedLayout({ header, children }) {
                                 >
                                     <BarChart3 className="w-3.5 h-3.5 text-purple-400" />
                                     <span>ANALYTICS & AUDIT (S7)</span>
+                                </Link>
+
+                                {/* UAT Checklist Pengujian Mandiri */}
+                                <Link
+                                    href="/checklist"
+                                    className={`px-3 py-1.5 rounded-lg flex items-center gap-1.5 font-bold transition-all ${
+                                        url.startsWith('/checklist')
+                                            ? 'bg-emerald-950/80 text-emerald-300 border border-emerald-500/50 shadow-[0_0_12px_rgba(16,185,129,0.25)]'
+                                            : 'text-slate-300 hover:text-white hover:bg-slate-900 border border-slate-800'
+                                    }`}
+                                >
+                                    <ClipboardCheck className="w-3.5 h-3.5 text-emerald-400" />
+                                    <span>UAT CHECKLIST</span>
                                 </Link>
 
                                 {['admin', 'timses'].includes(user?.role) && (
@@ -438,6 +451,18 @@ export default function AuthenticatedLayout({ header, children }) {
                             >
                                 <BarChart3 className="w-3.5 h-3.5 inline mr-2 text-purple-400" />
                                 Analytics & Audit (Slice 7)
+                            </Link>
+
+                            <Link
+                                href="/checklist"
+                                className={`block px-3 py-2 rounded-lg font-bold ${
+                                    url.startsWith('/checklist')
+                                        ? 'bg-emerald-950 text-emerald-300 border border-emerald-500/50'
+                                        : 'text-slate-300 hover:bg-slate-900 border border-slate-800'
+                                }`}
+                            >
+                                <ClipboardCheck className="w-3.5 h-3.5 inline mr-2 text-emerald-400" />
+                                UAT Checklist (Uji Mandiri)
                             </Link>
 
                             {['admin', 'timses'].includes(user?.role) && (
