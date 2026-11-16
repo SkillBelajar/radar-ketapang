@@ -41,7 +41,15 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/notifications/mark-all-read', [NotificationController::class, 'markAllAsRead'])->name('notifications.markAllRead');
 
     Route::get('/user-guide', function () {
-        return Inertia::render('UserGuide');
+        $token = env('HERMES_API_TOKEN', '');
+        return Inertia::render('UserGuide', [
+            'apiBaseUrl' => url('/api/v1/hermes'),
+            'hasToken' => !empty($token),
+            'maskedToken' => !empty($token)
+                ? (strlen($token) > 10 ? substr($token, 0, 5) . '••••••••••••••••' . substr($token, -5) : '••••••••')
+                : null,
+            'plainToken' => !empty($token) ? $token : null,
+        ]);
     })->name('user-guide');
 
     // Slice 3: Target Setup & Feed Hub (Restricted to 'admin' & 'timses')

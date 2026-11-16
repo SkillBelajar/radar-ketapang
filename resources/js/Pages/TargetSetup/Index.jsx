@@ -440,6 +440,29 @@ export default function TargetSetupIndex({ targetSetup, recentFeeds = [], totalF
                                 Agregator berita dan sumber media lokal terverifikasi. Backend menggunakan antrean <strong>Redis Queue</strong> untuk menarik dan menyaring artikel secara background.
                             </p>
 
+                            {/* Hermes Agent AI Autonomous Engine Banner */}
+                            <div className="p-4 rounded-xl bg-gradient-to-r from-cyan-950/60 to-slate-950 border border-cyan-500/40 space-y-2.5 font-mono">
+                                <div className="flex items-center justify-between text-xs">
+                                    <span className="text-cyan-300 font-bold flex items-center gap-1.5">
+                                        <Cpu className="w-3.5 h-3.5 text-cyan-400" />
+                                        Hermes Agent AI Gateway
+                                    </span>
+                                    <span className="px-1.5 py-0.5 rounded text-[9px] bg-emerald-950 text-emerald-400 border border-emerald-800">
+                                        SANCTUM ACTIVE
+                                    </span>
+                                </div>
+                                <p className="text-[11px] text-slate-400 leading-normal">
+                                    Artikel mentah dianalisis oleh Hermes Autonomous Engine via endpoint <code>/api/v1/hermes/fetch-news</code>.
+                                </p>
+                                <a
+                                    href="/user-guide?tab=hermes"
+                                    className="inline-flex items-center gap-1.5 text-xs text-cyan-400 hover:text-cyan-300 font-bold hover:underline"
+                                >
+                                    <span>Buka Panduan & Skrip Hermes Agent</span>
+                                    <ArrowUpRight className="w-3.5 h-3.5" />
+                                </a>
+                            </div>
+
                             {/* Worker Trigger Action Box */}
                             <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-3 font-mono">
                                 <div className="flex items-center justify-between text-xs">
