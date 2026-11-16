@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\StudioController;
 use App\Http\Controllers\TargetSetupController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -10,13 +12,20 @@ Route::get('/', function () {
     return Inertia::render('Welcome', [
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
-        'appVersion' => config('app.version', '0.14'),
+        'appVersion' => config('app.version', '0.15'),
     ]);
 })->name('welcome');
 
 Route::middleware(['auth'])->group(function () {
     // Slice 5: Dasbor Analisis (Radar Politik & AI Output)
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    // Slice 6: 1-Click Influencer Content Studio
+    Route::get('/studio', [StudioController::class, 'index'])->name('studio.index');
+
+    // Slice 6: In-App Notifications
+    Route::post('/notifications/{id}/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
+    Route::post('/notifications/mark-all-read', [NotificationController::class, 'markAllAsRead'])->name('notifications.markAllRead');
 
     Route::get('/user-guide', function () {
         return Inertia::render('UserGuide');

@@ -1,20 +1,62 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { usePage, Link, router } from '@inertiajs/react';
 import { 
     Radio, Shield, Terminal, LogOut, User, Menu, X, 
     BookOpen, Activity, Compass, Cpu, Bell, CheckCircle2,
-    Sliders, FileText
+    Sliders, FileText, Share2, Flame, AlertTriangle, ExternalLink,
+    Check, Sparkles
 } from 'lucide-react';
 
 export default function AuthenticatedLayout({ header, children }) {
-    const { auth, appName = 'Radar Politik', appVersion = '0.14' } = usePage().props;
+    const { auth, appName = 'Radar Politik', appVersion = '0.15', notifications = { unread_count: 0, recent: [] } } = usePage().props;
     const { url } = usePage();
-    const user = auth.user;
+    const user = auth?.user;
     const [mobileNavOpen, setMobileNavOpen] = useState(false);
+    const [notificationsOpen, setNotificationsOpen] = useState(false);
+    const notifDropdownRef = useRef(null);
+
+    const unreadCount = notifications?.unread_count || 0;
+    const recentNotifs = notifications?.recent || [];
+
+    // Close notifications dropdown when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (notifDropdownRef.current && !notifDropdownRef.current.contains(event.target)) {
+                setNotificationsOpen(false);
+            }
+        };
+
+        if (notificationsOpen) {
+            document.addEventListener('mousedown', handleClickOutside);
+        }
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [notificationsOpen]);
 
     const handleLogout = (e) => {
         e.preventDefault();
         router.post('/logout');
+    };
+
+    const handleMarkAsRead = (notif, e) => {
+        e.preventDefault();
+        router.post(`/notifications/${notif.id}/read`, {}, {
+            preserveScroll: true,
+            onSuccess: () => {
+                setNotificationsOpen(false);
+                if (notif.data?.url) {
+                    router.visit('/dashboard');
+                }
+            }
+        });
+    };
+
+    const handleMarkAllAsRead = (e) => {
+        e.preventDefault();
+        router.post('/notifications/mark-all-read', {}, {
+            preserveScroll: true,
+        });
     };
 
     const getRoleBadge = (role) => {
@@ -98,16 +140,29 @@ export default function AuthenticatedLayout({ header, children }) {
                                     <span>RADAR KRISIS (S5)</span>
                                 </Link>
 
+                                {/* Slice 6: 1-Click Influencer Studio */}
+                                <Link
+                                    href="/studio"
+                                    className={`px-3 py-1.5 rounded-lg flex items-center gap-1.5 font-bold transition-all ${
+                                        url.startsWith('/studio')
+                                            ? 'bg-cyan-950/80 text-cyan-300 border border-cyan-500/50 shadow-[0_0_12px_rgba(6,182,212,0.25)]'
+                                            : 'text-slate-300 hover:text-white hover:bg-slate-900 border border-slate-800'
+                                    }`}
+                                >
+                                    <Share2 className="w-3.5 h-3.5 text-cyan-400" />
+                                    <span>CONTENT STUDIO (S6)</span>
+                                </Link>
+
                                 {['admin', 'timses'].includes(user?.role) && (
                                     <Link
                                         href="/target-setup"
                                         className={`px-3 py-1.5 rounded-lg flex items-center gap-1.5 font-bold transition-all ${
                                             url.startsWith('/target-setup')
-                                                ? 'bg-cyan-950/80 text-cyan-300 border border-cyan-500/50 shadow-[0_0_12px_rgba(6,182,212,0.25)]'
+                                                ? 'bg-emerald-950/80 text-emerald-300 border border-emerald-500/50 shadow-[0_0_12px_rgba(16,185,129,0.25)]'
                                                 : 'text-slate-300 hover:text-white hover:bg-slate-900 border border-slate-800'
                                         }`}
                                     >
-                                        <Radio className="w-3.5 h-3.5 text-cyan-400" />
+                                        <Radio className="w-3.5 h-3.5 text-emerald-400" />
                                         <span>TARGET SETUP (S3)</span>
                                     </Link>
                                 )}
@@ -123,58 +178,200 @@ export default function AuthenticatedLayout({ header, children }) {
                                     <BookOpen className="w-3.5 h-3.5 text-amber-400" />
                                     <span>PANDUAN OPERASIONAL</span>
                                 </Link>
-
-                                <span className="px-3 py-1.5 rounded-lg text-slate-500 flex items-center gap-1.5 cursor-not-allowed border border-transparent">
-                                    <FileText className="w-3.5 h-3.5" />
-                                    <span>1-CLICK STUDIO (S7)</span>
-                                </span>
                             </nav>
                         </div>
 
-                        {/* Right User Call-Sign & Logout Area */}
-                        <div className="hidden md:flex items-center space-x-4">
-                            {/* Role Badge */}
-                            <div className={`px-2.5 py-1 rounded-md border font-mono text-xs flex items-center gap-2 ${roleInfo.bg}`}>
-                                <span className={`w-2 h-2 rounded-full ${roleInfo.dot} animate-pulse`}></span>
-                                <span className="font-bold">{roleInfo.label}</span>
-                                <span className="text-[10px] opacity-75 hidden lg:inline">({roleInfo.code})</span>
+                        {/* Right Area: In-App Alerts Bell + User Call-Sign + Logout */}
+                        <div className="flex items-center space-x-3">
+                            {/* In-App Alerts Bell Dropdown (Slice 6) */}
+                            <div className="relative" ref={notifDropdownRef}>
+                                <button
+                                    type="button"
+                                    onClick={() => setNotificationsOpen(!notificationsOpen)}
+                                    className={`relative p-2 rounded-lg border transition-all cursor-pointer group ${
+                                        notificationsOpen
+                                            ? 'bg-cyan-950 border-cyan-500/60 text-cyan-300'
+                                            : 'bg-slate-900 hover:bg-slate-800 border-slate-800 text-slate-300 hover:text-white'
+                                    }`}
+                                    aria-label="Lonceng Notifikasi Krisis"
+                                    title="Notifikasi Real-Time Radar Krisis"
+                                >
+                                    <Bell className={`w-4 h-4 transition-transform group-hover:scale-110 ${unreadCount > 0 ? 'text-amber-400' : 'text-slate-400'}`} />
+                                    
+                                    {/* Red Badge Indicator */}
+                                    {unreadCount > 0 && (
+                                        <span className="absolute -top-1 -right-1 flex h-4 min-w-[16px] px-1 items-center justify-center rounded-full bg-rose-600 text-[9px] font-mono font-bold text-white shadow-[0_0_10px_rgba(225,29,72,0.8)] animate-pulse">
+                                            {unreadCount > 9 ? '9+' : unreadCount}
+                                        </span>
+                                    )}
+                                </button>
+
+                                {/* Dropdown Menu Panel */}
+                                {notificationsOpen && (
+                                    <div className="absolute right-0 mt-2 w-80 sm:w-96 rounded-2xl bg-slate-900/95 border border-cyan-950 shadow-2xl backdrop-blur-xl z-50 overflow-hidden font-mono text-xs animate-in fade-in zoom-in-95 duration-150">
+                                        {/* Dropdown Header */}
+                                        <div className="p-3.5 border-b border-slate-800/80 bg-slate-950/80 flex items-center justify-between">
+                                            <div className="flex items-center gap-2">
+                                                <div className="w-6 h-6 rounded-md bg-rose-950/80 border border-rose-500/50 flex items-center justify-center">
+                                                    <Flame className="w-3.5 h-3.5 text-rose-400" />
+                                                </div>
+                                                <div>
+                                                    <span className="font-bold text-white tracking-wide">
+                                                        ALERT KRISIS RADAR
+                                                    </span>
+                                                    <div className="text-[10px] text-slate-400">
+                                                        {unreadCount} peringatan belum terbaca
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {unreadCount > 0 && (
+                                                <button
+                                                    type="button"
+                                                    onClick={handleMarkAllAsRead}
+                                                    className="text-[10px] text-cyan-400 hover:text-cyan-300 font-bold hover:underline cursor-pointer"
+                                                >
+                                                    Tandai Semua Terbaca
+                                                </button>
+                                            )}
+                                        </div>
+
+                                        {/* Notification Items List */}
+                                        <div className="max-h-80 overflow-y-auto divide-y divide-slate-800/60">
+                                            {recentNotifs.length === 0 ? (
+                                                <div className="p-8 text-center text-slate-500">
+                                                    <CheckCircle2 className="w-8 h-8 mx-auto text-emerald-500/40 mb-2" />
+                                                    <p className="font-bold text-slate-400">Situasi Kondusif</p>
+                                                    <p className="text-[11px] text-slate-500 mt-1">Belum ada sinyal isu berkecepatan tinggi terdeteksi.</p>
+                                                </div>
+                                            ) : (
+                                                recentNotifs.map((notif) => {
+                                                    const data = notif.data || {};
+                                                    const isUnread = !notif.read_at;
+                                                    const isDanger = data.level === 'danger' || data.level === 'integrity';
+                                                    const isWarning = data.level === 'warning';
+
+                                                    return (
+                                                        <div
+                                                            key={notif.id}
+                                                            onClick={(e) => handleMarkAsRead(notif, e)}
+                                                            className={`p-3.5 transition-colors cursor-pointer hover:bg-slate-800/60 flex items-start gap-3 ${
+                                                                isUnread
+                                                                    ? isDanger
+                                                                        ? 'bg-rose-950/20 border-l-2 border-l-rose-500'
+                                                                        : 'bg-amber-950/20 border-l-2 border-l-amber-500'
+                                                                    : 'bg-slate-950/40 opacity-75'
+                                                            }`}
+                                                        >
+                                                            <div className="mt-0.5 flex-shrink-0">
+                                                                {isDanger ? (
+                                                                    <div className="w-6 h-6 rounded-full bg-rose-950 border border-rose-500 flex items-center justify-center">
+                                                                        <AlertTriangle className="w-3.5 h-3.5 text-rose-400 animate-pulse" />
+                                                                    </div>
+                                                                ) : isWarning ? (
+                                                                    <div className="w-6 h-6 rounded-full bg-amber-950 border border-amber-500 flex items-center justify-center">
+                                                                        <Flame className="w-3.5 h-3.5 text-amber-400" />
+                                                                    </div>
+                                                                ) : (
+                                                                    <div className="w-6 h-6 rounded-full bg-cyan-950 border border-cyan-500 flex items-center justify-center">
+                                                                        <Radio className="w-3.5 h-3.5 text-cyan-400" />
+                                                                    </div>
+                                                                )}
+                                                            </div>
+
+                                                            <div className="flex-1 min-w-0">
+                                                                <div className="flex items-center justify-between gap-1 mb-1">
+                                                                    <span className={`text-[11px] font-bold truncate ${isDanger ? 'text-rose-300' : isWarning ? 'text-amber-300' : 'text-cyan-300'}`}>
+                                                                        {data.title || 'Peringatan Radar Krisis'}
+                                                                    </span>
+                                                                    {isUnread && (
+                                                                        <span className="w-1.5 h-1.5 rounded-full bg-rose-500 flex-shrink-0"></span>
+                                                                    )}
+                                                                </div>
+
+                                                                <p className="text-[11px] text-slate-300 line-clamp-2 leading-relaxed">
+                                                                    {data.message || data.news_title || 'Peringatan krisis baru terdeteksi oleh sistem.'}
+                                                                </p>
+
+                                                                <div className="flex items-center justify-between mt-2 text-[10px] text-slate-500">
+                                                                    <span>{notif.created_at || 'Baru saja'}</span>
+                                                                    <span className="text-cyan-400 font-semibold flex items-center gap-0.5 hover:underline">
+                                                                        Cek Analisis <ExternalLink className="w-2.5 h-2.5" />
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    );
+                                                })
+                                            )}
+                                        </div>
+
+                                        {/* Dropdown Footer Actions */}
+                                        <div className="p-2.5 bg-slate-950 border-t border-slate-800/80 flex items-center justify-between text-[11px]">
+                                            <Link
+                                                href="/dashboard"
+                                                onClick={() => setNotificationsOpen(false)}
+                                                className="text-slate-400 hover:text-white flex items-center gap-1 font-semibold"
+                                            >
+                                                <span>Dasbor Krisis</span>
+                                            </Link>
+                                            <Link
+                                                href="/studio"
+                                                onClick={() => setNotificationsOpen(false)}
+                                                className="text-cyan-400 hover:text-cyan-300 font-semibold flex items-center gap-1"
+                                            >
+                                                <span>Content Studio (S6)</span>
+                                                <ExternalLink className="w-3 h-3" />
+                                            </Link>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
 
-                            {/* User Name & Callsign */}
-                            <div className="text-right font-mono">
-                                <div className="text-xs font-bold text-white leading-tight">
-                                    {user?.name || 'Operator'}
+                            {/* User Info & Role (Desktop) */}
+                            <div className="hidden md:flex items-center space-x-3">
+                                {/* Role Badge */}
+                                <div className={`px-2.5 py-1 rounded-md border font-mono text-xs flex items-center gap-2 ${roleInfo.bg}`}>
+                                    <span className={`w-2 h-2 rounded-full ${roleInfo.dot} animate-pulse`}></span>
+                                    <span className="font-bold">{roleInfo.label}</span>
+                                    <span className="text-[10px] opacity-75 hidden lg:inline">({roleInfo.code})</span>
                                 </div>
-                                <div className="text-[10px] text-cyan-400/80 leading-tight">
-                                    {user?.email}
+
+                                {/* User Name & Callsign */}
+                                <div className="text-right font-mono">
+                                    <div className="text-xs font-bold text-white leading-tight">
+                                        {user?.name || 'Operator'}
+                                    </div>
+                                    <div className="text-[10px] text-cyan-400/80 leading-tight">
+                                        {user?.email}
+                                    </div>
                                 </div>
+
+                                {/* Logout Action */}
+                                <button
+                                    type="button"
+                                    onClick={handleLogout}
+                                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-red-950/60 border border-slate-700 hover:border-red-500/60 text-slate-300 hover:text-red-300 text-xs font-mono transition-all cursor-pointer"
+                                    title="Keluar dari sesi command center"
+                                >
+                                    <LogOut className="w-3.5 h-3.5" />
+                                    <span>LOGOUT</span>
+                                </button>
                             </div>
 
-                            {/* Logout Action */}
-                            <button
-                                type="button"
-                                onClick={handleLogout}
-                                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-red-950/60 border border-slate-700 hover:border-red-500/60 text-slate-300 hover:text-red-300 text-xs font-mono transition-all cursor-pointer"
-                                title="Keluar dari sesi command center"
-                            >
-                                <LogOut className="w-3.5 h-3.5" />
-                                <span>LOGOUT</span>
-                            </button>
-                        </div>
-
-                        {/* Mobile Menu Button */}
-                        <div className="flex md:hidden items-center gap-2">
-                            <div className={`px-2 py-0.5 rounded text-[10px] font-mono border ${roleInfo.bg}`}>
-                                {roleInfo.label}
+                            {/* Mobile Menu Button */}
+                            <div className="flex md:hidden items-center gap-2">
+                                <div className={`px-2 py-0.5 rounded text-[10px] font-mono border ${roleInfo.bg}`}>
+                                    {roleInfo.label}
+                                </div>
+                                <button
+                                    type="button"
+                                    onClick={() => setMobileNavOpen(!mobileNavOpen)}
+                                    className="p-2 rounded-lg text-slate-400 hover:text-cyan-400 hover:bg-slate-900 border border-slate-800"
+                                    aria-label="Toggle navigation"
+                                >
+                                    {mobileNavOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}</button>
                             </div>
-                            <button
-                                type="button"
-                                onClick={() => setMobileNavOpen(!mobileNavOpen)}
-                                className="p-2 rounded-lg text-slate-400 hover:text-cyan-400 hover:bg-slate-900 border border-slate-800"
-                                aria-label="Toggle navigation"
-                            >
-                                {mobileNavOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-                            </button>
                         </div>
                     </div>
                 </div>
@@ -206,16 +403,28 @@ export default function AuthenticatedLayout({ header, children }) {
                                 Radar Krisis (Slice 5)
                             </Link>
 
+                            <Link
+                                href="/studio"
+                                className={`block px-3 py-2 rounded-lg font-bold ${
+                                    url.startsWith('/studio')
+                                        ? 'bg-cyan-950 text-cyan-300 border border-cyan-500/50'
+                                        : 'text-slate-300 hover:bg-slate-900 border border-slate-800'
+                                }`}
+                            >
+                                <Share2 className="w-3.5 h-3.5 inline mr-2 text-cyan-400" />
+                                Content Studio (Slice 6)
+                            </Link>
+
                             {['admin', 'timses'].includes(user?.role) && (
                                 <Link
                                     href="/target-setup"
                                     className={`block px-3 py-2 rounded-lg font-bold ${
                                         url.startsWith('/target-setup')
-                                            ? 'bg-cyan-950 text-cyan-300 border border-cyan-500/50'
+                                            ? 'bg-emerald-950 text-emerald-300 border border-emerald-500/50'
                                             : 'text-slate-300 hover:bg-slate-900 border border-slate-800'
                                     }`}
                                 >
-                                    <Radio className="w-3.5 h-3.5 inline mr-2 text-cyan-400" />
+                                    <Radio className="w-3.5 h-3.5 inline mr-2 text-emerald-400" />
                                     Target Setup (Slice 3)
                                 </Link>
                             )}
@@ -231,11 +440,6 @@ export default function AuthenticatedLayout({ header, children }) {
                                 <BookOpen className="w-3.5 h-3.5 inline mr-2 text-amber-400" />
                                 Panduan Operasional
                             </Link>
-
-                            <div className="px-3 py-2 rounded-lg text-slate-500 border border-transparent">
-                                <FileText className="w-3.5 h-3.5 inline mr-2" />
-                                1-Click Studio (Slice 7)
-                            </div>
                         </div>
 
                         <div className="pt-2 border-t border-slate-800">
@@ -275,13 +479,13 @@ export default function AuthenticatedLayout({ header, children }) {
                             <span>RADAR POLITIK KETAPANG // MIL-SPEC OPS</span>
                         </div>
 
-                        {/* CRITICAL: Prominent Version 0.14 Display */}
+                        {/* CRITICAL: Prominent Version 0.15 Display */}
                         <div className="flex items-center space-x-3">
                             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900 border border-cyan-500/60 shadow-[0_0_12px_rgba(6,182,212,0.25)] text-cyan-300 text-xs font-semibold tracking-wider">
                                 <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
                                 <span className="text-slate-400">SISTEM:</span>
                                 <span className="text-white font-bold tracking-widest bg-cyan-950/80 px-2 py-0.5 rounded border border-cyan-500/30">
-                                    Versi: 0.14
+                                    Versi: 0.15
                                 </span>
                             </div>
                         </div>

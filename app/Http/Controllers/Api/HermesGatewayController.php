@@ -5,8 +5,11 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\NewsFeed;
 use App\Models\TargetSetup;
+use App\Models\User;
+use App\Notifications\NewCrisisAlert;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Validator;
 
 class HermesGatewayController extends Controller
@@ -55,7 +58,7 @@ class HermesGatewayController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'app_version' => config('app.version', '0.14'),
+            'app_version' => config('app.version', '0.15'),
             'total_pending' => $newsFeeds->count(),
             'instructions' => $dualModeInstruction,
             'data' => $newsFeeds->map(function ($feed) {
@@ -118,6 +121,14 @@ class HermesGatewayController extends Controller
             'scripts' => $validated['scripts'] ?? null,
             'status' => 'analyzed',
         ]);
+
+        // Trigger NewCrisisAlert jika velocity_score >= 40 atau status == 'integrity_alert'
+        if ($validated['velocity_score'] >= 40 || $validated['status'] === 'integrity_alert') {
+            $users = User::all();
+            if ($users->isNotEmpty()) {
+                Notification::send($users, new NewCrisisAlert($newsFeed));
+            }
+        }
 
         return response()->json([
             'status' => 'success',
