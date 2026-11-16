@@ -108,28 +108,28 @@ export default function StudioIndex({ newsFeeds = [], stats = {}, filters = {}, 
         const val = parseInt(score, 10) || 0;
         if (val >= 75) {
             return {
-                label: `KRITIS ${val}%`,
+                label: `SANGAT HANGAT ${val}%`,
                 bg: 'bg-rose-950/80 text-rose-300 border-rose-500/50',
                 dot: 'bg-rose-500 animate-ping',
             };
         }
         if (val >= 40) {
             return {
-                label: `WASPADA ${val}%`,
+                label: `MULAI RAMAI ${val}%`,
                 bg: 'bg-amber-950/80 text-amber-300 border-amber-500/50',
                 dot: 'bg-amber-500',
             };
         }
         return {
-            label: `KONDUSIF ${val}%`,
+            label: `TENANG ${val}%`,
             bg: 'bg-emerald-950/80 text-emerald-300 border-emerald-500/50',
             dot: 'bg-emerald-500',
         };
     };
 
     return (
-        <AuthenticatedLayout>
-            <Head title="Media & Press Response Studio - Radar Politik" />
+        <AuthenticatedLayout header="Ruang Draf Tanggapan Media & Pers">
+            <Head title="Ruang Tanggapan Media & Pers - Radar Politik Ketapang" />
 
             <div className="space-y-6">
                 {/* Header Banner Command Center */}
@@ -140,20 +140,20 @@ export default function StudioIndex({ newsFeeds = [], stats = {}, filters = {}, 
                     <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
                         <div>
                             <div className="flex items-center gap-2 mb-2">
-                                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-cyan-950 text-cyan-400 border border-cyan-500/40">
-                                    <Sparkles className="w-3 h-3 text-cyan-400 animate-spin" />
-                                    SLICE 6: MEDIA RESPONSE & PRESS STUDIO
+                                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-cyan-950 text-cyan-300 border border-cyan-500/40">
+                                    <Sparkles className="w-3 h-3 text-cyan-400" />
+                                    DRAF SIAP PAKAI UNTUK WARTAWAN & MEDIA
                                 </span>
-                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono bg-slate-800 text-slate-300 border border-slate-700">
-                                    ROLE: {currentUserRole === 'influencer' ? 'TIM MEDIA & PERS' : currentUserRole.toUpperCase()}
+                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] bg-slate-800 text-slate-300 border border-slate-700">
+                                    Peran: {currentUserRole === 'influencer' ? 'Tim Media & Pers' : (currentUserRole === 'admin' ? 'Pengelola Utama' : 'Pemantau Isu')}
                                 </span>
                             </div>
-                            <h1 className="text-2xl sm:text-3xl font-mono font-black text-white tracking-wide flex items-center gap-3">
+                            <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-wide flex items-center gap-3">
                                 <Share2 className="w-7 h-7 text-cyan-400" />
-                                MEDIA & PRESS RESPONSE STUDIO
+                                Ruang Tanggapan Media & Pers
                             </h1>
-                            <p className="text-sm text-slate-400 font-mono mt-1 max-w-2xl">
-                                Pusat draf siaran pers resmi, pernyataan juru bicara, dan lembar hak jawab redaksi untuk merespons artikel berita portal online secara terukur dan faktual.
+                            <p className="text-sm text-slate-300 mt-1 max-w-2xl leading-relaxed">
+                                Kumpulan draf tulisan resmi siap salin dan kirim ke media lokal Ketapang: siaran pers lengkap, poin bicara saat diwawancarai wartawan, hingga surat hak jawab resmi jika ada berita keliru.
                             </p>
                         </div>
 
@@ -161,10 +161,10 @@ export default function StudioIndex({ newsFeeds = [], stats = {}, filters = {}, 
                         <div className="flex items-center gap-3 self-start md:self-center">
                             <Link
                                 href="/dashboard"
-                                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 hover:text-white font-mono text-xs font-bold transition-all shadow-lg"
+                                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 hover:text-white text-xs font-bold transition-all shadow-lg"
                             >
                                 <Flame className="w-4 h-4 text-rose-400" />
-                                <span>Pantau Radar Berita</span>
+                                <span>Kembali ke Radar Berita</span>
                             </Link>
                         </div>
                     </div>
@@ -172,53 +172,53 @@ export default function StudioIndex({ newsFeeds = [], stats = {}, filters = {}, 
                     {/* Stats Grid */}
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6 pt-6 border-t border-slate-800/80">
                         <div className="p-3 rounded-xl bg-slate-950/70 border border-slate-800">
-                            <div className="text-[10px] font-mono text-slate-400 uppercase tracking-wider">Draf Siap Rilis</div>
-                            <div className="text-xl sm:text-2xl font-mono font-black text-cyan-400 mt-1">
+                            <div className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Total Draf Siap Pakai</div>
+                            <div className="text-xl sm:text-2xl font-black text-cyan-400 mt-1">
                                 {stats.total_scripts || 0}
                             </div>
-                            <div className="text-[10px] font-mono text-slate-500">Respons Terverifikasi AI</div>
+                            <div className="text-[10px] text-slate-400">Siap Diterbitkan</div>
                         </div>
 
                         <div className="p-3 rounded-xl bg-slate-950/70 border border-rose-950/50">
-                            <div className="text-[10px] font-mono text-rose-400 uppercase tracking-wider flex items-center gap-1">
+                            <div className="text-[10px] text-rose-400 uppercase tracking-wider font-semibold flex items-center gap-1">
                                 <ShieldAlert className="w-3 h-3 text-rose-400" />
-                                <span>Defensive Reframing</span>
+                                <span>Draf Klarifikasi</span>
                             </div>
-                            <div className="text-xl sm:text-2xl font-mono font-black text-rose-300 mt-1">
+                            <div className="text-xl sm:text-2xl font-black text-rose-300 mt-1">
                                 {stats.defensive_count || 0}
                             </div>
-                            <div className="text-[10px] font-mono text-slate-500">Klarifikasi Isu Kritis</div>
+                            <div className="text-[10px] text-slate-400">Menjawab Isu Miring</div>
                         </div>
 
                         <div className="p-3 rounded-xl bg-slate-950/70 border border-emerald-950/50">
-                            <div className="text-[10px] font-mono text-emerald-400 uppercase tracking-wider flex items-center gap-1">
+                            <div className="text-[10px] text-emerald-400 uppercase tracking-wider font-semibold flex items-center gap-1">
                                 <Sparkles className="w-3 h-3 text-emerald-400" />
-                                <span>Proactive Amplifying</span>
+                                <span>Draf Kabar Positif</span>
                             </div>
-                            <div className="text-xl sm:text-2xl font-mono font-black text-emerald-300 mt-1">
+                            <div className="text-xl sm:text-2xl font-black text-emerald-300 mt-1">
                                 {stats.proactive_count || 0}
                             </div>
-                            <div className="text-[10px] font-mono text-slate-500">Amplifikasi Rilis Prestasi</div>
+                            <div className="text-[10px] text-slate-400">Pemberitaan Baik / Prestasi</div>
                         </div>
 
                         <div className="p-3 rounded-xl bg-slate-950/70 border border-amber-950/50">
-                            <div className="text-[10px] font-mono text-amber-400 uppercase tracking-wider flex items-center gap-1">
+                            <div className="text-[10px] text-amber-400 uppercase tracking-wider font-semibold flex items-center gap-1">
                                 <Flame className="w-3 h-3 text-amber-400" />
-                                <span>Krisis Terpanas</span>
+                                <span>Isu Paling Ramai</span>
                             </div>
-                            <div className="text-xl sm:text-2xl font-mono font-black text-amber-300 mt-1">
+                            <div className="text-xl sm:text-2xl font-black text-amber-300 mt-1">
                                 {stats.high_crisis_count || 0}
                             </div>
-                            <div className="text-[10px] font-mono text-slate-500">Skor Velocity ≥ 75%</div>
+                            <div className="text-[10px] text-slate-400">Kecepatan &ge; 75%</div>
                         </div>
                     </div>
                 </div>
 
                 {/* Filter and Control Bar */}
-                <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 font-mono text-xs">
+                <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 text-xs">
                     {/* Platform Selector Tabs */}
                     <div className="flex items-center gap-1 bg-slate-950 p-1 rounded-lg border border-slate-800 overflow-x-auto">
-                        <span className="text-slate-500 px-2 text-[11px] font-bold hidden sm:inline">FORMAT RESPON:</span>
+                        <span className="text-slate-400 px-2 text-[11px] font-semibold hidden sm:inline">PILIH FORMAT:</span>
                         <button
                             type="button"
                             onClick={() => setSelectedPlatform('all')}
@@ -228,7 +228,7 @@ export default function StudioIndex({ newsFeeds = [], stats = {}, filters = {}, 
                                     : 'text-slate-400 hover:text-white'
                             }`}
                         >
-                            Semua (3 Format Pers)
+                            Semua (3 Format)
                         </button>
                         <button
                             type="button"
@@ -240,7 +240,7 @@ export default function StudioIndex({ newsFeeds = [], stats = {}, filters = {}, 
                             }`}
                         >
                             <FileText className="w-3.5 h-3.5 text-blue-400" />
-                            <span>Siaran Pers</span>
+                            <span>1. Siaran Pers</span>
                         </button>
                         <button
                             type="button"
@@ -252,7 +252,7 @@ export default function StudioIndex({ newsFeeds = [], stats = {}, filters = {}, 
                             }`}
                         >
                             <Mic className="w-3.5 h-3.5 text-amber-400" />
-                            <span>Pernyataan Jubir</span>
+                            <span>2. Poin Bicara Jubir</span>
                         </button>
                         <button
                             type="button"
@@ -264,7 +264,7 @@ export default function StudioIndex({ newsFeeds = [], stats = {}, filters = {}, 
                             }`}
                         >
                             <Scale className="w-3.5 h-3.5 text-teal-400" />
-                            <span>Hak Jawab Redaksi</span>
+                            <span>3. Hak Jawab Redaksi</span>
                         </button>
                     </div>
 
@@ -292,7 +292,7 @@ export default function StudioIndex({ newsFeeds = [], stats = {}, filters = {}, 
                                         : 'text-slate-400 hover:text-rose-300'
                                 }`}
                             >
-                                Defensive
+                                Klarifikasi Isu
                             </button>
                             <button
                                 type="button"
@@ -303,7 +303,7 @@ export default function StudioIndex({ newsFeeds = [], stats = {}, filters = {}, 
                                         : 'text-slate-400 hover:text-emerald-300'
                                 }`}
                             >
-                                Proactive
+                                Kabar Positif
                             </button>
                         </div>
 
@@ -315,7 +315,7 @@ export default function StudioIndex({ newsFeeds = [], stats = {}, filters = {}, 
                                 placeholder="Cari judul/portal..."
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
-                                className="w-full bg-slate-950 border border-slate-800 rounded-lg pl-8 pr-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 font-mono"
+                                className="w-full bg-slate-950 border border-slate-800 rounded-lg pl-8 pr-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500"
                             />
                         </div>
                     </div>
@@ -363,23 +363,23 @@ export default function StudioIndex({ newsFeeds = [], stats = {}, filters = {}, 
 
                                                     {/* Sentiment Strategy Badge */}
                                                     {feed.sentiment === 'negative' ? (
-                                                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono bg-rose-950/60 text-rose-300 border border-rose-800/50">
+                                                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] bg-rose-950/60 text-rose-300 border border-rose-800/50 font-semibold">
                                                             <ShieldAlert className="w-3 h-3" />
-                                                            DEFENSIVE REFRAMING
+                                                            KLARIFIKASI ISU
                                                         </span>
                                                     ) : (
-                                                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-950/60 text-emerald-300 border border-emerald-800/50">
+                                                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] bg-emerald-950/60 text-emerald-300 border border-emerald-800/50 font-semibold">
                                                             <Sparkles className="w-3 h-3" />
-                                                            PROACTIVE AMPLIFICATION
+                                                            KABAR BAIK / PRESTASI
                                                         </span>
                                                     )}
 
                                                     {/* Source Portal Badge with Direct Link */}
-                                                    <span className="text-xs font-mono text-slate-400">
+                                                    <span className="text-xs text-slate-400">
                                                         Portal Berita: <strong className="text-cyan-300 font-semibold">{feed.source || 'Media Online'}</strong>
                                                     </span>
                                                     {feed.published_at && (
-                                                        <span className="text-[10px] font-mono text-slate-500">
+                                                        <span className="text-[10px] text-slate-500">
                                                             • {new Date(feed.published_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
                                                         </span>
                                                     )}
@@ -400,7 +400,7 @@ export default function StudioIndex({ newsFeeds = [], stats = {}, filters = {}, 
                                             </div>
 
                                             {/* Action Header: Open Link, Toggle Fact & Copy All */}
-                                            <div className="flex flex-wrap items-center gap-2 self-start lg:self-center font-mono text-xs">
+                                            <div className="flex flex-wrap items-center gap-2 self-start lg:self-center text-xs">
                                                 {/* Tautan Sumber Berita Resmi */}
                                                 <a
                                                     href={feed.url}
@@ -425,7 +425,7 @@ export default function StudioIndex({ newsFeeds = [], stats = {}, filters = {}, 
                                                         }`}
                                                     >
                                                         <Eye className="w-3.5 h-3.5 text-cyan-400" />
-                                                        <span>{isFactOpen ? 'Tutup Konteks Fakta' : 'Cek Konteks Fakta'}</span>
+                                                        <span>{isFactOpen ? 'Tutup Fakta' : 'Lihat Fakta Kejadian'}</span>
                                                     </button>
                                                 )}
 
@@ -442,12 +442,12 @@ export default function StudioIndex({ newsFeeds = [], stats = {}, filters = {}, 
                                                     {copiedKey === `${feed.id}-all` ? (
                                                         <>
                                                             <Check className="w-3.5 h-3.5 text-emerald-400" />
-                                                            <span>Copied All! ✅</span>
+                                                            <span>Tersalin Semua! ✅</span>
                                                         </>
                                                     ) : (
                                                         <>
                                                             <Copy className="w-3.5 h-3.5 text-slate-300" />
-                                                            <span>Salin Semua (3 Format)</span>
+                                                            <span>Salin 3 Format Sekaligus</span>
                                                         </>
                                                     )}
                                                 </button>
@@ -456,16 +456,16 @@ export default function StudioIndex({ newsFeeds = [], stats = {}, filters = {}, 
 
                                         {/* Expandable Fact-Anchor Brief */}
                                         {isFactOpen && (
-                                            <div className="mt-4 p-4 rounded-xl bg-slate-950/90 border border-cyan-950/80 space-y-3 font-mono text-xs animate-in fade-in duration-200">
+                                            <div className="mt-4 p-4 rounded-xl bg-slate-950/90 border border-cyan-950/80 space-y-3 text-xs animate-in fade-in duration-200">
                                                 <div className="flex items-center gap-2 text-cyan-400 font-bold uppercase text-[10px] tracking-wider">
                                                     <ShieldCheck className="w-3.5 h-3.5 text-cyan-400" />
-                                                    <span>Pedoman Fakta Lapangan (Fact-Anchor Intelijen Pers)</span>
+                                                    <span>Rujukan Fakta Lapangan Sebenarnya</span>
                                                 </div>
 
                                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
                                                     <div className="p-3 rounded-lg bg-rose-950/20 border border-rose-900/40">
                                                         <div className="text-[10px] text-rose-400 font-bold uppercase mb-1">
-                                                            Isu Miring / Tuduhan di Berita:
+                                                            Kabar Miring / Tuduhan di Berita:
                                                         </div>
                                                         <div className="text-slate-300 leading-relaxed">
                                                             {factAnchor.tuduhan || factAnchor.claim || 'Tidak ada tuduhan spesifik tercatat.'}
@@ -474,7 +474,7 @@ export default function StudioIndex({ newsFeeds = [], stats = {}, filters = {}, 
 
                                                     <div className="p-3 rounded-lg bg-emerald-950/20 border border-emerald-900/40">
                                                         <div className="text-[10px] text-emerald-400 font-bold uppercase mb-1">
-                                                            Fakta Kejadian Terkonfirmasi:
+                                                            Fakta Lapangan Terkonfirmasi:
                                                         </div>
                                                         <div className="text-slate-300 leading-relaxed">
                                                             {factAnchor.fakta || factAnchor.fact || 'Fakta lapangan terkonfirmasi valid.'}
@@ -484,7 +484,7 @@ export default function StudioIndex({ newsFeeds = [], stats = {}, filters = {}, 
 
                                                 {(factAnchor.dokumen_rujukan || factAnchor.reference) && (
                                                     <div className="text-[11px] text-slate-400 bg-slate-900/90 px-3 py-1.5 rounded-lg border border-slate-800">
-                                                        <span className="text-cyan-400 font-semibold">Dokumen / Rujukan Resmi:</span> {factAnchor.dokumen_rujukan || factAnchor.reference}
+                                                        <span className="text-cyan-400 font-semibold">Dokumen / Bukti Rujukan:</span> {factAnchor.dokumen_rujukan || factAnchor.reference}
                                                     </div>
                                                 )}
                                             </div>

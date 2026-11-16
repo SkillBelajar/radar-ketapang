@@ -19,7 +19,7 @@ function VelocityIndicator({ score }) {
     const numericScore = Math.max(0, Math.min(100, Number(score) || 0));
 
     let tier = {
-        label: 'AMAN / STABIL',
+        label: 'TENANG / AMAN',
         color: 'emerald',
         badgeBg: 'bg-emerald-950/80 text-emerald-300 border-emerald-500/50',
         barGradient: 'from-emerald-500 to-teal-400',
@@ -29,7 +29,7 @@ function VelocityIndicator({ score }) {
 
     if (numericScore >= 75) {
         tier = {
-            label: 'BAHAYA / KRITIS',
+            label: 'SANGAT HANGAT',
             color: 'rose',
             badgeBg: 'bg-rose-950/90 text-rose-300 border-rose-500/60',
             barGradient: 'from-rose-500 via-red-500 to-amber-500',
@@ -38,7 +38,7 @@ function VelocityIndicator({ score }) {
         };
     } else if (numericScore >= 40) {
         tier = {
-            label: 'WASPADA / SIAGA',
+            label: 'MULAI RAMAI',
             color: 'amber',
             badgeBg: 'bg-amber-950/80 text-amber-300 border-amber-500/50',
             barGradient: 'from-amber-500 to-yellow-400',
@@ -52,7 +52,7 @@ function VelocityIndicator({ score }) {
             <div className="flex items-center justify-between text-xs">
                 <div className="flex items-center gap-1.5">
                     <Flame className={`w-3.5 h-3.5 text-${tier.color}-400 animate-pulse`} />
-                    <span className="text-[11px] text-slate-400 uppercase tracking-wider">Velocity Score</span>
+                    <span className="text-[11px] text-slate-300 font-sans">Kecepatan Menyebarnya Isu</span>
                 </div>
                 <div className="flex items-center gap-2">
                     <span className={`px-2 py-0.5 rounded text-[10px] font-bold border ${tier.badgeBg} ${tier.glow}`}>
@@ -185,29 +185,29 @@ export default function Dashboard({ feeds = [], stats = {}, filters = {}, target
                 return {
                     label: 'SENTIMEN NEGATIF',
                     bg: 'bg-rose-950/80 text-rose-300 border-rose-500/50',
-                    mode: 'Defensive Reframing',
+                    mode: 'Penjelasan Bertahan / Klarifikasi',
                     modeColor: 'rose',
                 };
             case 'positive':
                 return {
                     label: 'SENTIMEN POSITIF',
                     bg: 'bg-emerald-950/80 text-emerald-300 border-emerald-500/50',
-                    mode: 'Proactive Amplification',
+                    mode: 'Kabar Baik / Perlu Disebarkan',
                     modeColor: 'emerald',
                 };
             default:
                 return {
                     label: 'SENTIMEN NETRAL',
                     bg: 'bg-slate-900 text-slate-300 border-slate-700',
-                    mode: 'Proactive Framing',
+                    mode: 'Pemberitaan Berimbang',
                     modeColor: 'cyan',
                 };
         }
     };
 
     return (
-        <AuthenticatedLayout header="Dasbor Analisis: Crisis Velocity & AI Output">
-            <Head title="Radar Krisis & Dasbor Analisis - Radar Politik" />
+        <AuthenticatedLayout header="Papan Pantauan Berita & Tanggapan Cepat">
+            <Head title="Papan Pantauan Berita - Radar Politik Ketapang" />
 
             <div className="space-y-6">
                 {/* Tactical Command Banner */}
@@ -216,24 +216,24 @@ export default function Dashboard({ feeds = [], stats = {}, filters = {}, target
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                         <div className="space-y-1.5">
                             <div className="flex items-center gap-2">
-                                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-cyan-950 text-cyan-300 border border-cyan-500/40 text-[11px] font-mono font-bold">
+                                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-cyan-950 text-cyan-300 border border-cyan-500/40 text-[11px] font-medium">
                                     <Activity className="w-3 h-3 text-cyan-400 animate-pulse" />
-                                    SLICE 5: PORTAL BERITA & CRISIS VELOCITY RADAR
+                                    PEMANTAU BERITA KETAPANG
                                 </span>
-                                <span className="text-slate-400 text-xs font-mono">
-                                    Sumber Data: <strong className="text-cyan-400">100% PORTAL BERITA AKTUAL</strong>
+                                <span className="text-slate-400 text-xs">
+                                    Sumber: <strong className="text-cyan-400">Portal Berita Resmi Kalbar</strong>
                                 </span>
                             </div>
-                            <h1 className="text-xl md:text-2xl font-black text-white tracking-wide font-mono">
-                                Radar Politik & AI Intelligence Pers
+                            <h1 className="text-xl md:text-2xl font-extrabold text-white tracking-tight">
+                                Papan Pantauan Isu & Berita Terkini
                             </h1>
-                            <p className="text-slate-300 text-xs md:text-sm max-w-2xl">
-                                Monitoring kecepatan eskalasi pemberitaan media online di Kabupaten Ketapang dan Kalbar. Dilengkapi tautan artikel sumber asli, klarifikasi fact-anchor, dan draf respon pers resmi.
+                            <p className="text-slate-300 text-xs md:text-sm max-w-2xl leading-relaxed">
+                                Semua berita dari media lokal Ketapang terkumpul di sini secara otomatis. Cek berita mana yang hangat, bandingkan tuduhan dengan fakta sebenarnya, dan gunakan draf jawaban resmi siap pakai.
                             </p>
                         </div>
 
                         {/* Top Action Buttons */}
-                        <div className="flex flex-wrap items-center gap-2.5 self-start md:self-center font-mono text-xs">
+                        <div className="flex flex-wrap items-center gap-2.5 self-start md:self-center text-xs">
                             <button
                                 type="button"
                                 onClick={handleFetchNews}
@@ -242,7 +242,7 @@ export default function Dashboard({ feeds = [], stats = {}, filters = {}, target
                                 title="Tarik berita online terbaru secara aktual"
                             >
                                 <RefreshCw className={`w-3.5 h-3.5 ${fetchingNews ? 'animate-spin' : ''}`} />
-                                <span>{fetchingNews ? 'Menarik Berita...' : '⚡ Tarik Berita Aktual'}</span>
+                                <span>{fetchingNews ? 'Menarik Berita...' : '⚡ Tarik Berita Baru'}</span>
                             </button>
 
                             <Link
@@ -250,7 +250,7 @@ export default function Dashboard({ feeds = [], stats = {}, filters = {}, target
                                 className="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-cyan-300 border border-cyan-500/40 flex items-center gap-1.5 font-bold transition-all shadow-sm"
                             >
                                 <Share2 className="w-3.5 h-3.5 text-cyan-400" />
-                                <span>Media Studio (S6)</span>
+                                <span>Ruang Media & Pers</span>
                             </Link>
 
                             <Link
@@ -258,14 +258,14 @@ export default function Dashboard({ feeds = [], stats = {}, filters = {}, target
                                 className="px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700 flex items-center gap-1.5 transition-all"
                             >
                                 <Radio className="w-3.5 h-3.5 text-slate-400" />
-                                <span>Target Setup (S3)</span>
+                                <span>Atur Kata Kunci</span>
                             </Link>
                         </div>
                     </div>
                 </div>
 
                 {/* Crisis Velocity Metrics Grid */}
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 font-mono">
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
                     {/* 1. Total Monitored */}
                     <div className="bg-slate-900/90 border border-slate-800 rounded-xl p-3.5">
                         <div className="text-[10px] text-slate-400 flex items-center gap-1">
@@ -275,67 +275,67 @@ export default function Dashboard({ feeds = [], stats = {}, filters = {}, target
                         <div className="text-xl font-black text-white mt-1">
                             {stats.total_monitored || 0}
                         </div>
-                        <div className="text-[10px] text-slate-400 mt-0.5">Portal Berita Online</div>
+                        <div className="text-[10px] text-slate-400 mt-0.5">Portal Berita Lokal</div>
                     </div>
 
                     {/* 2. Total Analyzed */}
                     <div className="bg-slate-900/90 border border-slate-800 rounded-xl p-3.5">
                         <div className="text-[10px] text-slate-400 flex items-center gap-1">
                             <Sparkles className="w-3 h-3 text-cyan-400" />
-                            Teranalisis AI
+                            Sudah Diperiksa
                         </div>
                         <div className="text-xl font-black text-cyan-300 mt-1">
                             {stats.total_analyzed || 0}
                         </div>
-                        <div className="text-[10px] text-emerald-400 mt-0.5">Respon Pers Siap</div>
+                        <div className="text-[10px] text-emerald-400 mt-0.5">Draf Jawaban Siap</div>
                     </div>
 
                     {/* 3. Critical Danger (>=75) */}
                     <div className="bg-slate-900/90 border border-rose-900/60 rounded-xl p-3.5 bg-rose-950/10">
                         <div className="text-[10px] text-rose-300 flex items-center gap-1">
                             <Flame className="w-3 h-3 text-rose-400 animate-pulse" />
-                            Krisis Bahaya
+                            Sangat Hangat
                         </div>
                         <div className="text-xl font-black text-rose-400 mt-1">
                             {stats.critical_count || 0}
                         </div>
-                        <div className="text-[10px] text-rose-400/80 mt-0.5">Velocity ≥ 75%</div>
+                        <div className="text-[10px] text-rose-400/80 mt-0.5">Kecepatan &ge; 75%</div>
                     </div>
 
                     {/* 4. Warning (40-74) */}
                     <div className="bg-slate-900/90 border border-amber-900/60 rounded-xl p-3.5 bg-amber-950/10">
                         <div className="text-[10px] text-amber-300 flex items-center gap-1">
                             <AlertTriangle className="w-3 h-3 text-amber-400" />
-                            Waspada
+                            Mulai Ramai
                         </div>
                         <div className="text-xl font-black text-amber-400 mt-1">
                             {stats.warning_count || 0}
                         </div>
-                        <div className="text-[10px] text-amber-400/80 mt-0.5">Velocity 40-74%</div>
+                        <div className="text-[10px] text-amber-400/80 mt-0.5">Kecepatan 40-74%</div>
                     </div>
 
                     {/* 5. Safe (<40) */}
                     <div className="bg-slate-900/90 border border-emerald-900/60 rounded-xl p-3.5 bg-emerald-950/10">
                         <div className="text-[10px] text-emerald-300 flex items-center gap-1">
                             <ShieldCheck className="w-3 h-3 text-emerald-400" />
-                            Aman / Stabil
+                            Tenang / Aman
                         </div>
                         <div className="text-xl font-black text-emerald-400 mt-1">
                             {stats.safe_count || 0}
                         </div>
-                        <div className="text-[10px] text-emerald-400/80 mt-0.5">Velocity &lt; 40%</div>
+                        <div className="text-[10px] text-emerald-400/80 mt-0.5">Kecepatan &lt; 40%</div>
                     </div>
 
                     {/* 6. Integrity Alert */}
                     <div className="bg-slate-900/90 border border-red-500/50 rounded-xl p-3.5 bg-red-950/30 shadow-[0_0_12px_rgba(239,68,68,0.2)]">
                         <div className="text-[10px] text-red-300 flex items-center gap-1">
                             <AlertOctagon className="w-3 h-3 text-red-400 animate-pulse" />
-                            Integrity Alert
+                            Perlu Bukti Hukum
                         </div>
                         <div className="text-xl font-black text-red-400 mt-1">
                             {stats.integrity_alert_count || 0}
                         </div>
-                        <div className="text-[10px] text-red-300/80 mt-0.5">Penolakan Mesin AI</div>
+                        <div className="text-[10px] text-red-300/80 mt-0.5">Tuduhan Berat</div>
                     </div>
                 </div>
 
@@ -546,20 +546,20 @@ export default function Dashboard({ feeds = [], stats = {}, filters = {}, target
                                                 <div className="flex items-start gap-3">
                                                     <AlertOctagon className="w-6 h-6 text-red-400 shrink-0 mt-0.5" />
                                                     <div className="space-y-1">
-                                                        <h4 className="text-sm font-black text-red-200 tracking-wide uppercase">
-                                                            🚨 PERINGATAN INTEGRITAS (INTEGRITY ALERT)
+                                                        <h4 className="text-sm font-bold text-red-200 tracking-wide uppercase">
+                                                            🚨 PERINGATAN: TUDUHAN BERAT / PERLU TINDAKAN HUKUM
                                                         </h4>
                                                         <p className="text-xs text-red-200/90 font-sans leading-relaxed">
-                                                            AI menolak memproses isu ini karena potensi pelanggaran hukum/etika. Disarankan mengambil langkah legal/klarifikasi formal.
+                                                            Berita ini memuat tuduhan hukum yang serius. Tim disarankan berkoordinasi langsung dengan pimpinan atau penasihat hukum untuk memberikan bantahan formal.
                                                         </p>
                                                     </div>
                                                 </div>
 
                                                 {/* Hidden narrative notes */}
                                                 <div className="pt-2 border-t border-red-900/60 text-[11px] text-red-300 flex items-center justify-between">
-                                                    <span>Status: AI Blocked / Escalated</span>
+                                                    <span>Status: Eskalasi Tim Khusus</span>
                                                     <span className="font-bold underline cursor-pointer" onClick={() => setSelectedFeedForModal(feed)}>
-                                                        Lihat Rujukan Dokumen →
+                                                        Lihat Dokumen Rujukan →
                                                     </span>
                                                 </div>
                                             </div>
@@ -567,14 +567,14 @@ export default function Dashboard({ feeds = [], stats = {}, filters = {}, target
                                             /* 2. SUCCESS AI OUTPUT: FACT-ANCHOR & NARRATIVE BUILDER */
                                             <div className="space-y-4 pt-1">
                                                 {/* Fact-Anchor 2-Column Comparison Grid */}
-                                                <div className="rounded-xl bg-slate-950/80 border border-slate-800 overflow-hidden font-mono text-xs">
+                                                <div className="rounded-xl bg-slate-950/80 border border-slate-800 overflow-hidden text-xs">
                                                     <div className="px-3.5 py-2 bg-slate-900/90 border-b border-slate-800 flex items-center justify-between">
                                                         <span className="text-[11px] font-bold text-slate-300 flex items-center gap-1.5 uppercase">
                                                             <ShieldAlert className="w-3.5 h-3.5 text-cyan-400" />
-                                                            Tabel Fact-Anchor (Fakta vs Tuduhan)
+                                                            Cek Kebenaran: Tuduhan vs Fakta Lapangan
                                                         </span>
                                                         <span className="text-[10px] text-emerald-400 font-bold">
-                                                            Terverifikasi
+                                                            Fakta Teruji
                                                         </span>
                                                     </div>
 
@@ -583,7 +583,7 @@ export default function Dashboard({ feeds = [], stats = {}, filters = {}, target
                                                         <div className="space-y-1">
                                                             <div className="text-[10px] font-bold text-rose-400 flex items-center gap-1 uppercase">
                                                                 <AlertTriangle className="w-3 h-3 text-rose-400" />
-                                                                Tuduhan / Isu Miring:
+                                                                Tuduhan / Kabar Miring:
                                                             </div>
                                                             <p className="text-xs text-rose-200/90 font-sans leading-relaxed bg-rose-950/30 p-2.5 rounded-lg border border-rose-900/40">
                                                                 {factAnchor.tuduhan || factAnchor.claim || 'Belum ada tuduhan spesifik tercatat.'}
@@ -594,7 +594,7 @@ export default function Dashboard({ feeds = [], stats = {}, filters = {}, target
                                                         <div className="space-y-1">
                                                             <div className="text-[10px] font-bold text-emerald-400 flex items-center gap-1 uppercase">
                                                                 <ShieldCheck className="w-3 h-3 text-emerald-400" />
-                                                                Fakta Kejadian Lapangan:
+                                                                Bukti & Fakta Sebenarnya:
                                                             </div>
                                                             <p className="text-xs text-emerald-200/90 font-sans leading-relaxed bg-emerald-950/30 p-2.5 rounded-lg border border-emerald-900/40">
                                                                 {factAnchor.fakta_lapangan || factAnchor.fakta || factAnchor.fact || 'Data fakta lapangan telah dikompilasi.'}
@@ -606,18 +606,18 @@ export default function Dashboard({ feeds = [], stats = {}, filters = {}, target
                                                     {(factAnchor.dokumen_rujukan || factAnchor.reference) && (
                                                         <div className="px-3.5 py-2 bg-slate-900/40 border-t border-slate-800/80 text-[11px] text-slate-400 flex items-center gap-1.5">
                                                             <Info className="w-3 h-3 text-cyan-400 shrink-0" />
-                                                            <span>Rujukan: <strong className="text-slate-300">{factAnchor.dokumen_rujukan || factAnchor.reference}</strong></span>
+                                                            <span>Bukti Dokumen: <strong className="text-slate-300">{factAnchor.dokumen_rujukan || factAnchor.reference}</strong></span>
                                                         </div>
                                                     )}
                                                 </div>
 
                                                 {/* Narrative Builder (Press & Media Response Formats) */}
                                                 <div className="space-y-2.5">
-                                                    <div className="flex items-center justify-between font-mono">
+                                                    <div className="flex items-center justify-between">
                                                         <div className="flex items-center gap-2">
                                                             <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
                                                             <span className="text-xs font-bold text-white uppercase">
-                                                                Draf Respon Media & Pers
+                                                                Draf Jawaban Resmi untuk Media & Publik
                                                             </span>
                                                         </div>
 
@@ -627,7 +627,7 @@ export default function Dashboard({ feeds = [], stats = {}, filters = {}, target
                                                                 ? 'bg-rose-950/90 text-rose-300 border-rose-500/50'
                                                                 : 'bg-emerald-950/90 text-emerald-300 border-emerald-500/50'
                                                         }`}>
-                                                            {feed.sentiment === 'negative' ? '🛡️ Defensive Reframing' : '🚀 Proactive Amplification'}
+                                                            {feed.sentiment === 'negative' ? '🛡️ Draf Klarifikasi' : '🚀 Draf Berita Positif'}
                                                         </span>
                                                     </div>
 
@@ -658,7 +658,7 @@ export default function Dashboard({ feeds = [], stats = {}, filters = {}, target
                                                             <ScriptChannelBox
                                                                 channel={activeFmt.label.toUpperCase()}
                                                                 title={activeFmt.title}
-                                                                content={scriptText || 'Draf naskah respon belum dikompilasi oleh mesin AI.'}
+                                                                content={scriptText || 'Draf jawaban resmi sedang disiapkan.'}
                                                                 modeLabel={sentimentInfo.mode}
                                                                 modeColor={sentimentInfo.modeColor}
                                                             />
@@ -670,10 +670,12 @@ export default function Dashboard({ feeds = [], stats = {}, filters = {}, target
                                     </div>
 
                                     {/* Card Action Footer */}
-                                    <div className="px-5 py-3 bg-slate-950/60 border-t border-slate-800/80 flex items-center justify-between font-mono text-xs">
+                                    <div className="px-5 py-3 bg-slate-950/60 border-t border-slate-800/80 flex items-center justify-between text-xs">
                                         <div className="text-[11px] text-slate-400 flex items-center gap-1.5">
                                             <span className="w-2 h-2 rounded-full bg-cyan-400"></span>
-                                            <span>AI Status: <strong className="text-cyan-300 uppercase">{feed.ai_status}</strong></span>
+                                            <span>Kondisi Berita: <strong className="text-cyan-300">
+                                                {feed.ai_status === 'integrity_alert' ? 'Perlu Bukti Hukum' : (feed.ai_status === 'success' ? 'Sudah Diperiksa' : 'Menunggu')}
+                                            </strong></span>
                                         </div>
 
                                         <button
@@ -682,7 +684,7 @@ export default function Dashboard({ feeds = [], stats = {}, filters = {}, target
                                             className="inline-flex items-center gap-1 px-3 py-1 rounded-lg bg-slate-900 hover:bg-cyan-950 text-slate-300 hover:text-cyan-300 border border-slate-700 hover:border-cyan-500/50 font-bold transition-all cursor-pointer"
                                         >
                                             <Eye className="w-3.5 h-3.5" />
-                                            <span>Rincian Lengkap</span>
+                                            <span>Lihat Ringkasan Lengkap</span>
                                         </button>
                                     </div>
                                 </div>
@@ -698,7 +700,7 @@ export default function Dashboard({ feeds = [], stats = {}, filters = {}, target
                             {/* Modal Header */}
                             <div className="flex items-start justify-between border-b border-slate-800 pb-4">
                                 <div className="space-y-1 flex-1 pr-4">
-                                    <div className="flex items-center gap-2 font-mono text-xs">
+                                    <div className="flex items-center gap-2 text-xs">
                                         <span className="px-2.5 py-0.5 rounded bg-slate-950 border border-slate-700 text-cyan-300 font-bold">
                                             {selectedFeedForModal.source || 'Portal Berita'}
                                         </span>
@@ -716,10 +718,10 @@ export default function Dashboard({ feeds = [], stats = {}, filters = {}, target
                                             href={selectedFeedForModal.url}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-cyan-950 hover:bg-cyan-900 border border-cyan-500/50 text-cyan-300 font-mono text-xs font-bold transition"
+                                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-cyan-950 hover:bg-cyan-900 border border-cyan-500/50 text-cyan-300 text-xs font-bold transition"
                                         >
                                             <ExternalLink className="w-3.5 h-3.5" />
-                                            <span>Buka Sumber Artikel ({selectedFeedForModal.source})</span>
+                                            <span>Buka Sumber Berita Asli ({selectedFeedForModal.source})</span>
                                         </a>
                                     </div>
                                 </div>
@@ -739,40 +741,40 @@ export default function Dashboard({ feeds = [], stats = {}, filters = {}, target
 
                             {/* Modal Content Logic */}
                             {selectedFeedForModal.ai_status === 'integrity_alert' ? (
-                                <div className="p-5 rounded-xl bg-red-950/90 border-2 border-red-500 space-y-3 font-mono">
+                                <div className="p-5 rounded-xl bg-red-950/90 border-2 border-red-500 space-y-3">
                                     <div className="flex items-center gap-2 text-red-300 font-bold text-sm">
                                         <AlertOctagon className="w-5 h-5 text-red-400" />
-                                        <span>PERINGATAN INTEGRITAS TINGKAT TINGGI</span>
+                                        <span>PERINGATAN: TUDUHAN BERAT / BUTUH PENANGANAN KHUSUS</span>
                                     </div>
                                     <p className="text-xs text-red-100 font-sans leading-relaxed">
-                                        🚨 AI menolak memproses isu ini karena potensi pelanggaran hukum/etika. Disarankan mengambil langkah legal/klarifikasi formal.
+                                        Berita ini memuat isu hukum yang serius. Disarankan membawa bukti dokumen fisik dan melibatkan tim advokasi hukum sebelum memberikan tanggapan terbuka.
                                     </p>
                                     <div className="pt-2 text-xs text-red-300 space-y-1">
-                                        <div>Tuduhan: <span className="text-white">{selectedFeedForModal.fact_anchor?.tuduhan || 'Pencatutan nama lembaga resmi'}</span></div>
+                                        <div>Tuduhan / Isu Miring: <span className="text-white">{selectedFeedForModal.fact_anchor?.tuduhan || 'Pencatutan nama lembaga resmi'}</span></div>
                                         <div>Fakta Lapangan: <span className="text-white">{selectedFeedForModal.fact_anchor?.fakta_lapangan || 'Klarifikasi resmi lembaga'}</span></div>
-                                        <div>Rujukan: <span className="text-white">{selectedFeedForModal.fact_anchor?.dokumen_rujukan || 'Rilis Pers'}</span></div>
+                                        <div>Bukti Dokumen: <span className="text-white">{selectedFeedForModal.fact_anchor?.dokumen_rujukan || 'Rilis Pers'}</span></div>
                                     </div>
                                 </div>
                             ) : (
                                 <div className="space-y-5">
                                     {/* Fact Anchor Details */}
                                     <div className="space-y-2">
-                                        <h3 className="text-xs font-mono font-bold text-cyan-300 uppercase flex items-center gap-1.5">
+                                        <h3 className="text-xs font-bold text-cyan-300 uppercase flex items-center gap-1.5">
                                             <ShieldAlert className="w-4 h-4 text-cyan-400" />
-                                            Analisis Fact-Anchor (Fakta vs Tuduhan)
+                                            Perbandingan Fakta Lapangan vs Tuduhan
                                         </h3>
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 font-sans text-xs">
                                             <div className="p-3.5 rounded-xl bg-rose-950/40 border border-rose-900/50 space-y-1">
-                                                <div className="font-mono text-[10px] font-bold text-rose-400 uppercase">
-                                                    Klaim / Tuduhan Isu:
+                                                <div className="text-[10px] font-bold text-rose-400 uppercase">
+                                                    Kabar Miring / Tuduhan:
                                                 </div>
                                                 <div className="text-rose-100 leading-relaxed">
                                                     {selectedFeedForModal.fact_anchor?.tuduhan || selectedFeedForModal.fact_anchor?.claim || 'Tidak ada data tuduhan.'}
                                                 </div>
                                             </div>
                                             <div className="p-3.5 rounded-xl bg-emerald-950/40 border border-emerald-900/50 space-y-1">
-                                                <div className="font-mono text-[10px] font-bold text-emerald-400 uppercase">
-                                                    Fakta Lapangan Terverifikasi:
+                                                <div className="text-[10px] font-bold text-emerald-400 uppercase">
+                                                    Bukti & Fakta Lapangan Sebenarnya:
                                                 </div>
                                                 <div className="text-emerald-100 leading-relaxed">
                                                     {selectedFeedForModal.fact_anchor?.fakta_lapangan || selectedFeedForModal.fact_anchor?.fakta || 'Tidak ada data fakta lapangan.'}
@@ -782,10 +784,10 @@ export default function Dashboard({ feeds = [], stats = {}, filters = {}, target
                                     </div>
 
                                     {/* All Scripts Multi-Channel */}
-                                    <div className="space-y-3 font-mono">
+                                    <div className="space-y-3">
                                         <h3 className="text-xs font-bold text-cyan-300 uppercase flex items-center gap-1.5">
                                             <Sparkles className="w-4 h-4 text-cyan-400" />
-                                            Draf Respon Media & Komunikasi Pers Resmi
+                                            Draf Jawaban Resmi untuk Media Pers & Publik
                                         </h3>
                                         <div className="space-y-3">
                                             {PRESS_FORMATS.map((fmt) => (
@@ -806,9 +808,9 @@ export default function Dashboard({ feeds = [], stats = {}, filters = {}, target
                                 <button
                                     type="button"
                                     onClick={() => setSelectedFeedForModal(null)}
-                                    className="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-mono text-xs font-bold transition-colors cursor-pointer"
+                                    className="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold transition-colors cursor-pointer"
                                 >
-                                    TUTUP DETAIL
+                                    Tutup Tampilan
                                 </button>
                             </div>
                         </div>

@@ -149,7 +149,7 @@ export default function ChecklistIndex({ steps = [], progress = { total: 10, com
 
     return (
         <AuthenticatedLayout>
-            <Head title="Lembar Uji Mandiri (UAT Checklist) // Radar Politik" />
+            <Head title="Lembar Pemeriksaan Sistem // Radar Berita Ketapang" />
 
             <div className="py-6 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-6">
 
@@ -174,42 +174,42 @@ export default function ChecklistIndex({ steps = [], progress = { total: 10, com
                 {/* Header Title & Mission Command */}
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-5">
                     <div>
-                        <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-cyan-950/70 border border-cyan-800/60 text-cyan-400 text-xs font-mono font-medium tracking-wider mb-2">
+                        <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-cyan-950/70 border border-cyan-800/60 text-cyan-400 text-xs font-medium tracking-wider mb-2">
                             <BookmarkCheck className="w-3.5 h-3.5" />
-                            <span>UAT PROTOCOL // SLICE 1 S/D 8 VERIFICATION</span>
+                            <span>LEMBAR PEMERIKSAAN FITUR // 10 LANGKAH PENGUJIAN</span>
                         </div>
-                        <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight font-mono">
-                            LEMBAR PENGUJIAN MANDIRI <span className="text-cyan-400 font-sans">(UAT CHECKLIST)</span>
+                        <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+                            LEMBAR PEMERIKSAAN MANDIRI <span className="text-cyan-400 font-sans">(PANDUAN UJI COBA)</span>
                         </h1>
                         <p className="text-slate-400 text-sm mt-1">
-                            Panduan pengujian fungsionalitas end-to-end secara step-by-step beserta data dummy terintegrasi.
+                            Panduan praktis untuk mencoba seluruh fitur aplikasi secara langsung langkah demi langkah.
                         </p>
                     </div>
 
                     <div className="flex flex-wrap items-center gap-2">
                         <button
                             onClick={handleSeedDemo}
-                            className="inline-flex items-center space-x-2 px-3.5 py-2 rounded-lg bg-amber-950/50 hover:bg-amber-900/60 border border-amber-600/50 text-amber-300 text-xs font-mono font-medium transition"
-                            title="Segarkan data dummy (berita krisis, notifikasi, keyword) ke kondisi awal"
+                            className="inline-flex items-center space-x-2 px-3.5 py-2 rounded-lg bg-amber-950/50 hover:bg-amber-900/60 border border-amber-600/50 text-amber-300 text-xs font-medium transition cursor-pointer"
+                            title="Segarkan data contoh ke kondisi awal"
                         >
                             <RefreshCw className="w-3.5 h-3.5" />
-                            <span>SEGARKAN DATA DUMMY</span>
+                            <span>Segarkan Contoh Berita</span>
                         </button>
                         <button
                             onClick={handleReset}
-                            className="inline-flex items-center space-x-2 px-3.5 py-2 rounded-lg bg-rose-950/40 hover:bg-rose-900/50 border border-rose-800/50 text-rose-300 text-xs font-mono font-medium transition"
+                            className="inline-flex items-center space-x-2 px-3.5 py-2 rounded-lg bg-rose-950/40 hover:bg-rose-900/50 border border-rose-800/50 text-rose-300 text-xs font-medium transition cursor-pointer"
                             title="Reset checklist menjadi 0%"
                         >
                             <RotateCcw className="w-3.5 h-3.5" />
-                            <span>RESET PROGRES</span>
+                            <span>Atur Ulang Centang</span>
                         </button>
                         <button
                             onClick={handleSaveAll}
                             disabled={isSaving}
-                            className="inline-flex items-center space-x-2 px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-mono font-bold transition shadow-lg shadow-emerald-950/50 disabled:opacity-50"
+                            className="inline-flex items-center space-x-2 px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition shadow-lg shadow-emerald-950/50 disabled:opacity-50 cursor-pointer"
                         >
                             <BookmarkCheck className="w-4 h-4" />
-                            <span>{isSaving ? 'MENYIMPAN...' : 'SIMPAN SEMUA HASIL'}</span>
+                            <span>{isSaving ? 'Menyimpan...' : 'Simpan Semua Hasil'}</span>
                         </button>
                     </div>
                 </div>
@@ -247,19 +247,19 @@ export default function ChecklistIndex({ steps = [], progress = { total: 10, com
                             </span>
                         </div>
                         <div>
-                            <div className="text-xs font-mono uppercase tracking-wider text-slate-400">STATUS PENGUJIAN</div>
-                            <div className="text-xl font-bold text-white font-mono mt-0.5">
+                            <div className="text-xs uppercase tracking-wider text-slate-400 font-bold">HASIL PEMERIKSAAN</div>
+                            <div className="text-xl font-bold text-white mt-0.5">
                                 {completedCount} <span className="text-slate-500 text-sm font-normal">/ {totalCount} Selesai</span>
                             </div>
                             <div className="mt-1">
                                 {currentPercent === 100 ? (
                                     <span className="inline-flex items-center space-x-1 text-xs font-semibold text-emerald-400">
                                         <CheckCircle2 className="w-3.5 h-3.5" />
-                                        <span>Semua Uji Lolos (Production Ready)</span>
+                                        <span>Semua Langkah Lolos Uji (Siap Pakai)</span>
                                     </span>
                                 ) : currentPercent > 0 ? (
                                     <span className="text-xs font-semibold text-cyan-400">
-                                        Pengujian Sedang Berlangsung
+                                        Pemeriksaan Sedang Berjalan
                                     </span>
                                 ) : (
                                     <span className="text-xs text-slate-500">
@@ -272,46 +272,46 @@ export default function ChecklistIndex({ steps = [], progress = { total: 10, com
 
                     <div className="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 shadow-xl flex flex-col justify-between">
                         <div className="flex items-center justify-between">
-                            <span className="text-xs font-mono uppercase text-slate-400 tracking-wider">TARGET CAKUPAN UJI</span>
-                            <span className="px-2 py-0.5 rounded bg-slate-800 text-[10px] font-mono text-slate-300">Slice 1 - 8</span>
+                            <span className="text-xs uppercase text-slate-400 tracking-wider font-bold">BAGIAN YANG DIPERIKSA</span>
+                            <span className="px-2 py-0.5 rounded bg-slate-800 text-[10px] text-slate-300 font-bold">10 Langkah</span>
                         </div>
                         <div className="text-sm text-slate-300 mt-2 space-y-1">
                             <div className="flex justify-between text-xs">
-                                <span className="text-slate-400">Infrastruktur & Auth</span>
-                                <span className="font-mono text-cyan-400">Slice 1 & 2</span>
+                                <span className="text-slate-400">Masuk Akun & Keamanan</span>
+                                <span className="text-cyan-400 font-medium">Langkah 1 & 2</span>
                             </div>
                             <div className="flex justify-between text-xs">
-                                <span className="text-slate-400">Target & Feed Collector</span>
-                                <span className="font-mono text-cyan-400">Slice 3</span>
+                                <span className="text-slate-400">Pengaturan & Penarik Berita</span>
+                                <span className="text-cyan-400 font-medium">Langkah 3 & 4</span>
                             </div>
                             <div className="flex justify-between text-xs">
-                                <span className="text-slate-400">Hermes API & Radar Krisis</span>
-                                <span className="font-mono text-cyan-400">Slice 4 & 5</span>
+                                <span className="text-slate-400">Posko Berita & Tanggapan Cepat</span>
+                                <span className="text-cyan-400 font-medium">Langkah 5 & 6</span>
                             </div>
                             <div className="flex justify-between text-xs">
-                                <span className="text-slate-400">Content Studio & Analytics</span>
-                                <span className="font-mono text-cyan-400">Slice 6, 7 & 8</span>
+                                <span className="text-slate-400">Ruang Naskah & Laporan Grafik</span>
+                                <span className="text-cyan-400 font-medium">Langkah 7 s/d 10</span>
                             </div>
                         </div>
                     </div>
 
                     <div className="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 shadow-xl flex flex-col justify-between">
                         <div className="flex items-center justify-between">
-                            <span className="text-xs font-mono uppercase text-slate-400 tracking-wider">STATUS ARTIFAK SISTEM</span>
-                            <span className="px-2 py-0.5 rounded bg-emerald-950/80 border border-emerald-800 text-[10px] font-mono text-emerald-400">STABLE</span>
+                            <span className="text-xs uppercase text-slate-400 tracking-wider font-bold">KESIAPAN APLIKASI</span>
+                            <span className="px-2 py-0.5 rounded bg-emerald-950/80 border border-emerald-800 text-[10px] text-emerald-400 font-bold">SIAP PAKAI</span>
                         </div>
                         <div className="text-xs text-slate-300 space-y-1.5 mt-2">
                             <div className="flex justify-between">
-                                <span className="text-slate-400">Versi UI Footer:</span>
-                                <span className="font-mono text-white font-semibold">1.0 (Release Candidate)</span>
+                                <span className="text-slate-400">Versi Aplikasi:</span>
+                                <span className="text-white font-semibold">1.0 (Release Candidate)</span>
                             </div>
                             <div className="flex justify-between">
-                                <span className="text-slate-400">High Concurrency:</span>
-                                <span className="font-mono text-emerald-400">Octane FrankenPHP</span>
+                                <span className="text-slate-400">Kecepatan Respons:</span>
+                                <span className="text-emerald-400 font-medium">Cepat & Ringan</span>
                             </div>
                             <div className="flex justify-between">
-                                <span className="text-slate-400">Mobile Layout:</span>
-                                <span className="font-mono text-emerald-400">Zero Overflow-X Tested</span>
+                                <span className="text-slate-400">Tampilan Layar HP:</span>
+                                <span className="text-emerald-400 font-medium">Rapi & Pas di Layar</span>
                             </div>
                         </div>
                     </div>
@@ -325,8 +325,8 @@ export default function ChecklistIndex({ steps = [], progress = { total: 10, com
                     >
                         <div className="flex items-center space-x-2.5">
                             <Key className="w-4 h-4 text-cyan-400" />
-                            <span className="font-mono font-bold text-sm text-white tracking-wider">
-                                KARTU DATA DUMMY & KREDENSIAL SIAP UJI CEPAT
+                            <span className="font-bold text-sm text-white tracking-wider">
+                                KARTU AKUN CONTOH & PERINTAH UJI CEPAT
                             </span>
                             <span className="px-2 py-0.5 text-[10px] rounded-full bg-cyan-950 text-cyan-400 border border-cyan-800">
                                 Klik untuk {showDummyCard ? 'Sembunyikan' : 'Buka'}
@@ -339,20 +339,20 @@ export default function ChecklistIndex({ steps = [], progress = { total: 10, com
                         <div className="p-5 space-y-6">
                             {/* Akun Multi-Role */}
                             <div>
-                                <h3 className="text-xs font-mono font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center space-x-1.5">
+                                <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center space-x-1.5">
                                     <UserCheck className="w-4 h-4 text-emerald-400" />
-                                    <span>1. Kredensial 3 Akun Role (Password Seluruh Akun: <code className="text-amber-300">password</code>)</span>
+                                    <span>1. Tiga Akun Peran untuk Uji Coba (Kata Sandi Seluruh Akun: <code className="text-amber-300">password</code>)</span>
                                 </h3>
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                                     {dummyData?.accounts?.map((acc, idx) => (
                                         <div key={idx} className="p-3.5 rounded-xl bg-slate-950/70 border border-slate-800 hover:border-slate-700 transition">
                                             <div className="flex items-center justify-between mb-1">
-                                                <span className={`text-[11px] font-mono font-bold uppercase ${
+                                                <span className={`text-[11px] font-bold uppercase ${
                                                     acc.role === 'admin' ? 'text-rose-400' : acc.role === 'timses' ? 'text-cyan-400' : 'text-amber-400'
                                                 }`}>
                                                     {acc.label}
                                                 </span>
-                                                <span className="text-[10px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-400 font-mono">
+                                                <span className="text-[10px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-400">
                                                     {acc.role}
                                                 </span>
                                             </div>
@@ -361,7 +361,7 @@ export default function ChecklistIndex({ steps = [], progress = { total: 10, com
                                                 <span className="truncate mr-2">{acc.email}</span>
                                                 <button
                                                     onClick={() => handleCopy(acc.email, `email_${acc.role}`)}
-                                                    className="p-1 hover:text-cyan-400 transition"
+                                                    className="p-1 hover:text-cyan-400 transition cursor-pointer"
                                                     title="Salin Email"
                                                 >
                                                     {copiedKey === `email_${acc.role}` ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
@@ -374,20 +374,20 @@ export default function ChecklistIndex({ steps = [], progress = { total: 10, com
 
                             {/* Perintah cURL Uji API */}
                             <div>
-                                <h3 className="text-xs font-mono font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center space-x-1.5">
+                                <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center space-x-1.5">
                                     <Terminal className="w-4 h-4 text-cyan-400" />
-                                    <span>2. Perintah cURL Uji REST API Hermes (Sanctum Token)</span>
+                                    <span>2. Perintah Uji Pembacaan Berita Asisten Cerdas (Terminal)</span>
                                 </h3>
                                 <div className="space-y-3">
                                     <div>
-                                        <div className="flex items-center justify-between text-xs font-mono text-slate-400 mb-1">
-                                            <span>GET /api/v1/hermes/fetch-news (Ambil Berita Pending & Target Persona)</span>
+                                        <div className="flex items-center justify-between text-xs text-slate-400 mb-1">
+                                            <span>Ambil Berita yang Belum Diproses (GET /fetch-news)</span>
                                             <button
                                                 onClick={() => handleCopy(dummyData?.sample_curl?.fetch, 'curl_fetch')}
-                                                className="inline-flex items-center space-x-1 text-cyan-400 hover:text-cyan-300"
+                                                className="inline-flex items-center space-x-1 text-cyan-400 hover:text-cyan-300 cursor-pointer"
                                             >
                                                 {copiedKey === 'curl_fetch' ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
-                                                <span>{copiedKey === 'curl_fetch' ? 'Copied! ✅' : 'Salin Perintah'}</span>
+                                                <span>{copiedKey === 'curl_fetch' ? 'Tersalin! ✅' : 'Salin Perintah'}</span>
                                             </button>
                                         </div>
                                         <pre className="p-3 rounded-xl bg-slate-950 border border-slate-800 text-xs font-mono text-slate-300 overflow-x-auto whitespace-pre-wrap">
@@ -396,14 +396,14 @@ export default function ChecklistIndex({ steps = [], progress = { total: 10, com
                                     </div>
 
                                     <div>
-                                        <div className="flex items-center justify-between text-xs font-mono text-slate-400 mb-1">
-                                            <span>POST /api/v1/hermes/webhook (Kirim Balasan Hasil Analisis AI)</span>
+                                        <div className="flex items-center justify-between text-xs text-slate-400 mb-1">
+                                            <span>Kirim Hasil Analisis Berita (POST /webhook)</span>
                                             <button
                                                 onClick={() => handleCopy(dummyData?.sample_curl?.webhook, 'curl_webhook')}
-                                                className="inline-flex items-center space-x-1 text-cyan-400 hover:text-cyan-300"
+                                                className="inline-flex items-center space-x-1 text-cyan-400 hover:text-cyan-300 cursor-pointer"
                                             >
                                                 {copiedKey === 'curl_webhook' ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
-                                                <span>{copiedKey === 'curl_webhook' ? 'Copied! ✅' : 'Salin Perintah'}</span>
+                                                <span>{copiedKey === 'curl_webhook' ? 'Tersalin! ✅' : 'Salin Perintah'}</span>
                                             </button>
                                         </div>
                                         <pre className="p-3 rounded-xl bg-slate-950 border border-slate-800 text-xs font-mono text-slate-300 overflow-x-auto whitespace-pre-wrap">
@@ -421,7 +421,7 @@ export default function ChecklistIndex({ steps = [], progress = { total: 10, com
                     <div className="flex items-center space-x-2">
                         <button
                             onClick={() => setFilterCategory('all')}
-                            className={`px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition ${
+                            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer ${
                                 filterCategory === 'all'
                                     ? 'bg-cyan-950 text-cyan-300 border border-cyan-800'
                                     : 'text-slate-400 hover:text-slate-200'
@@ -431,28 +431,28 @@ export default function ChecklistIndex({ steps = [], progress = { total: 10, com
                         </button>
                         <button
                             onClick={() => setFilterCategory('pending')}
-                            className={`px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition ${
+                            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer ${
                                 filterCategory === 'pending'
                                     ? 'bg-amber-950 text-amber-300 border border-amber-800'
                                     : 'text-slate-400 hover:text-slate-200'
                             }`}
                         >
-                            Belum Tercentang ({totalCount - completedCount})
+                            Belum Selesai ({totalCount - completedCount})
                         </button>
                         <button
                             onClick={() => setFilterCategory('completed')}
-                            className={`px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition ${
+                            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer ${
                                 filterCategory === 'completed'
                                     ? 'bg-emerald-950 text-emerald-300 border border-emerald-800'
                                     : 'text-slate-400 hover:text-slate-200'
                             }`}
                         >
-                            Sudah Tercentang ({completedCount})
+                            Sudah Selesai ({completedCount})
                         </button>
                     </div>
 
-                    <span className="text-xs font-mono text-slate-500 hidden sm:inline">
-                        Klik kotak centang di setiap kartu untuk menyimpan status secara otomatis
+                    <span className="text-xs text-slate-500 hidden sm:inline">
+                        Klik tombol di kanan atau centang kotak untuk menyimpan progres Anda
                     </span>
                 </div>
 
@@ -479,35 +479,35 @@ export default function ChecklistIndex({ steps = [], progress = { total: 10, com
                                             <button
                                                 type="button"
                                                 onClick={() => handleToggle(step.key)}
-                                                className={`mt-1 w-6 h-6 rounded-md flex items-center justify-center transition border ${
+                                                className={`mt-1 w-6 h-6 rounded-md flex items-center justify-center transition border cursor-pointer ${
                                                     isChecked
                                                         ? 'bg-emerald-500 border-emerald-400 text-slate-950 shadow-md shadow-emerald-500/30'
                                                         : 'border-slate-600 hover:border-cyan-400 bg-slate-950 text-transparent'
                                                 }`}
-                                                title={isChecked ? 'Klik untuk batal centang' : 'Klik untuk menandai terverifikasi'}
+                                                title={isChecked ? 'Klik untuk batal centang' : 'Klik untuk menandai sudah selesai'}
                                             >
                                                 <Check className="w-4 h-4 stroke-[3]" />
                                             </button>
 
                                             <div>
                                                 <div className="flex flex-wrap items-center gap-2 mb-1">
-                                                    <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-slate-800 text-cyan-400 border border-slate-700">
+                                                    <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-cyan-400 border border-slate-700">
                                                         {step.slice}
                                                     </span>
-                                                    <span className="px-2 py-0.5 rounded text-[10px] font-mono text-slate-400 bg-slate-950 border border-slate-800">
+                                                    <span className="px-2 py-0.5 rounded text-[10px] text-slate-400 bg-slate-950 border border-slate-800">
                                                         {step.category}
                                                     </span>
-                                                    <span className="text-[11px] text-slate-500 font-mono">
-                                                        Hak Akses: <span className="text-slate-300">{step.role_required}</span>
+                                                    <span className="text-[11px] text-slate-500">
+                                                        Hak Akses: <span className="text-slate-300 font-medium">{step.role_required}</span>
                                                     </span>
                                                     {isChecked && (
-                                                        <span className="inline-flex items-center space-x-1 px-2 py-0.5 rounded bg-emerald-950/80 border border-emerald-800 text-[10px] font-mono text-emerald-400">
+                                                        <span className="inline-flex items-center space-x-1 px-2 py-0.5 rounded bg-emerald-950/80 border border-emerald-800 text-[10px] text-emerald-400 font-bold">
                                                             <Check className="w-3 h-3" />
-                                                            <span>TERVERIFIKASI</span>
+                                                            <span>SUDAH DIUJI</span>
                                                         </span>
                                                     )}
                                                 </div>
-                                                <h2 className={`text-base sm:text-lg font-bold font-mono ${
+                                                <h2 className={`text-base sm:text-lg font-bold ${
                                                     isChecked ? 'text-emerald-300 line-through' : 'text-white'
                                                 }`}>
                                                     {step.title}
@@ -522,7 +522,7 @@ export default function ChecklistIndex({ steps = [], progress = { total: 10, com
                                         {step.target_url && (
                                             <Link
                                                 href={step.target_url}
-                                                className="hidden sm:inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-cyan-950/80 hover:text-cyan-300 border border-slate-700 hover:border-cyan-700 text-slate-300 text-xs font-mono transition shrink-0"
+                                                className="hidden sm:inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-cyan-950/80 hover:text-cyan-300 border border-slate-700 hover:border-cyan-700 text-slate-300 text-xs transition shrink-0 cursor-pointer"
                                             >
                                                 <span>Buka Halaman Uji</span>
                                                 <ExternalLink className="w-3.5 h-3.5" />
@@ -532,8 +532,8 @@ export default function ChecklistIndex({ steps = [], progress = { total: 10, com
 
                                     {/* Detailed Step-by-Step Instructions */}
                                     <div className="p-4 rounded-xl bg-slate-950/80 border border-slate-800/80 space-y-2">
-                                        <div className="text-[11px] font-mono font-semibold uppercase text-cyan-400 tracking-wider">
-                                            PROSEDUR PENGUJIAN STEP-BY-STEP:
+                                        <div className="text-[11px] font-bold uppercase text-cyan-400 tracking-wider">
+                                            CARA MELAKUKAN PENGUJIAN:
                                         </div>
                                         <ol className="space-y-1.5 list-decimal list-inside text-xs text-slate-300">
                                             {step.steps?.map((subStep, sIdx) => (
@@ -547,14 +547,14 @@ export default function ChecklistIndex({ steps = [], progress = { total: 10, com
                                     {/* Tester Notes & Quick Action Bar */}
                                     <div className="flex flex-col sm:flex-row items-stretch sm:items-end justify-between gap-3 pt-2">
                                         <div className="flex-1">
-                                            <label className="block text-[10px] font-mono text-slate-400 mb-1">
-                                                CATATAN / HASIL TEMUAN PENGUJI:
+                                            <label className="block text-[10px] font-bold text-slate-400 mb-1">
+                                                CATATAN ATAU TEMUAN ANDA:
                                             </label>
                                             <textarea
                                                 rows="2"
                                                 value={localState?.tester_notes || ''}
                                                 onChange={(e) => handleNotesChange(step.key, e.target.value)}
-                                                placeholder="Tulis catatan pengujian (contoh: 'Berhasil diuji pada Chrome mobile, HTTP 403 muncul sesuai spesifikasi')..."
+                                                placeholder="Tuliskan pengalaman atau hasil pengujian Anda di sini (misal: 'Semua tombol berjalan normal')..."
                                                 className="w-full px-3 py-2 rounded-lg bg-slate-950 border border-slate-800 focus:border-cyan-500 focus:ring-0 text-xs text-slate-200 placeholder-slate-600 resize-none font-sans transition"
                                             />
                                         </div>
@@ -563,7 +563,7 @@ export default function ChecklistIndex({ steps = [], progress = { total: 10, com
                                             {step.target_url && (
                                                 <Link
                                                     href={step.target_url}
-                                                    className="sm:hidden inline-flex items-center space-x-1 px-3 py-2 rounded-lg bg-slate-800 text-slate-300 text-xs font-mono"
+                                                    className="sm:hidden inline-flex items-center space-x-1 px-3 py-2 rounded-lg bg-slate-800 text-slate-300 text-xs cursor-pointer"
                                                 >
                                                     <span>Uji Halaman</span>
                                                     <ExternalLink className="w-3.5 h-3.5" />
@@ -573,7 +573,7 @@ export default function ChecklistIndex({ steps = [], progress = { total: 10, com
                                             <button
                                                 type="button"
                                                 onClick={() => handleToggle(step.key)}
-                                                className={`px-3.5 py-2 rounded-lg text-xs font-mono font-bold transition flex items-center space-x-1.5 ${
+                                                className={`px-3.5 py-2 rounded-lg text-xs font-bold transition flex items-center space-x-1.5 cursor-pointer ${
                                                     isChecked
                                                         ? 'bg-slate-800 hover:bg-slate-700 text-slate-300'
                                                         : 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-md shadow-emerald-950/40'
@@ -604,17 +604,17 @@ export default function ChecklistIndex({ steps = [], progress = { total: 10, com
                     <div className="flex items-center space-x-3 text-xs text-slate-400">
                         <Info className="w-4 h-4 text-cyan-400 shrink-0" />
                         <span>
-                            Status centang setiap langkah tersimpan otomatis di database saat dicentang, atau klik tombol simpan untuk menyimpan seluruh catatan temuan sekaligus.
+                            Status centang setiap langkah tersimpan otomatis saat Anda mengeklik centang. Anda juga bisa menekan tombol simpan untuk mengunci seluruh catatan temuan sekaligus.
                         </span>
                     </div>
 
                     <button
                         onClick={handleSaveAll}
                         disabled={isSaving}
-                        className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-mono font-bold transition shadow-lg shadow-emerald-950/50 disabled:opacity-50"
+                        className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition shadow-lg shadow-emerald-950/50 disabled:opacity-50 cursor-pointer"
                     >
                         <BookmarkCheck className="w-4 h-4" />
-                        <span>{isSaving ? 'MENYIMPAN HASIL...' : 'SIMPAN SEMUA HASIL UJI'}</span>
+                        <span>{isSaving ? 'Menyimpan Hasil...' : 'Simpan Semua Hasil Uji'}</span>
                     </button>
                 </div>
 

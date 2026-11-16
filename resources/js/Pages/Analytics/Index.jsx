@@ -96,34 +96,33 @@ export default function AnalyticsIndex({ sentimentTrend = [], auditLogs = {} }) 
     };
 
     return (
-        <AuthenticatedLayout>
-            <Head title="Evaluasi & Audit Intelijen Politik" />
+        <AuthenticatedLayout header="Grafik & Tren Pemberitaan">
+            <Head title="Grafik & Tren Berita - Radar Politik Ketapang" />
 
-            <div className="space-y-8 font-mono">
+            <div className="space-y-8">
                 {/* Header Banner: Mil-Spec Analytics Command */}
                 <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-900 via-purple-950/40 to-slate-900 border border-purple-500/40 p-6 sm:p-8 shadow-[0_0_30px_rgba(168,85,247,0.15)]">
                     <div className="absolute top-0 right-0 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl pointer-events-none"></div>
                     <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
                         <div className="space-y-2">
                             <div className="flex flex-wrap items-center gap-2">
-                                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold tracking-wider bg-purple-950/80 text-purple-300 border border-purple-500/50 shadow-[0_0_12px_rgba(168,85,247,0.3)]">
+                                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-purple-950/80 text-purple-300 border border-purple-500/50 shadow-[0_0_12px_rgba(168,85,247,0.3)]">
                                     <BarChart3 className="w-3.5 h-3.5" />
-                                    SLICE 7 // MODUL EVALUASI
+                                    GRAFIK & TREN PEMBERITAAN
                                 </span>
                                 <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-slate-900 border border-slate-700 text-slate-300">
                                     <Radio className="w-3 h-3 text-emerald-400 animate-pulse" />
-                                    7-DAY SHIFT TRACKER
+                                    Pantauan 7 Hari Terakhir
                                 </span>
                                 <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-cyan-950/80 border border-cyan-500/40 text-cyan-300">
-                                    TRUST INDEX: {trustIndexScore}%
+                                    Skor Kepercayaan: {trustIndexScore}%
                                 </span>
                             </div>
-                            <h1 className="text-2xl sm:text-3xl font-black tracking-wider text-white uppercase flex items-center gap-3">
-                                <span>SENTIMENT SHIFT & AUDIT LOG</span>
+                            <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-wide flex items-center gap-3">
+                                <span>Tren Nada Berita & Riwayat Pemeriksaan</span>
                             </h1>
                             <p className="text-xs sm:text-sm text-slate-300 max-w-2xl font-sans leading-relaxed">
-                                Rekapitulasi pergeseran opini publik 7 hari terakhir di wilayah Ketapang, efektivitas mitigasi krisis,
-                                serta audit forensik tindakan otomatis AI (Hermes Engine) terhadap integritas narasi.
+                                Pantau arah pemberitaan media lokal Ketapang selama seminggu terakhir. Grafik ini menunjukkan apakah pemberitaan sedang didominasi kabar positif, informasi netral, atau kritik yang perlu ditanggapi.
                             </p>
                         </div>
 
@@ -134,14 +133,14 @@ export default function AnalyticsIndex({ sentimentTrend = [], auditLogs = {} }) 
                                 className="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-rose-300 border border-rose-500/40 text-xs font-bold flex items-center gap-2 transition-all shadow-[0_0_12px_rgba(244,63,94,0.2)]"
                             >
                                 <Activity className="w-4 h-4 text-rose-400" />
-                                <span>KE RADAR KRISIS</span>
+                                <span>Ke Radar Isu</span>
                             </Link>
                             <Link
                                 href="/studio"
                                 className="px-3.5 py-2 rounded-xl bg-purple-900/40 hover:bg-purple-800/50 text-purple-200 border border-purple-500/50 text-xs font-bold flex items-center gap-2 transition-all shadow-[0_0_15px_rgba(168,85,247,0.3)]"
                             >
                                 <Sparkles className="w-4 h-4 text-purple-300" />
-                                <span>CONTENT STUDIO</span>
+                                <span>Ruang Media & Pers</span>
                             </Link>
                         </div>
                     </div>
@@ -153,18 +152,18 @@ export default function AnalyticsIndex({ sentimentTrend = [], auditLogs = {} }) 
                         <div className="space-y-1">
                             <div className="flex items-center gap-2">
                                 <TrendingUp className="w-5 h-5 text-purple-400" />
-                                <h2 className="text-lg font-black tracking-wider text-white uppercase">
-                                    SENTIMENT SHIFT TRACKER (7 HARI TERAKHIR)
+                                <h2 className="text-lg font-bold text-white">
+                                    Grafik Perkembangan Nada Berita (7 Hari Terakhir)
                                 </h2>
                             </div>
                             <p className="text-xs text-slate-400 font-sans">
-                                Komparasi tren fluktuasi sentimen Negatif (serangan/kritik) vs Positif (apresiasi/program sukses).
+                                Membandingkan jumlah berita positif (kabar baik), netral (informasi biasa), dan negatif (kritik/isu miring).
                             </p>
                         </div>
 
                         {/* Chart Mode Controls */}
                         <div className="flex items-center gap-2 self-start sm:self-auto bg-slate-950 p-1.5 rounded-xl border border-slate-800 text-xs">
-                            <span className="text-[11px] text-slate-400 px-2 font-mono hidden sm:inline">MODE GRAFIK:</span>
+                            <span className="text-[11px] text-slate-400 px-2 font-semibold hidden sm:inline">BENTUK GRAFIK:</span>
                             <button
                                 type="button"
                                 onClick={() => setChartMode('line')}
@@ -174,7 +173,7 @@ export default function AnalyticsIndex({ sentimentTrend = [], auditLogs = {} }) 
                                         : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900'
                                 }`}
                             >
-                                Line Chart
+                                Garis
                             </button>
                             <button
                                 type="button"
@@ -185,7 +184,7 @@ export default function AnalyticsIndex({ sentimentTrend = [], auditLogs = {} }) 
                                         : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900'
                                 }`}
                             >
-                                Bar Chart
+                                Batang
                             </button>
                             <button
                                 type="button"
@@ -196,7 +195,7 @@ export default function AnalyticsIndex({ sentimentTrend = [], auditLogs = {} }) 
                                         : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900'
                                 }`}
                             >
-                                Area Trend
+                                Bidang Berwarna
                             </button>
                         </div>
                     </div>
@@ -347,33 +346,33 @@ export default function AnalyticsIndex({ sentimentTrend = [], auditLogs = {} }) 
                     {/* Quick Insight Strip */}
                     <div className="mt-4 pt-4 border-t border-slate-800/80 grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
                         <div className="p-3 rounded-xl bg-slate-950/60 border border-slate-800">
-                            <span className="text-slate-400 block text-[11px]">SENTIMEN DOMINAN:</span>
+                            <span className="text-slate-400 block text-[11px]">ARAH BERITA:</span>
                             <span className="text-white font-bold flex items-center gap-1.5 mt-0.5">
                                 <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
-                                Stabil Menghijau
+                                Dominan Positif & Aman
                             </span>
                         </div>
                         <div className="p-3 rounded-xl bg-slate-950/60 border border-slate-800">
-                            <span className="text-slate-400 block text-[11px]">RATA-RATA KECEPATAN:</span>
-                            <span className="text-amber-300 font-bold mt-0.5 block">{avgVelocity} Velocity / 100</span>
+                            <span className="text-slate-400 block text-[11px]">RATA-RATA KEHANGATAN:</span>
+                            <span className="text-amber-300 font-bold mt-0.5 block">{avgVelocity}% (Terkendali)</span>
                         </div>
                         <div className="p-3 rounded-xl bg-slate-950/60 border border-slate-800">
-                            <span className="text-slate-400 block text-[11px]">ISU RAWAN MERAH:</span>
-                            <span className="text-rose-400 font-bold mt-0.5 block">{criticalIsuCount} Isu Kritis</span>
+                            <span className="text-slate-400 block text-[11px]">BUTUH PERHATIAN:</span>
+                            <span className="text-rose-400 font-bold mt-0.5 block">{criticalIsuCount} Isu Ramai</span>
                         </div>
                         <div className="p-3 rounded-xl bg-slate-950/60 border border-slate-800">
-                            <span className="text-slate-400 block text-[11px]">TOTAL ANALISIS AKTIF:</span>
-                            <span className="text-cyan-300 font-bold mt-0.5 block">{totalProcessed} Dokumen Berita</span>
+                            <span className="text-slate-400 block text-[11px]">TOTAL BERITA DIPERIKSA:</span>
+                            <span className="text-cyan-300 font-bold mt-0.5 block">{totalProcessed} Artikel</span>
                         </div>
                     </div>
                 </div>
 
-                {/* Section 2: Summary Cards (Weekly Trust & AI Performance KPIs) */}
+                {/* Section 2: Summary Cards (Weekly Trust & Performance KPIs) */}
                 <div className="space-y-4">
                     <div className="flex items-center gap-2">
                         <ShieldCheck className="w-5 h-5 text-emerald-400" />
-                        <h2 className="text-lg font-black tracking-wider text-white uppercase">
-                            WEEKLY TRUST & AI PERFORMANCE AUDIT
+                        <h2 className="text-lg font-bold text-white">
+                            Ringkasan Pantauan Berita Pekan Ini
                         </h2>
                     </div>
 
@@ -381,53 +380,53 @@ export default function AnalyticsIndex({ sentimentTrend = [], auditLogs = {} }) 
                         {/* KPI 1: Total Processed */}
                         <div className="p-5 rounded-2xl bg-slate-900/90 border border-slate-800 hover:border-slate-700 transition-all shadow-xl">
                             <div className="flex items-center justify-between text-slate-400 mb-2">
-                                <span className="text-xs font-bold uppercase tracking-wider">Total Diproses</span>
+                                <span className="text-xs font-bold">Total Berita Masuk</span>
                                 <Cpu className="w-4 h-4 text-cyan-400" />
                             </div>
                             <div className="text-2xl sm:text-3xl font-black text-white">{totalProcessed}</div>
                             <div className="mt-2 text-[11px] text-cyan-300 flex items-center gap-1">
                                 <CheckCircle2 className="w-3 h-3 text-cyan-400" />
-                                <span>100% Ingested & Analyzed</span>
+                                <span>Semua artikel terbaca rapi</span>
                             </div>
                         </div>
 
                         {/* KPI 2: Krisis Berhasil Diredam */}
                         <div className="p-5 rounded-2xl bg-slate-900/90 border border-emerald-500/40 hover:border-emerald-500/70 transition-all shadow-[0_0_20px_rgba(16,185,129,0.1)]">
                             <div className="flex items-center justify-between text-emerald-400 mb-2">
-                                <span className="text-xs font-bold uppercase tracking-wider">Krisis Diredam</span>
+                                <span className="text-xs font-bold">Isu Ramai Tertangani</span>
                                 <ShieldCheck className="w-4 h-4 text-emerald-400" />
                             </div>
                             <div className="text-2xl sm:text-3xl font-black text-emerald-300">{weeklyCrisisAverted}</div>
                             <div className="mt-2 text-[11px] text-emerald-400/80 flex items-center gap-1">
                                 <ArrowUpRight className="w-3 h-3 text-emerald-400" />
-                                <span>Isu Velocity ≥ 40 Termitigasi</span>
+                                <span>Draf klarifikasi sudah dibuat</span>
                             </div>
                         </div>
 
                         {/* KPI 3: Serangan Diblokir (Integrity Alerts) */}
                         <div className="p-5 rounded-2xl bg-slate-900/90 border border-red-500/50 hover:border-red-500/80 transition-all shadow-[0_0_20px_rgba(239,68,68,0.15)]">
                             <div className="flex items-center justify-between text-red-400 mb-2">
-                                <span className="text-xs font-bold uppercase tracking-wider">Serangan Diblokir</span>
+                                <span className="text-xs font-bold">Tuduhan Berat</span>
                                 <ShieldAlert className="w-4 h-4 text-red-400 animate-pulse" />
                             </div>
                             <div className="text-2xl sm:text-3xl font-black text-red-300">{integrityAlertsCount}</div>
                             <div className="mt-2 text-[11px] text-red-400 flex items-center gap-1 font-bold">
-                                <span>🚨 Integrity Alert Active</span>
+                                <span>🚨 Butuh Bukti Hukum / Klarifikasi</span>
                             </div>
                         </div>
 
                         {/* KPI 4: Skrip Defensive & Proactive */}
                         <div className="p-5 rounded-2xl bg-slate-900/90 border border-purple-500/40 hover:border-purple-500/70 transition-all shadow-[0_0_20px_rgba(168,85,247,0.1)]">
                             <div className="flex items-center justify-between text-purple-400 mb-2">
-                                <span className="text-xs font-bold uppercase tracking-wider">Skrip Respon Siap</span>
+                                <span className="text-xs font-bold">Draf Rilis Siap</span>
                                 <Sparkles className="w-4 h-4 text-purple-400" />
                             </div>
                             <div className="text-2xl sm:text-3xl font-black text-purple-200">
                                 {defensiveScriptsCount + proactiveScriptsCount}
                             </div>
                             <div className="mt-2 text-[11px] text-slate-300 flex items-center justify-between">
-                                <span className="text-rose-400 font-bold">{defensiveScriptsCount} Defensive</span>
-                                <span className="text-emerald-400 font-bold">{proactiveScriptsCount} Proactive</span>
+                                <span className="text-rose-400 font-bold">{defensiveScriptsCount} Klarifikasi</span>
+                                <span className="text-emerald-400 font-bold">{proactiveScriptsCount} Kabar Baik</span>
                             </div>
                         </div>
                     </div>
@@ -439,12 +438,12 @@ export default function AnalyticsIndex({ sentimentTrend = [], auditLogs = {} }) 
                         <div className="space-y-1">
                             <div className="flex items-center gap-2">
                                 <FileText className="w-5 h-5 text-cyan-400" />
-                                <h3 className="text-base sm:text-lg font-black tracking-wider text-white uppercase">
-                                    AUDIT TRAIL: REKAPITULASI TINDAKAN AI TERBARU
+                                <h3 className="text-base sm:text-lg font-bold text-white">
+                                    Riwayat Pemeriksaan Berita Terbaru
                                 </h3>
                             </div>
                             <p className="text-xs text-slate-400 font-sans">
-                                Catatan forensik setiap tindakan otomatis, deteksi sentimen, dan intervensi keamanan narasi politik.
+                                Catatan setiap artikel berita yang masuk, hasil pembacaan sentimen, dan draf tanggapan yang disiapkan.
                             </p>
                         </div>
 
@@ -470,7 +469,7 @@ export default function AnalyticsIndex({ sentimentTrend = [], auditLogs = {} }) 
                                         : 'text-red-400 hover:text-red-300'
                                 }`}
                             >
-                                Blokir Integritas ({integrityAlertsCount})
+                                Tuduhan Berat ({integrityAlertsCount})
                             </button>
                             <button
                                 type="button"
@@ -481,7 +480,7 @@ export default function AnalyticsIndex({ sentimentTrend = [], auditLogs = {} }) 
                                         : 'text-rose-400 hover:text-rose-300'
                                 }`}
                             >
-                                Defensive ({defensiveScriptsCount})
+                                Klarifikasi ({defensiveScriptsCount})
                             </button>
                             <button
                                 type="button"
@@ -492,21 +491,21 @@ export default function AnalyticsIndex({ sentimentTrend = [], auditLogs = {} }) 
                                         : 'text-emerald-400 hover:text-emerald-300'
                                 }`}
                             >
-                                Proactive ({proactiveScriptsCount})
+                                Kabar Baik ({proactiveScriptsCount})
                             </button>
                         </div>
                     </div>
 
                     {/* Table View (Desktop & Responsive Scroll) */}
                     <div className="overflow-x-auto">
-                        <table className="w-full text-left text-xs font-mono">
+                        <table className="w-full text-left text-xs">
                             <thead className="bg-slate-950/80 text-slate-400 border-b border-slate-800 uppercase text-[11px] tracking-wider">
                                 <tr>
                                     <th className="py-3.5 px-4">Waktu</th>
                                     <th className="py-3.5 px-4">Isu & Sumber Berita</th>
-                                    <th className="py-3.5 px-4 text-center">Tindakan AI</th>
-                                    <th className="py-3.5 px-4 text-center">Velocity & Sentimen</th>
-                                    <th className="py-3.5 px-4">Dampak & Catatan Forensik</th>
+                                    <th className="py-3.5 px-4 text-center">Status Tanggapan</th>
+                                    <th className="py-3.5 px-4 text-center">Kehangatan & Nada</th>
+                                    <th className="py-3.5 px-4">Catatan Kejadian</th>
                                     <th className="py-3.5 px-4 text-right">Aksi</th>
                                 </tr>
                             </thead>
@@ -514,7 +513,7 @@ export default function AnalyticsIndex({ sentimentTrend = [], auditLogs = {} }) 
                                 {filteredActions.length === 0 ? (
                                     <tr>
                                         <td colSpan="6" className="py-8 text-center text-slate-500">
-                                            Tidak ada catatan log audit yang cocok dengan filter ini.
+                                            Tidak ada catatan pemeriksaan yang cocok dengan filter ini.
                                         </td>
                                     </tr>
                                 ) : (
@@ -547,7 +546,7 @@ export default function AnalyticsIndex({ sentimentTrend = [], auditLogs = {} }) 
                                                         </span>
                                                         {log.has_fact_anchor && (
                                                             <span className="text-[10px] text-cyan-400 flex items-center gap-0.5">
-                                                                <Check className="w-3 h-3" /> Fact-Anchor
+                                                                <Check className="w-3 h-3" /> Ada Fakta Lapangan
                                                             </span>
                                                         )}
                                                     </div>
@@ -556,30 +555,30 @@ export default function AnalyticsIndex({ sentimentTrend = [], auditLogs = {} }) 
                                                 {/* Action Badge */}
                                                 <td className="py-4 px-4 whitespace-nowrap text-center">
                                                     {isIntegrity ? (
-                                                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[10px] font-black bg-red-950 text-red-300 border border-red-500/60 shadow-[0_0_10px_rgba(239,68,68,0.3)]">
+                                                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[10px] font-bold bg-red-950 text-red-300 border border-red-500/60 shadow-[0_0_10px_rgba(239,68,68,0.3)]">
                                                             <ShieldAlert className="w-3 h-3 text-red-400" />
-                                                            BLOKIR INTEGRITAS
+                                                            PERLU BUKTI HUKUM
                                                         </span>
                                                     ) : isDefensive ? (
                                                         <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[10px] font-bold bg-rose-950 text-rose-300 border border-rose-500/50">
                                                             <Shield className="w-3 h-3 text-rose-400" />
-                                                            DEFENSIVE REFRAME
+                                                            DRAF KLARIFIKASI
                                                         </span>
                                                     ) : isProactive ? (
                                                         <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[10px] font-bold bg-emerald-950 text-emerald-300 border border-emerald-500/50">
                                                             <Sparkles className="w-3 h-3 text-emerald-400" />
-                                                            PROACTIVE AMPLIFY
+                                                            DRAF KABAR BAIK
                                                         </span>
                                                     ) : (
                                                         <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[10px] font-bold bg-slate-900 text-slate-400 border border-slate-800">
-                                                            MONITORING NETRAL
+                                                            BERITA NETRAL
                                                         </span>
                                                     )}
                                                 </td>
 
                                                 {/* Velocity & Sentiment */}
                                                 <td className="py-4 px-4 whitespace-nowrap text-center">
-                                                    <div className="font-black text-sm">
+                                                    <div className="font-bold text-sm">
                                                         <span
                                                             className={
                                                                 log.velocity_score >= 75
@@ -592,8 +591,8 @@ export default function AnalyticsIndex({ sentimentTrend = [], auditLogs = {} }) 
                                                             {log.velocity_score}%
                                                         </span>
                                                     </div>
-                                                    <span className="text-[10px] uppercase tracking-wider text-slate-400">
-                                                        {log.sentiment}
+                                                    <span className="text-[10px] uppercase font-semibold text-slate-400">
+                                                        {log.sentiment === 'negative' ? 'Kritik / Isu' : log.sentiment === 'positive' ? 'Kabar Baik' : 'Netral'}
                                                     </span>
                                                 </td>
 
@@ -617,7 +616,7 @@ export default function AnalyticsIndex({ sentimentTrend = [], auditLogs = {} }) 
                                                             href="/studio"
                                                             className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-cyan-950 hover:bg-cyan-900 text-cyan-300 border border-cyan-500/40 text-[11px] font-bold transition-all"
                                                         >
-                                                            <span>Lihat Skrip</span>
+                                                            <span>Lihat Draf</span>
                                                             <ArrowUpRight className="w-3 h-3" />
                                                         </Link>
                                                     ) : (
@@ -640,10 +639,10 @@ export default function AnalyticsIndex({ sentimentTrend = [], auditLogs = {} }) 
 
                     {/* Table Footer Telemetry */}
                     <div className="p-4 border-t border-slate-800 bg-slate-950/70 text-slate-400 text-xs flex flex-col sm:flex-row items-center justify-between gap-2">
-                        <span>Menampilkan {filteredActions.length} dari total {recentActions.length} catatan audit log aktif</span>
+                        <span>Menampilkan {filteredActions.length} dari total {recentActions.length} catatan berita aktif</span>
                         <div className="flex items-center gap-2">
                             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                            <span className="text-slate-300 font-mono">Hermes Audit Engine: LIVE</span>
+                            <span className="text-slate-300 font-medium">Sistem Pantauan: AKTIF</span>
                         </div>
                     </div>
                 </div>

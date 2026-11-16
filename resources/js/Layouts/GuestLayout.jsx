@@ -25,11 +25,11 @@ export default function GuestLayout({ children, title }) {
                                         RADAR POLITIK
                                     </span>
                                     <span className="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-mono tracking-widest uppercase bg-cyan-950/80 text-cyan-400 border border-cyan-800/60 rounded">
-                                        SECURE OPS
+                                        KETAPANG
                                     </span>
                                 </div>
                                 <p className="text-[11px] text-slate-400 tracking-tight hidden sm:block">
-                                    Ketapang Media Intelligence & Reputation Command Center
+                                    Pemantau Berita & Reputasi Tokoh Ketapang
                                 </p>
                             </div>
                         </div>
@@ -38,18 +38,14 @@ export default function GuestLayout({ children, title }) {
                         <div className="hidden md:flex items-center space-x-4 font-mono text-xs">
                             <div className="flex items-center space-x-2 px-3 py-1 rounded bg-slate-900/90 border border-emerald-500/30 text-emerald-400">
                                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
-                                <span>SYS_STATUS: ONLINE</span>
-                            </div>
-                            <div className="flex items-center space-x-2 px-3 py-1 rounded bg-slate-900/90 border border-cyan-500/30 text-cyan-400">
-                                <Cpu className="w-3.5 h-3.5 text-cyan-400" />
-                                <span>OCTANE: HIGH SPEED</span>
+                                <span>STATUS: AKTIF</span>
                             </div>
                             <a
                                 href="/login"
                                 className="flex items-center space-x-2 px-3.5 py-1.5 rounded bg-cyan-950/80 hover:bg-cyan-900 border border-cyan-500/60 text-cyan-300 hover:text-white font-bold transition-all shadow-[0_0_12px_rgba(6,182,212,0.25)]"
                             >
                                 <Lock className="w-3.5 h-3.5 text-cyan-400" />
-                                <span>PORTAL LOGIN</span>
+                                <span>MASUK KE AKUN</span>
                             </a>
                         </div>
 
@@ -109,11 +105,11 @@ export default function GuestLayout({ children, title }) {
                         {/* System Metadata & Copyright */}
                         <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 text-xs text-slate-400 text-center sm:text-left">
                             <span className="flex items-center gap-1.5 font-mono text-cyan-400">
-                                <Terminal className="w-3.5 h-3.5" />
-                                <span>RADAR-KETAPANG // MIL-SPEC INTEL</span>
+                                <Radio className="w-3.5 h-3.5" />
+                                <span>Radar Politik Ketapang</span>
                             </span>
                             <span className="hidden sm:inline text-slate-700">|</span>
-                            <span>&copy; {new Date().getFullYear()} Timses & Tokoh Politik Command Center</span>
+                            <span>&copy; {new Date().getFullYear()} Aplikasi Pemantau Berita Pilkada</span>
                         </div>
 
                         {/* Prominent Mandatory Version Footer Badge */}

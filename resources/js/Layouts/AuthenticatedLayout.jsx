@@ -63,29 +63,29 @@ export default function AuthenticatedLayout({ header, children }) {
         switch (role) {
             case 'admin':
                 return {
-                    label: 'SUPER ADMIN',
-                    code: 'LVL-4 MASTER',
+                    label: 'ADMIN',
+                    code: 'Pengelola',
                     bg: 'bg-red-950/70 text-red-300 border-red-500/50',
                     dot: 'bg-red-400',
                 };
             case 'timses':
                 return {
-                    label: 'TIMSES ANALIS',
-                    code: 'INTEL OPS',
+                    label: 'TIMSES',
+                    code: 'Pemantau Isu',
                     bg: 'bg-emerald-950/70 text-emerald-300 border-emerald-500/50',
                     dot: 'bg-emerald-400',
                 };
             case 'influencer':
                 return {
-                    label: 'TIM MEDIA & PERS',
-                    code: 'MEDIA CENTER',
+                    label: 'TIM MEDIA',
+                    code: 'Humas & Pers',
                     bg: 'bg-teal-950/70 text-teal-300 border-teal-500/50',
                     dot: 'bg-teal-400',
                 };
             default:
                 return {
-                    label: 'OPERATOR',
-                    code: 'STANDARD',
+                    label: 'PENGGUNA',
+                    code: 'Anggota',
                     bg: 'bg-cyan-950/70 text-cyan-300 border-cyan-500/50',
                     dot: 'bg-cyan-400',
                 };
@@ -113,21 +113,21 @@ export default function AuthenticatedLayout({ header, children }) {
                                 </div>
                                 <div>
                                     <div className="flex items-center gap-2">
-                                        <span className="font-mono font-black text-sm tracking-widest text-white group-hover:text-cyan-300 transition-colors uppercase">
+                                        <span className="font-mono font-black text-sm tracking-wider text-white group-hover:text-cyan-300 transition-colors uppercase">
                                             RADAR POLITIK
                                         </span>
                                         <span className="px-1.5 py-0.2 rounded text-[9px] font-mono bg-cyan-950 text-cyan-400 border border-cyan-800">
-                                            SECURE
+                                            KETAPANG
                                         </span>
                                     </div>
-                                    <span className="text-[10px] font-mono text-slate-400 hidden sm:block">
-                                        Ketapang Intelligence Center
+                                    <span className="text-[10px] text-slate-400 hidden sm:block">
+                                        Pemantau Berita & Isu Politik
                                     </span>
                                 </div>
                             </Link>
 
                             {/* Desktop Nav Items */}
-                            <nav className="hidden md:flex items-center space-x-1.5 ml-6 font-mono text-xs">
+                            <nav className="hidden md:flex items-center space-x-1.5 ml-6 text-xs">
                                 <Link
                                     href="/dashboard"
                                     className={`px-3 py-1.5 rounded-lg flex items-center gap-1.5 font-bold transition-all ${
@@ -137,10 +137,10 @@ export default function AuthenticatedLayout({ header, children }) {
                                     }`}
                                 >
                                     <Activity className="w-3.5 h-3.5 text-rose-400" />
-                                    <span>RADAR KRISIS (S5)</span>
+                                    <span>PAPAN BERITA</span>
                                 </Link>
 
-                                {/* Slice 6: 1-Click Influencer Studio */}
+                                {/* Ruang Draf Media & Pers */}
                                 <Link
                                     href="/studio"
                                     className={`px-3 py-1.5 rounded-lg flex items-center gap-1.5 font-bold transition-all ${
@@ -150,10 +150,10 @@ export default function AuthenticatedLayout({ header, children }) {
                                     }`}
                                 >
                                     <Share2 className="w-3.5 h-3.5 text-cyan-400" />
-                                    <span>MEDIA RESPONSE (S6)</span>
+                                    <span>RUANG MEDIA & PERS</span>
                                 </Link>
 
-                                {/* Slice 7: Modul Evaluasi (Analytics & Audit) */}
+                                {/* Modul Evaluasi (Grafik & Tren) */}
                                 <Link
                                     href="/analytics"
                                     className={`px-3 py-1.5 rounded-lg flex items-center gap-1.5 font-bold transition-all ${
@@ -163,10 +163,10 @@ export default function AuthenticatedLayout({ header, children }) {
                                     }`}
                                 >
                                     <BarChart3 className="w-3.5 h-3.5 text-purple-400" />
-                                    <span>ANALYTICS & AUDIT (S7)</span>
+                                    <span>GRAFIK & TREN</span>
                                 </Link>
 
-                                {/* UAT Checklist Pengujian Mandiri */}
+                                {/* UAT Checklist Lembar Pengujian */}
                                 <Link
                                     href="/checklist"
                                     className={`px-3 py-1.5 rounded-lg flex items-center gap-1.5 font-bold transition-all ${
@@ -176,7 +176,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                     }`}
                                 >
                                     <ClipboardCheck className="w-3.5 h-3.5 text-emerald-400" />
-                                    <span>UAT CHECKLIST</span>
+                                    <span>LEMBAR PENGUJIAN</span>
                                 </Link>
 
                                 {['admin', 'timses'].includes(user?.role) && (
@@ -189,7 +189,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                         }`}
                                     >
                                         <Radio className="w-3.5 h-3.5 text-emerald-400" />
-                                        <span>TARGET SETUP (S3)</span>
+                                        <span>ATUR KATA KUNCI</span>
                                     </Link>
                                 )}
 
@@ -202,7 +202,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                     }`}
                                 >
                                     <BookOpen className="w-3.5 h-3.5 text-amber-400" />
-                                    <span>PANDUAN OPERASIONAL</span>
+                                    <span>PANDUAN</span>
                                 </Link>
                             </nav>
                         </div>
@@ -377,11 +377,11 @@ export default function AuthenticatedLayout({ header, children }) {
                                 <button
                                     type="button"
                                     onClick={handleLogout}
-                                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-red-950/60 border border-slate-700 hover:border-red-500/60 text-slate-300 hover:text-red-300 text-xs font-mono transition-all cursor-pointer"
-                                    title="Keluar dari sesi command center"
+                                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-red-950/60 border border-slate-700 hover:border-red-500/60 text-slate-300 hover:text-red-300 text-xs font-medium transition-all cursor-pointer"
+                                    title="Keluar dari akun Anda"
                                 >
                                     <LogOut className="w-3.5 h-3.5" />
-                                    <span>LOGOUT</span>
+                                    <span>KELUAR</span>
                                 </button>
                             </div>
 
@@ -426,7 +426,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                 }`}
                             >
                                 <Activity className="w-3.5 h-3.5 inline mr-2 text-rose-400" />
-                                Radar Krisis (Slice 5)
+                                Papan Berita
                             </Link>
 
                             <Link
@@ -438,7 +438,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                 }`}
                             >
                                 <Share2 className="w-3.5 h-3.5 inline mr-2 text-cyan-400" />
-                                Media Response Studio (Slice 6)
+                                Ruang Media & Pers
                             </Link>
 
                             <Link
@@ -450,7 +450,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                 }`}
                             >
                                 <BarChart3 className="w-3.5 h-3.5 inline mr-2 text-purple-400" />
-                                Analytics & Audit (Slice 7)
+                                Grafik & Tren
                             </Link>
 
                             <Link
@@ -462,7 +462,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                 }`}
                             >
                                 <ClipboardCheck className="w-3.5 h-3.5 inline mr-2 text-emerald-400" />
-                                UAT Checklist (Uji Mandiri)
+                                Lembar Pengujian (UAT)
                             </Link>
 
                             {['admin', 'timses'].includes(user?.role) && (
@@ -475,7 +475,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                     }`}
                                 >
                                     <Radio className="w-3.5 h-3.5 inline mr-2 text-emerald-400" />
-                                    Target Setup (Slice 3)
+                                    Atur Kata Kunci
                                 </Link>
                             )}
 
@@ -488,7 +488,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                 }`}
                             >
                                 <BookOpen className="w-3.5 h-3.5 inline mr-2 text-amber-400" />
-                                Panduan Operasional
+                                Panduan Pengguna
                             </Link>
                         </div>
 
@@ -499,7 +499,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                 className="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg bg-red-950/60 border border-red-500/60 text-red-300 font-bold hover:bg-red-900/60 transition-colors cursor-pointer"
                             >
                                 <LogOut className="w-4 h-4" />
-                                <span>LOGOUT DARI SISTEM</span>
+                                <span>KELUAR DARI AKUN</span>
                             </button>
                         </div>
                     </div>
@@ -523,10 +523,10 @@ export default function AuthenticatedLayout({ header, children }) {
             {/* Cyber Security Command Center Authenticated Footer */}
             <footer className="border-t border-cyan-950 bg-slate-950/90 backdrop-blur-md relative z-10">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
-                    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-xs">
+                    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
                         <div className="flex items-center gap-2 text-slate-400">
-                            <Terminal className="w-3.5 h-3.5 text-cyan-400" />
-                            <span>RADAR POLITIK KETAPANG // MIL-SPEC OPS</span>
+                            <Radio className="w-3.5 h-3.5 text-cyan-400" />
+                            <span>Radar Politik Ketapang • Sistem Pemantau Isu Berita</span>
                         </div>
 
                         {/* CRITICAL: Prominent Version 1.0 (Release Candidate) Display */}

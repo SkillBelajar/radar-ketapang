@@ -37,21 +37,21 @@ export default function Login({ status, appVersion = '1.0 (Release Candidate)' }
             <div className="max-w-md w-full mx-auto space-y-6">
                 {/* Security Classification Header Banner */}
                 <div className="text-center space-y-2">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-950/70 border border-red-500/50 text-red-400 font-mono text-[11px] shadow-[0_0_15px_rgba(239,68,68,0.2)]">
-                        <span className="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
-                        <span className="tracking-widest uppercase font-bold">RESTRICTED AREA // TINGKAT KEAMANAN DEFCON-2</span>
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/70 border border-cyan-500/50 text-cyan-300 text-xs">
+                        <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        <span className="font-medium">Silakan Masuk ke Akun Anda</span>
                     </div>
-                    <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight uppercase font-mono">
-                        Portal Login Eksklusif
+                    <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+                        Radar Politik Ketapang
                     </h1>
                     <p className="text-xs sm:text-sm text-slate-400 font-sans">
-                        Sistem Intelijen Media & Analisis Isu Politik Kabupaten Ketapang
+                        Pantau berita lokal, cek kebenaran isu, dan buat tanggapan resmi dengan mudah.
                     </p>
                 </div>
 
                 {/* Session Status Notification */}
                 {status && (
-                    <div className="p-3.5 rounded-lg bg-emerald-950/80 border border-emerald-500/60 text-emerald-300 text-xs font-mono flex items-center gap-2 shadow-[0_0_10px_rgba(16,185,129,0.2)]">
+                    <div className="p-3.5 rounded-lg bg-emerald-950/80 border border-emerald-500/60 text-emerald-300 text-xs font-sans flex items-center gap-2 shadow-[0_0_10px_rgba(16,185,129,0.2)]">
                         <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
                         <span>{status}</span>
                     </div>
@@ -60,12 +60,12 @@ export default function Login({ status, appVersion = '1.0 (Release Candidate)' }
                 {/* Quick Test Accounts Switcher (Slice 2 Testing Aid) */}
                 <div className="p-4 rounded-xl bg-slate-900/90 border border-cyan-500/30 shadow-[0_0_20px_rgba(6,182,212,0.1)]">
                     <div className="flex items-center justify-between mb-2.5">
-                        <span className="text-[11px] font-mono font-bold text-cyan-400 flex items-center gap-1.5 uppercase">
-                            <Terminal className="w-3.5 h-3.5" />
-                            <span>1-Klik Akun Pengujian (Slice 2)</span>
+                        <span className="text-xs font-bold text-cyan-400 flex items-center gap-1.5">
+                            <UserCheck className="w-4 h-4" />
+                            <span>Pilih Cepat Akun Contoh (1-Klik Isi):</span>
                         </span>
                         <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-800">
-                            SEEDED
+                            CONTOH
                         </span>
                     </div>
                     <div className="grid grid-cols-3 gap-2">
@@ -99,7 +99,7 @@ export default function Login({ status, appVersion = '1.0 (Release Candidate)' }
                             className="p-2 rounded-lg bg-slate-950 hover:bg-teal-950/80 border border-slate-800 hover:border-teal-500 text-left transition-all group cursor-pointer"
                         >
                             <div className="text-[10px] font-mono text-teal-400 font-bold flex items-center justify-between">
-                                <span>INFLUENCER</span>
+                                <span>TIM MEDIA</span>
                                 <span className="w-1.5 h-1.5 rounded-full bg-teal-400 group-hover:scale-125 transition-transform"></span>
                             </div>
                             <div className="text-[9px] font-mono text-slate-400 truncate mt-0.5">influencer@radar.com</div>
@@ -112,9 +112,9 @@ export default function Login({ status, appVersion = '1.0 (Release Candidate)' }
                     <form onSubmit={submit} className="space-y-4">
                         {/* Call-Sign / Email Input */}
                         <div>
-                            <label className="block text-xs font-mono text-slate-300 mb-1.5 uppercase tracking-wider flex items-center justify-between">
-                                <span>Call-Sign Operator / Email</span>
-                                <span className="text-[10px] text-cyan-400 lowercase font-normal">wajib terdaftar</span>
+                            <label className="block text-xs font-medium text-slate-300 mb-1.5 flex items-center justify-between">
+                                <span>Alamat Email</span>
+                                <span className="text-[10px] text-slate-400">Gunakan email yang terdaftar</span>
                             </label>
                             <div className="relative">
                                 <input
@@ -141,9 +141,9 @@ export default function Login({ status, appVersion = '1.0 (Release Candidate)' }
 
                         {/* Passkey / Password Input */}
                         <div>
-                            <label className="block text-xs font-mono text-slate-300 mb-1.5 uppercase tracking-wider flex items-center justify-between">
-                                <span>Kunci Sandi Enkripsi</span>
-                                <span className="text-[10px] text-slate-400 font-normal">SHA-256 Auth</span>
+                            <label className="block text-xs font-medium text-slate-300 mb-1.5 flex items-center justify-between">
+                                <span>Kata Sandi</span>
+                                <span className="text-[10px] text-slate-400">Kata sandi contoh: password</span>
                             </label>
                             <div className="relative">
                                 <input
@@ -157,7 +157,7 @@ export default function Login({ status, appVersion = '1.0 (Release Candidate)' }
                                     required
                                     className={`w-full pl-4 pr-11 py-3 rounded-xl bg-slate-950 border ${
                                         errors.password ? 'border-red-500 focus:ring-red-500' : 'border-slate-800 focus:border-cyan-500 focus:ring-cyan-500'
-                                    } text-white placeholder-slate-600 text-sm font-mono focus:outline-none focus:ring-2 transition-all`}
+                                    } text-white placeholder-slate-600 text-sm focus:outline-none focus:ring-2 transition-all`}
                                 />
                                 <button
                                     type="button"
@@ -170,7 +170,7 @@ export default function Login({ status, appVersion = '1.0 (Release Candidate)' }
                                 </button>
                             </div>
                             {errors.password && (
-                                <p className="mt-1.5 text-xs text-red-400 font-mono flex items-center gap-1">
+                                <p className="mt-1.5 text-xs text-red-400 flex items-center gap-1">
                                     <AlertCircle className="w-3.5 h-3.5 shrink-0" />
                                     <span>{errors.password}</span>
                                 </p>
@@ -178,7 +178,7 @@ export default function Login({ status, appVersion = '1.0 (Release Candidate)' }
                         </div>
 
                         {/* Remember Session & Encryption Flag */}
-                        <div className="flex items-center justify-between pt-1 font-mono text-xs">
+                        <div className="flex items-center justify-between pt-1 text-xs">
                             <label className="flex items-center gap-2 cursor-pointer select-none text-slate-300 hover:text-white">
                                 <input
                                     type="checkbox"
@@ -187,12 +187,8 @@ export default function Login({ status, appVersion = '1.0 (Release Candidate)' }
                                     onChange={(e) => setData('remember', e.target.checked)}
                                     className="w-4 h-4 rounded bg-slate-950 border-slate-700 text-cyan-500 focus:ring-cyan-500 focus:ring-offset-slate-950"
                                 />
-                                <span>Simpan Sesi Akses</span>
+                                <span>Ingat sesi saya di browser ini</span>
                             </label>
-                            <span className="text-[11px] text-cyan-400/80 flex items-center gap-1">
-                                <Lock className="w-3 h-3 text-cyan-400" />
-                                <span>E2E Session Guard</span>
-                            </span>
                         </div>
 
                         {/* Action Submit Button */}
@@ -200,7 +196,7 @@ export default function Login({ status, appVersion = '1.0 (Release Candidate)' }
                             <button
                                 type="submit"
                                 disabled={processing}
-                                className={`w-full py-3.5 px-4 rounded-xl font-bold font-mono text-sm tracking-wider flex items-center justify-center gap-2 transition-all shadow-[0_0_20px_rgba(6,182,212,0.35)] cursor-pointer ${
+                                className={`w-full py-3.5 px-4 rounded-xl font-bold text-sm tracking-wide flex items-center justify-center gap-2 transition-all shadow-[0_0_20px_rgba(6,182,212,0.35)] cursor-pointer ${
                                     processing 
                                         ? 'bg-slate-800 text-slate-400 cursor-not-allowed'
                                         : 'bg-gradient-to-r from-cyan-500 via-teal-400 to-emerald-400 hover:from-cyan-400 hover:to-emerald-300 text-slate-950 active:scale-[0.99]'
@@ -209,12 +205,12 @@ export default function Login({ status, appVersion = '1.0 (Release Candidate)' }
                                 {processing ? (
                                     <>
                                         <span className="w-4 h-4 border-2 border-slate-950 border-t-transparent rounded-full animate-spin"></span>
-                                        <span>MEMVERIFIKASI KREDENSIAL...</span>
+                                        <span>Memeriksa Akun...</span>
                                     </>
                                 ) : (
                                     <>
                                         <Lock className="w-4 h-4" />
-                                        <span>AUTENTIKASI & MASUK COMMAND CENTER</span>
+                                        <span>Masuk ke Aplikasi</span>
                                         <ArrowRight className="w-4 h-4" />
                                     </>
                                 )}
@@ -223,11 +219,11 @@ export default function Login({ status, appVersion = '1.0 (Release Candidate)' }
                     </form>
 
                     {/* Security Footnote */}
-                    <div className="mt-6 pt-4 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-400 font-mono">
+                    <div className="mt-6 pt-4 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-400 font-sans">
                         <Link href="/" className="text-cyan-400 hover:text-cyan-300 transition-colors flex items-center gap-1">
                             &larr; Beranda Radar
                         </Link>
-                        <span className="px-2 py-0.5 rounded bg-slate-950 border border-slate-800 text-slate-300">
+                        <span className="px-2 py-0.5 rounded bg-slate-950 border border-slate-800 text-slate-300 font-mono">
                             Versi: {appVersion}
                         </span>
                     </div>
