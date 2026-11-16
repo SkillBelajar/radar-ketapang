@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 
 export default function AuthenticatedLayout({ header, children }) {
-    const { auth, appName = 'Radar Politik', appVersion = '0.11' } = usePage().props;
+    const { auth, appName = 'Radar Politik', appVersion = '0.12' } = usePage().props;
     const user = auth.user;
     const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
@@ -85,18 +85,23 @@ export default function AuthenticatedLayout({ header, children }) {
 
                             {/* Desktop Nav Items */}
                             <nav className="hidden md:flex items-center space-x-1 ml-6 font-mono text-xs">
+                                {['admin', 'timses'].includes(user?.role) && (
+                                    <Link
+                                        href="/target-setup"
+                                        className="px-3 py-1.5 rounded-lg bg-cyan-950/80 text-cyan-300 border border-cyan-500/40 flex items-center gap-1.5 font-bold shadow-[0_0_10px_rgba(6,182,212,0.15)] hover:bg-cyan-900/80 transition-all"
+                                    >
+                                        <Radio className="w-3.5 h-3.5 text-cyan-400" />
+                                        <span>TARGET SETUP (S3)</span>
+                                    </Link>
+                                )}
+
                                 <Link
                                     href="/user-guide"
-                                    className="px-3 py-1.5 rounded-lg bg-cyan-950/80 text-cyan-300 border border-cyan-500/40 flex items-center gap-1.5 font-bold shadow-[0_0_10px_rgba(6,182,212,0.15)]"
+                                    className="px-3 py-1.5 rounded-lg text-slate-300 hover:text-cyan-300 hover:bg-slate-900 border border-slate-800 flex items-center gap-1.5 font-bold transition-all"
                                 >
                                     <BookOpen className="w-3.5 h-3.5 text-cyan-400" />
                                     <span>PANDUAN OPERASIONAL</span>
                                 </Link>
-
-                                <span className="px-3 py-1.5 rounded-lg text-slate-500 flex items-center gap-1.5 cursor-not-allowed border border-transparent">
-                                    <Activity className="w-3.5 h-3.5" />
-                                    <span>RADAR ISU (S3)</span>
-                                </span>
 
                                 <span className="px-3 py-1.5 rounded-lg text-slate-500 flex items-center gap-1.5 cursor-not-allowed border border-transparent">
                                     <FileText className="w-3.5 h-3.5" />
@@ -168,18 +173,23 @@ export default function AuthenticatedLayout({ header, children }) {
                         </div>
 
                         <div className="space-y-1">
+                            {['admin', 'timses'].includes(user?.role) && (
+                                <Link
+                                    href="/target-setup"
+                                    className="block px-3 py-2 rounded-lg bg-cyan-950 text-cyan-300 border border-cyan-500/50 font-bold"
+                                >
+                                    <Radio className="w-3.5 h-3.5 inline mr-2" />
+                                    Target Setup (Slice 3)
+                                </Link>
+                            )}
+
                             <Link
                                 href="/user-guide"
-                                className="block px-3 py-2 rounded-lg bg-cyan-950 text-cyan-300 border border-cyan-500/50 font-bold"
+                                className="block px-3 py-2 rounded-lg text-slate-300 hover:bg-slate-900 border border-slate-800 font-bold"
                             >
                                 <BookOpen className="w-3.5 h-3.5 inline mr-2" />
                                 Panduan Operasional
                             </Link>
-
-                            <div className="px-3 py-2 rounded-lg text-slate-500 border border-transparent">
-                                <Activity className="w-3.5 h-3.5 inline mr-2" />
-                                Radar Isu (Slice 3)
-                            </div>
 
                             <div className="px-3 py-2 rounded-lg text-slate-500 border border-transparent">
                                 <FileText className="w-3.5 h-3.5 inline mr-2" />

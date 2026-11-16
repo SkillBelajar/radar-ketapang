@@ -6,7 +6,7 @@ import {
     Lock, ArrowRight, Zap, Eye, CheckCircle2, Terminal
 } from 'lucide-react';
 
-export default function Welcome({ appVersion = '0.11', laravelVersion, phpVersion }) {
+export default function Welcome({ appVersion = '0.12', laravelVersion, phpVersion }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [submitted, setSubmitted] = useState(false);
@@ -163,7 +163,7 @@ export default function Welcome({ appVersion = '0.11', laravelVersion, phpVersio
                             </h3>
                         </div>
                         <div className="text-xs font-mono text-cyan-400">
-                            Current Stage: <span className="text-emerald-400 font-bold">Slice 2 Selesai</span>
+                            Current Stage: <span className="text-emerald-400 font-bold">Slice 3 Selesai (Target Setup & Feed Hub)</span>
                         </div>
                     </div>
 
@@ -171,8 +171,8 @@ export default function Welcome({ appVersion = '0.11', laravelVersion, phpVersio
                         {[
                             { id: 1, name: 'Fondasi & Memori', status: 'done' },
                             { id: 2, name: 'Auth Command', status: 'done' },
-                            { id: 3, name: 'Target Tracker', status: 'next' },
-                            { id: 4, name: 'Autopilot Crawl', status: 'pending' },
+                            { id: 3, name: 'Target Tracker', status: 'done' },
+                            { id: 4, name: 'Autopilot Crawl', status: 'next' },
                             { id: 5, name: 'Hermes AI', status: 'pending' },
                             { id: 6, name: 'In-App Alert', status: 'pending' },
                             { id: 7, name: '1-Click Script', status: 'pending' },

@@ -15,7 +15,7 @@ return [
 
     'name' => env('APP_NAME', 'Radar Politik'),
 
-    'version' => env('APP_VERSION', '0.11'),
+    'version' => env('APP_VERSION', '0.12'),
 
     /*
     |--------------------------------------------------------------------------
