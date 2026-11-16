@@ -35,7 +35,7 @@ class HandleInertiaRequests extends Middleware
                 'user' => $request->user(),
             ],
             'appName' => config('app.name', 'Radar Politik & Manajemen Reputasi'),
-            'appVersion' => config('app.version', '0.12'),
+            'appVersion' => config('app.version', '0.13'),
             'flash' => [
                 'success' => fn () => $request->session()->get('success'),
                 'error' => fn () => $request->session()->get('error'),

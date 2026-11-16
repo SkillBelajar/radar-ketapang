@@ -18,9 +18,17 @@ class NewsFeed extends Model
         'published_at',
         'raw_content',
         'status',
+        'velocity_score',
+        'sentiment',
+        'fact_anchor',
+        'scripts',
+        'ai_status',
     ];
 
     protected $casts = [
         'published_at' => 'datetime',
+        'velocity_score' => 'integer',
+        'fact_anchor' => 'array',
+        'scripts' => 'array',
     ];
 }

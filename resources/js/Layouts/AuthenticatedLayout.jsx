@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 
 export default function AuthenticatedLayout({ header, children }) {
-    const { auth, appName = 'Radar Politik', appVersion = '0.12' } = usePage().props;
+    const { auth, appName = 'Radar Politik', appVersion = '0.13' } = usePage().props;
     const user = auth.user;
     const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
