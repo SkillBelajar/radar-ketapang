@@ -230,8 +230,8 @@ class ChecklistController extends Controller
                 ],
             ],
             'sample_curl' => [
-                'fetch' => 'curl -s http://localhost:8282/api/v1/hermes/fetch-news -H "Accept: application/json" -H "Authorization: Bearer ' . $envToken . '"',
-                'webhook' => 'curl -X POST http://localhost:8282/api/v1/hermes/webhook -H "Content-Type: application/json" -H "Authorization: Bearer ' . $envToken . '" -d \'{"news_id":1,"status":"success","velocity_score":90,"sentiment":"negative","fact_anchor":{"claim":"Isu tuduhan sepihak di artikel berita","fact":"Fakta penanganan resmi di lapangan berdasarkan rujukan resmi Pusdalops"},"scripts":{"press_release":"Siaran pers resmi klarifikasi tanggap darurat Matan Hilir","spokesperson":"Poin juru bicara: Satgas 12 regu telah diterjunkan sejak subuh","editorial_reply":"Lembar fakta & permohonan hak jawab redaksi sesuai UU Pers"}}\'',
+                'fetch' => 'curl -s ' . url('/api/v1/hermes/fetch-news') . ' -H "Accept: application/json" -H "Authorization: *** ' . $envToken . '"',
+                'webhook' => 'curl -X POST ' . url('/api/v1/hermes/webhook') . ' -H "Content-Type: application/json" -H "Authorization: *** ' . $envToken . '" -d \'{"news_id":1,"status":"success","velocity_score":90,"sentiment":"negative","fact_anchor":{"claim":"Isu tuduhan sepihak di artikel berita","fact":"Fakta penanganan resmi di lapangan berdasarkan rujukan resmi Pusdalops"},"scripts":{"press_release":"Siaran pers resmi klarifikasi tanggap darurat Matan Hilir","spokesperson":"Poin juru bicara: Satgas 12 regu telah diterjunkan sejak subuh","editorial_reply":"Lembar fakta & permohonan hak jawab redaksi sesuai UU Pers"}}\'',
             ],
         ];
 

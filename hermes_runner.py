@@ -44,7 +44,7 @@ def get_env_token():
             pass
     return "10|8hkSeWC4hwuHI4Ipe3PsMH3TbHDdh48n3Zwt9qIqd660e197"
 
-API_BASE = os.getenv("RADAR_API_URL", "http://localhost:8282/api/v1/hermes")
+API_BASE = os.getenv("RADAR_API_URL", "https://radar.pawandigital.id/api/v1/hermes")
 HERMES_TOKEN = get_env_token()
 
 FETCH_ENDPOINT = f"{API_BASE}/fetch-news"

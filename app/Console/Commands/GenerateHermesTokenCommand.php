@@ -71,7 +71,8 @@ class GenerateHermesTokenCommand extends Command
         $this->line("  Authorization: Bearer {$plainTextToken}");
         $this->newLine();
         $this->line("<comment>Contoh CURL Fetch News:</comment>");
-        $this->line("  curl -X GET http://localhost:8282/api/v1/hermes/fetch-news \\");
+        $fetchUrl = url('/api/v1/hermes/fetch-news');
+        $this->line("  curl -X GET {$fetchUrl} \\");
         $this->line("       -H 'Authorization: Bearer {$plainTextToken}' \\");
         $this->line("       -H 'Accept: application/json'");
         $this->newLine();

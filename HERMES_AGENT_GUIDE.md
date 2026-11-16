@@ -43,7 +43,7 @@ Token otomatis tersimpan di file `.env` sebagai `HERMES_API_TOKEN`.
 - **Tujuan:** Mengambil berita mentah siap olah.
 - **Contoh Request:**
   ```bash
-  curl -X GET "http://localhost:8282/api/v1/hermes/fetch-news" \
+  curl -X GET "https://radar.pawandigital.id/api/v1/hermes/fetch-news" \
        -H "Authorization: Bearer <TOKEN>" \
        -H "Accept: application/json"
   ```

@@ -8,7 +8,7 @@ import {
     Copy, Check, Code, ExternalLink, Play, Sparkles, BookOpen, Layers
 } from 'lucide-react';
 
-export default function UserGuide({ apiBaseUrl = 'http://localhost:8282/api/v1/hermes', hasToken = true, maskedToken = null, plainToken = null }) {
+export default function UserGuide({ apiBaseUrl = 'https://radar.pawandigital.id/api/v1/hermes', hasToken = true, maskedToken = null, plainToken = null }) {
     const { auth, appVersion = '1.0 (Release Candidate)' } = usePage().props;
     const userRole = auth.user?.role || 'timses';
     
