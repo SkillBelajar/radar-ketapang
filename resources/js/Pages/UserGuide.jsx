@@ -6,7 +6,7 @@ import {
     Zap, Share2, CheckCircle2, ChevronRight, Terminal, 
     Sliders, FileText, ArrowRight, Eye, RefreshCw, Cpu, Activity,
     Copy, Check, Code, ExternalLink, Play, Sparkles, BookOpen, Layers,
-    HeartHandshake, MessageSquare, Quote, Flame
+    HeartHandshake, MessageSquare, Quote, Flame, Filter
 } from 'lucide-react';
 
 export default function UserGuide({ apiBaseUrl = 'https://radar.pawandigital.id/api/v1/hermes', hasToken = true, maskedToken = null, plainToken = null }) {
@@ -60,9 +60,9 @@ Misi Utama:
 Sistem Radar Politik menggunakan arsitektur Push-Only (murni pasif).
 Tugas Anda adalah:
 1. Mengambil daftar topik/kata kunci pantauan secara otomatis dari sistem (yang diatur di menu Pengaturan Sasaran: https://radar.pawandigital.id/target-setup).
-2. Mencari dan mengambil seluruh berita terbaru dari Google News untuk setiap topik pantauan tersebut.
-3. Langsung menganalisis semua berita yang diambil (suhu kecepatan krisis, sentimen, pemetaan fakta vs tuduhan, dan 3 naskah pers).
-4. Mengirimkan (push) seluruh paket berita beserta hasil analisisnya ke sistem Radar Politik.
+2. Mencari berita Google News Indonesia untuk setiap topik, lalu MEMILIH TEPAT 9 BERITA PALING BERDAMPAK NYATA bagi kehidupan masyarakat luas (bukan berita seremonial).
+3. Menganalisis 9 berita tersebut dengan "IDENTITY FRAMING KE MASYARAKAT": penuh empati & simpati tulus, bahasa tutur merakyat yang menarik didengar (Pendekatan Feynman), dan kepastian informasi yang memuaskan hati warga.
+4. Mengirimkan (push) 9 paket berita beserta hasil analisis lengkapnya ke sistem Radar Politik.
 
 Kredensial Sambungan:
 - Base URL: ${apiBaseUrl}
@@ -80,7 +80,7 @@ Dari respons sistem, baca data berikut:
 - persona: Arahan sudut pandang calon pemimpin untuk pedoman naskah pers.
 - negative_keywords: Kata kunci penyaring untuk diabaikan jika tidak relevan.
 
-Langkah 2: Ambil Berita Otomatis dari Google News untuk SEMUA Topik
+Langkah 2: Ambil Berita dari Google News & SELEKSI TEPAT 9 BERITA PALING BERDAMPAK NYATA
 Untuk SETIAP kata kunci / topik yang ada di dalam primary_keywords:
 Buka dan telusuri Google News regional Indonesia:
 - Format Pencarian Web:
@@ -88,51 +88,64 @@ Buka dan telusuri Google News regional Indonesia:
 - Format Data RSS (XML Langsung):
   https://news.google.com/rss/search?q={TOPIK}&hl=id&gl=ID&ceid=ID:id
 
-Contoh: Jika topik = "Ketapang", akses:
-https://news.google.com/search?q=Ketapang&hl=id&gl=ID&ceid=ID%3Aid
-(atau https://news.google.com/rss/search?q=Ketapang&hl=id&gl=ID&ceid=ID:id)
+ATURAN SELEKSI 9 BERITA BERDAMPAK NYATA (HIGH REAL-IMPACT):
+Dari seluruh berita yang ditemukan, pilih tepat 9 artikel yang dampaknya paling nyata dan dirasakan langsung oleh masyarakat Ketapang:
+1. Akses Jalan & Jembatan Pedalaman (konektivitas antar-kecamatan, jalur angkutan panen, jalan rusak/berlubang).
+2. Ekonomi & Mata Pencaharian Rakyat (harga sembako, harga sawit/TBS, getah karet, pupuk petani, subsidi BBM nelayan).
+3. Pelayanan Dasar (layanan RSUD/puskesmas, antrean obat, fasilitas sekolah anak daerah, air bersih PDAM, listrik desa).
+4. Lingkungan & Kedaruratan (penanganan banjir, karhutla, kabut asap, bantuan sosial darurat).
+*Abaikan berita seremonial belaka (seperti seremonial gunting pita, seminar formal, atau sambutan tanpa aksi nyata).*
 
-Ambil semua artikel berita terbaru yang ditemukan untuk setiap topik:
+Untuk setiap artikel yang lolos seleksi:
 - title: Judul berita
-- source: Nama portal media pers (misal: Antara Kalbar, Pontianak Post, Suara Pemred Kalbar, CNBC Indonesia, dll.)
+- source: Nama portal media pers (Antara Kalbar, Pontianak Post, Suara Pemred Kalbar, dll.)
 - url: Tautan artikel berita asli
 - published_at: Waktu terbit berita (format ISO 8601, misal: 2026-11-17T09:00:00Z)
 - raw_content: Ringkasan atau cuplikan isi berita
 
-Langkah 3: Analisis Langsung SEMUA Berita yang Diambil
-Untuk setiap berita yang diperoleh dari Google News, lakukan analisis intelijen:
+Langkah 3: Analisis Intelijen & Naskah Pers Simpatik (Identity Framing & Feynman)
+Untuk 9 berita terpilih, lakukan analisis intelijen:
 1. velocity_score (0 - 100):
-   - 0-39: Isu tenang / kabar prestasi pembangunan / kegiatan pelayanan publik.
-   - 40-79: Isu hangat / keluhan fasilitas publik / kritik warga yang perlu direspons.
-   - 80-100: Krisis mendesak / fitnah viral / tuduhan serius.
+   - 0-39: Kabar baik pembangunan / layanan publik yang berhasil melegakan warga.
+   - 40-79: Keluhan fasilitas publik / tantangan hidup warga yang membutuhkan respons cepat posko.
+   - 80-100: Isu krisis mendesak / fitnah viral / tuduhan serius yang menyerang nama baik.
 2. sentiment: 'positive', 'neutral', atau 'negative'.
-3. status:
-   - 'integrity_alert': Jika berita fitnah murni, hoaks tanpa bukti, atau pencatutan lembaga (seperti hasil survei palsu).
-   - 'success': Pemberitaan umum, laporan kinerja, keluhan warga, atau kebijakan daerah.
+3. status: 'integrity_alert' (jika fitnah/hoaks) atau 'success' (pemberitaan umum/aspirasi warga).
 4. fact_anchor:
-   - tuduhan: Inti klaim, keluhan, atau kritik di dalam berita.
-   - fakta_lapangan: Fakta objektif dan realitas tindakan penanganan di lapangan.
-   - dokumen_rujukan: SPK dinas, Perda, data BPS, atau rilis resmi instansi.
-5. scripts (3 Draf Naskah Pers - Doktrin Simpatik, Menarik Didengar & Memuaskan Masyarakat):
-   Pedoman Wajib Hermes:
-   - Doktrin Inti: Singkirkan bahasa birokrasi kaku, jangan menyalahkan warga, dan jangan mencari dalih birokratis. Bangun empati nyata, gunakan bahasa tutur merakyat yang enak didengar telinga warga awam (di warung kopi/jalanan), dan berikan kepastian solusi yang tuntas dan memuaskan hati publik.
-   - press_release (Draf Siaran Pers Resmi):
-     * Format 5W+1H yang sejuk dan solutif.
-     * Paragraf 1: Mengakui persoalan dengan empati mendalam atas apa yang dirasakan warga di lapangan.
-     * Paragraf 2: Rincian aksi penanganan konkret (alat/bantuan/personel yang diterjunkan) beserta nomor rujukan/SPK.
-     * Paragraf 3: Kutipan langsung calon/tokoh yang rendah hati, berterima kasih atas kontrol sosial pers/masyarakat, dan mengajak gotong royong menjaga ketertiban.
-   - spokesperson (Poin Bicara Juru Bicara Doorstop / Audio):
-     * 3-4 butir poin lisan langsung yang enak didengar dan mudah dipahami siapa saja (hindari jargon teknis).
-     * Butir 1 (Validasi Rasa Warga): "Kami sangat memahami kegelisahan bapak-ibu... terima kasih rekan-rekan media sudah mengingatkan kami."
-     * Butir 2 (Aksi Nyata & Kepastian): Rincian tindakan nyata yang sedang bergerak hari ini di lokasi.
-     * Butir 3 (Keterbukaan): "Posko aduan terbuka 24 jam. Kami siap dikritik dan kami kawal sampai tuntas."
-   - editorial_reply (Lembar Hak Jawab Redaksi Media):
-     * Mengacu pada UU Pers No. 40/1999 dan Kode Etik Jurnalistik Dewan Pers.
-     * Bahasa sangat beradab, elegan, menghormati pers sebagai pilar demokrasi.
-     * Menyajikan data klarifikasi faktual secara runtut tanpa arogansi atau ancaman somasi, sehingga redaksi dan pembaca terpuaskan oleh kejelasan fakta.
+   - tuduhan: Inti keluhan, aspirasi, atau kritik di dalam berita.
+   - fakta_lapangan: Fakta objektif penanganan nyata di lokasi.
+   - dokumen_rujukan: Surat Perintah Kerja (SPK) dinas, SK Satgas, data resmi instansi.
 
-Langkah 4: Kirimkan (Push) Paket Berita & Hasil Analisis ke Sistem
-Kirim seluruh paket berita hasil analisis dalam satu payload:
+5. scripts (DOKTRIN IDENTITY FRAMING KE MASYARAKAT, SIMPATIK, MENARIK DIDENGAR & MEMUASKAN):
+   A. IDENTITY FRAMING KE MASYARAKAT:
+      - Calon pemimpin memosisikan diri SEBAGAI BAGIAN DARI RAKYAT KETAPANG ("Kita satu keluarga besar Ketapang", "Sebagai sesama anak daerah yang merasakan langsung debu dan susahnya akses jalan...").
+      - Menolak gaya pejabat menara gading yang defensif atau mencari kambing hitam. Derita warga adalah derita pemimpin.
+   B. SIMPATIK & MENARIK DIDENGAR:
+      - Awali dengan empati mendalam dan validasi rasa. Akui lelah dan sulitnya warga tanpa membantah.
+      - Nada bicara hangat, hidup, dan enak didengar telinga masyarakat saat disiarkan di radio atau dibacakan di warung kopi.
+   C. PENDEKATAN FEYNMAN (BAHASA WARUNG KOPI):
+      - Bebas dari jargon birokrasi kaku (jangan pakai "optimalisasi alokasi fiskal", tapi "duit rakyat langsung kami kucurkan untuk beli batu dan sewa alat berat").
+      - Sederhana, to the point, dan langsung dipahami siapa pun.
+   D. MEMUASKAN HATI MASYARAKAT:
+      - Warga terpuaskan oleh kepastian: siapa tim teknis yang turun, alat berat apa yang bekerja di lokasi hari ini, nomor dokumen SPK yang mengikat, dan nomor kontak posko aduan 24 jam.
+
+   STRUKTUR 3 NASKAH:
+   - press_release (Draf Siaran Pers Resmi):
+     * Format 3 paragraf:
+       - Paragraf 1 (Validasi & Identity Framing): Menyapa warga sebagai keluarga besar Ketapang, mengakui persoalan dengan empati mendalam, dan berterima kasih atas kontrol sosial pers.
+       - Paragraf 2 (Aksi Lapangan Feynman & Dokumen Sah): Penjelasan sederhana aksi teknis hari ini di lokasi (personel & alat berat) beserta nomor rujukan SPK dinas.
+       - Paragraf 3 (Kutipan Kerakyatan & Jaminan Kepuasan): Kutipan rendah hati calon pemimpin yang siap dikritik dan membuka posko aduan 24 jam bagi warga.
+   - spokesperson (Poin Bicara Juru Bicara Doorstop / Audio):
+     * 3 butir tutur lisan hangat siap ucap di depan wartawan atau radio:
+       1) Butir 1 (Merangkul Warga): "Saudara-saudaraku warga Ketapang dan rekan media, terima kasih sudah mengingatkan. Kami merasakan betul beratnya beban bapak-ibu di lapangan..."
+       2) Butir 2 (Aksi Hari Ini): "Hari ini tim teknis dinas sudah di lokasi menurunkan alat berat dan material penanganan cepat..."
+       3) Butir 3 (Kepastian & Transparansi): "Dokumen kerjanya jelas (SPK No. 600/2026). Posko kami buka 24 jam untuk warga mengecek langsung sampai tuntas."
+   - editorial_reply (Lembar Hak Jawab Redaksi Media):
+     * Payung hukum UU Pers No. 40/1999 dan Kode Etik Jurnalistik.
+     * Mengapresiasi pers sebagai mitra strategis pengawal aspirasi rakyat, menyajikan klarifikasi fakta lapangan secara santun, beradab, dan menenangkan masyarakat.
+
+Langkah 4: Kirimkan (Push) Paket 9 Berita ke Sistem
+Kirim paket 9 berita hasil analisis dalam satu payload:
 POST ${apiBaseUrl}/push-news
 Header:
   Content-Type: application/json
@@ -142,18 +155,18 @@ Body JSON:
 {
   "articles": [
     {
-      "title": "Judul Berita dari Google News",
+      "title": "Judul Berita Berdampak dari Google News",
       "source": "Nama Portal Media",
       "url": "https://...",
       "published_at": "2026-11-17T09:00:00Z",
       "raw_content": "Ringkasan isi berita...",
-      "velocity_score": 85,
+      "velocity_score": 75,
       "sentiment": "negative",
       "status": "success",
       "fact_anchor": {
-        "tuduhan": "Sorotan publik terkait...",
-        "fakta_lapangan": "Penanganan telah berjalan di lokasi...",
-        "dokumen_rujukan": "Surat Perintah Kerja (SPK) No. 600/2026"
+        "tuduhan": "Keluhan warga terkait jalan rusak di pedalaman...",
+        "fakta_lapangan": "Tim teknis dan alat berat diturunkan untuk penanganan darurat batu uruk...",
+        "dokumen_rujukan": "SPK DPU-PR No. 600/BM/2026"
       },
       "scripts": {
         "press_release": "SIARAN PERS RESMI...",
@@ -183,76 +196,103 @@ headers = {
 }
 
 def run_hermes_daily_patrol():
-    # 1. Ambil topik pantauan otomatis dari /target-setup melalui API
+    # 1. Ambil topik pantauan otomatis dari /target-setup
     print("1. Mengambil topik pantauan dari Target Setup...")
     res = requests.get(f"{API_BASE}/target-parameters", headers=headers, timeout=20)
     params = res.json()
     keywords = params.get("primary_keywords", ["Bupati Ketapang"])
     persona = params.get("persona", "")
-    print(f"   Topik aktif yang dipantau: {keywords}")
+    print(f"   Topik aktif: {keywords}")
     
-    # 2. Ambil berita Google News untuk SEMUA topik & analisis AI langsung
-    print("2. Menelusuri Google News untuk setiap topik pantauan...")
-    articles_payload = []
+    # 2. Cari Google News & SELEKSI TEPAT 9 BERITA PALING BERDAMPAK NYATA
+    print("2. Menelusuri Google News & memfilter isu berdampak langsung bagi masyarakat...")
+    queries = list(keywords) + ["Ketapang jalan rusak jembatan", "Ketapang banjir pawan", "Ketapang sawit pupuk sembako", "Ketapang RSUD puskesmas"]
+    
+    candidates = []
     seen_urls = set()
     
-    for kw in keywords:
-        encoded_kw = urllib.parse.quote(kw)
-        google_news_url = f"https://news.google.com/rss/search?q={encoded_kw}&hl=id&gl=ID&ceid=ID:id"
-        print(f"   -> Mencari berita Google News untuk topik: '{kw}'...")
+    for q in queries:
+        encoded_q = urllib.parse.quote(q)
+        feed_url = f"https://news.google.com/rss/search?q={encoded_q}&hl=id&gl=ID&ceid=ID:id"
         try:
-            feed_res = requests.get(google_news_url, headers={"User-Agent": "Mozilla/5.0"}, timeout=15)
+            feed_res = requests.get(feed_url, headers={"User-Agent": "Mozilla/5.0"}, timeout=15)
             if feed_res.status_code == 200:
                 root = ET.fromstring(feed_res.content)
-                for item in root.findall(".//item")[:3]: # Ambil 3 berita teratas per topik
+                for item in root.findall(".//item")[:4]:
                     title = item.find("title").text if item.find("title") is not None else ""
                     link = item.find("link").text if item.find("link") is not None else ""
                     source = item.find("source").text if item.find("source") is not None else "Google News"
-                    pubDate = item.find("pubDate").text if item.find("pubDate") is not None else ""
-                    
                     if not link or link in seen_urls:
                         continue
                     seen_urls.add(link)
                     
-                    # Analisis cerdas langsung oleh Hermes
-                    title_l = title.lower()
-                    is_crisis = any(w in title_l for w in ["rusak", "banjir", "tunda", "keluhan", "protes", "korupsi", "palsu"])
-                    velocity = 80 if is_crisis else 30
-                    sentiment = "negative" if is_crisis else "positive"
+                    # Hitung skor dampak: prioritaskan jalan, ekonomi rakyat, RSUD, banjir; kurangi seremonial
+                    t_lower = title.lower()
+                    score = 50
+                    if any(w in t_lower for w in ["jalan", "jembatan", "rusak", "lumpur"]): score += 35
+                    if any(w in t_lower for w in ["sembako", "sawit", "karet", "pupuk", "pasar", "solar"]): score += 30
+                    if any(w in t_lower for w in ["rsud", "puskesmas", "obat", "pasien", "air"]): score += 25
+                    if any(w in t_lower for w in ["banjir", "evakuasi", "sungai", "darurat"]): score += 20
+                    if any(w in t_lower for w in ["pelantikan", "pengukuhan", "seminar", "lomba"]): score -= 40
                     
-                    articles_payload.append({
-                        "title": title,
-                        "source": source,
-                        "url": link,
-                        "published_at": datetime.now(timezone.utc).isoformat(),
-                        "raw_content": f"Berita Google News topik {kw}: {title}",
-                        "velocity_score": velocity,
-                        "sentiment": sentiment,
-                        "status": "success",
-                        "fact_anchor": {
-                            "tuduhan": f"Sorotan publik terkait {title}" if is_crisis else "Tidak ada isu negatif",
-                            "fakta_lapangan": "Tim teknis dan dinas terkait telah meninjau langsung ke lapangan dan melakukan penanganan.",
-                            "dokumen_rujukan": "Surat Perintah Kerja (SPK) No. 600/2026 / Perda Pemkab Ketapang"
-                        },
-                        "scripts": {
-                            "press_release": f"SIARAN PERS RESMI: Terkait '{title}', Pemkab Ketapang menyampaikan empati mendalam atas aspirasi warga. Tim lapangan telah diterjunkan dan pimpinan memastikan penanganan tuntas demi kenyamanan warga.",
-                            "spokesperson": f"POIN BICARA JUBIR: 'Terima kasih rekan media dan warga sudah mengingatkan. Kami merasakan kesulitan warga terkait {title}. Hari ini tim teknis bergerak di lokasi dan posko aduan dibuka 24 jam.'",
-                            "editorial_reply": f"SURAT HAK JAWAB PERS (UU 40/1999): Mengapresiasi fungsi kontrol pers, berikut kami sampaikan klarifikasi fakta lapangan dan dokumen resmi agar masyarakat mendapatkan informasi berimbang."
-                        }
-                    })
+                    candidates.append({"title": title, "source": source, "url": link, "score": score})
         except Exception as e:
-            print(f"   [!] Gagal mengambil Google News untuk '{kw}': {e}")
+            print(f"   [!] Gagal pada query '{q}': {e}")
     
-    # 3. Kirim paket berita + hasil analisis ke sistem (Push Ingestion)
-    print(f"3. Mengirimkan (push) {len(articles_payload)} berita dan analisis ke sistem...")
-    post_res = requests.post(
-        f"{API_BASE}/push-news",
-        headers=headers,
-        json={"articles": articles_payload},
-        timeout=30
-    )
-    print(f"Status kirim push: {post_res.status_code}")
-    print(post_res.json())
+    # Ambil tepat 9 berita berdampak tertinggi
+    candidates.sort(key=lambda x: x["score"], reverse=True)
+    selected_9 = candidates[:9]
+    print(f"   Terpilih tepat {len(selected_9)} berita berdampak nyata bagi warga Ketapang.")
+    
+    # 3. Analisis Intelijen & Naskah Pers Simpatik (Identity Framing & Feynman)
+    articles_payload = []
+    for it in selected_9:
+        title = it["title"]
+        t_low = title.lower()
+        is_crisis = any(w in t_low for w in ["rusak", "banjir", "keluhan", "protes", "krisis", "terendam"])
+        
+        # Fact Anchor
+        tuduhan = f"Aspirasi dan sorotan masyarakat seputar '{title}'"
+        fakta = "Tim teknis dinas terkait bersama satgas lapangan sudah berada di lokasi mengerahkan peralatan dan material penanganan cepat."
+        dokumen = "Surat Perintah Kerja (SPK) DPU-PR / Surat Keputusan Satgas No. 600/2026"
+        
+        articles_payload.append({
+            "title": title,
+            "source": it["source"],
+            "url": it["url"],
+            "published_at": datetime.now(timezone.utc).isoformat(),
+            "raw_content": f"Berita isu berdampak nyata di Ketapang: {title}",
+            "velocity_score": 75 if is_crisis else 35,
+            "sentiment": "negative" if is_crisis else "positive",
+            "status": "success",
+            "fact_anchor": {"tuduhan": tuduhan, "fakta_lapangan": fakta, "dokumen_rujukan": dokumen},
+            "scripts": {
+                "press_release": (
+                    f"SIARAN PERS RESMI // POSKO INFORMASI MASYARAKAT KETAPANG\\n\\n"
+                    f"Judul: Bersama Menuntaskan Harapan Warga Terkait '{title}'\\n\\n"
+                    f"KETAPANG — Menanggapi kabar dan aspirasi warga seputar '{title}', kami menyampaikan empati mendalam kepada seluruh keluarga besar masyarakat Ketapang. "
+                    f"Sebagai sesama anak daerah, derita dan beban bapak-ibu adalah tanggung jawab kami bersama. Kami tidak mencari alasan birokrasi, melainkan langsung hadir melayani.\\n\\n"
+                    f"1. Empati & Validasi: Kami sangat memahami kesulitan yang dihadapi warga dan berterima kasih atas setiap masukan konstruktif.\\n"
+                    f"2. Aksi Lapangan Nyata: {fakta} Langkah percepatan ini berlandaskan {dokumen}.\\n"
+                    f"3. Sikap Kerakyatan: 'Pemerintah hadir untuk mendengar dan melayani. Posko aduan warga kami buka 24 jam penuh sampai tuntas.'\\n\\n"
+                    f"Posko Respons Cepat Ketapang."
+                ),
+                "spokesperson": (
+                    f"POIN BICARA JUBIR (BAHASA TUTUR MERAKYAT ALA FEYNMAN):\\n"
+                    f"1. [Merangkul Warga]: 'Terima kasih saudara-saudaraku warga Ketapang dan rekan media sudah mengingatkan. Kami merasakan betul beratnya beban bapak-ibu terkait {title}.'\\n"
+                    f"2. [Aksi Hari Ini]: 'Arahan pimpinan sangat jelas: hari ini tim dinas sudah di lokasi membawa alat dan material penanganan langsung.'\\n"
+                    f"3. [Kepastian Memuaskan]: 'Pekerjaannya sah ({dokumen}). Posko aduan buka 24 jam untuk warga memantau langsung.'"
+                ),
+                "editorial_reply": (
+                    f"HAK JAWAB PERS (UU 40/1999): Mengapresiasi fungsi kontrol media, kami sampaikan fakta penanganan lapangan dan dokumen sah {dokumen} demi menyajikan informasi yang utuh dan menenangkan masyarakat."
+                )
+            }
+        })
+    
+    # 4. Setor (push) paket 9 berita ke sistem
+    print(f"4. Mengirimkan (push) {len(articles_payload)} berita berdampak dan analisis ke sistem...")
+    post_res = requests.post(f"{API_BASE}/push-news", headers=headers, json={"articles": articles_payload}, timeout=30)
+    print(f"Status kirim: {post_res.status_code} | {post_res.json()}")
 
 if __name__ == "__main__":
     run_hermes_daily_patrol()`;
@@ -980,7 +1020,7 @@ if __name__ == "__main__":
                                                 <h4 className="text-base font-extrabold text-white flex items-center gap-2">
                                                     <span>Pedoman Naskah Pers Asisten AI Hermes</span>
                                                     <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 font-mono uppercase">
-                                                        Simpatik, Merakyat & Memuaskan
+                                                        Identity Framing, Simpatik & Memuaskan
                                                     </span>
                                                 </h4>
                                                 <p className="text-xs text-slate-300">
@@ -990,40 +1030,84 @@ if __name__ == "__main__":
                                         </div>
 
                                         <p className="text-xs text-slate-300 leading-relaxed font-sans pt-1">
-                                            Masyarakat yang sedang menghadapi masalah (jalan rusak, antrean pelayanan, air pasang, harga komoditas) tidak menginginkan bantahan atau alasan birokrasi yang berbelit-belit. 
-                                            Masyarakat ingin <strong className="text-amber-300">didengar dengan penuh empati</strong>, disapa dengan bahasa yang <strong className="text-cyan-300">hangat dan mudah dipahami di warung kopi</strong>, serta diberikan <strong className="text-emerald-300">kepastian tindakan nyata yang melegakan hati</strong>.
+                                            Masyarakat yang sedang menghadapi masalah (jalan rusak, antrean pelayanan, banjir, harga sembako) tidak menginginkan bantahan atau alasan birokrasi yang berbelit-belit. 
+                                            Masyarakat ingin <strong className="text-amber-300">dirangkul sebagai satu keluarga besar Ketapang (Identity Framing)</strong>, disapa dengan bahasa yang <strong className="text-cyan-300">hangat, enak didengar, dan mudah dipahami di warung kopi (Pendekatan Feynman)</strong>, serta diberikan <strong className="text-emerald-300">kepastian tindakan nyata hari ini yang melegakan dan memuaskan hati</strong>.
                                         </p>
                                     </div>
 
-                                    {/* 3 Pilar Komunikasi Posko */}
-                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    {/* Ketentuan Seleksi 9 Berita Berdampak Nyata */}
+                                    <div className="p-5 rounded-xl bg-slate-950 border border-cyan-500/30 space-y-3">
+                                        <div className="flex items-center justify-between">
+                                            <h5 className="text-sm font-bold text-cyan-300 flex items-center gap-2">
+                                                <Filter className="w-4 h-4 text-cyan-400" />
+                                                <span>Seleksi Tepat 9 Berita Paling Berdampak Nyata (High Real-Impact)</span>
+                                            </h5>
+                                            <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-950 text-cyan-400 border border-cyan-800">
+                                                Bukan Berita Seremonial
+                                            </span>
+                                        </div>
+                                        <p className="text-xs text-slate-300 leading-relaxed">
+                                            Hermes wajib memprioritaskan tepat <strong>9 berita</strong> yang menyangkut hajat hidup masyarakat Ketapang secara langsung:
+                                        </p>
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+                                            <div className="p-3 rounded-lg bg-slate-900 border border-slate-800 space-y-1">
+                                                <span className="font-bold text-amber-300 text-[11px]">1. Jalan & Jembatan</span>
+                                                <p className="text-slate-400 text-[11px]">Akses jalan rusak, poros antar-kecamatan, jalur angkutan panen, jembatan pedalaman.</p>
+                                            </div>
+                                            <div className="p-3 rounded-lg bg-slate-900 border border-slate-800 space-y-1">
+                                                <span className="font-bold text-emerald-300 text-[11px]">2. Ekonomi Rakyat</span>
+                                                <p className="text-slate-400 text-[11px]">Harga sembako, stabilitas harga sawit/TBS, getah karet, pupuk petani, subsidi solar nelayan.</p>
+                                            </div>
+                                            <div className="p-3 rounded-lg bg-slate-900 border border-slate-800 space-y-1">
+                                                <span className="font-bold text-cyan-300 text-[11px]">3. Layanan Publik Dasar</span>
+                                                <p className="text-slate-400 text-[11px]">Pelayanan RSUD/puskesmas, antrean obat, air bersih PDAM, listrik desa, fasilitas sekolah.</p>
+                                            </div>
+                                            <div className="p-3 rounded-lg bg-slate-900 border border-slate-800 space-y-1">
+                                                <span className="font-bold text-rose-300 text-[11px]">4. Bencana & Kedaruratan</span>
+                                                <p className="text-slate-400 text-[11px]">Banjir luapan sungai Pawan, karhutla, kabut asap, evakuasi dan bantuan sosial warga.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* 4 Pilar Komunikasi Posko */}
+                                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                                        <div className="p-5 rounded-xl bg-slate-950 border border-purple-500/30 space-y-2.5">
+                                            <div className="w-8 h-8 rounded-lg bg-purple-500/20 border border-purple-500/40 flex items-center justify-center text-purple-300 font-bold text-sm">
+                                                1
+                                            </div>
+                                            <h5 className="text-sm font-bold text-purple-200">Identity Framing Merakyat</h5>
+                                            <p className="text-xs text-slate-400 leading-relaxed">
+                                                Pemimpin adalah bagian dari keluarga besar warga Ketapang. Bukan pejabat menara gading. Derita dan lelahnya warga adalah kegelisahan yang dirasakan bersama.
+                                            </p>
+                                        </div>
+
                                         <div className="p-5 rounded-xl bg-slate-950 border border-amber-500/30 space-y-2.5">
                                             <div className="w-8 h-8 rounded-lg bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-300 font-bold text-sm">
-                                                1
+                                                2
                                             </div>
                                             <h5 className="text-sm font-bold text-amber-200">Penuh Simpati & Validasi</h5>
                                             <p className="text-xs text-slate-400 leading-relaxed">
-                                                Jangan defensif atau menyalahkan masyarakat. Awali kalimat dengan memvalidasi langsung kesulitan yang dirasakan warga. Tunjukkan bahwa pimpinan hadir dan peduli.
+                                                Jangan pernah defensif atau menyalahkan warga. Awali dengan memvalidasi langsung kesulitan masyarakat dan berterima kasih atas kontrol sosial pers.
                                             </p>
                                         </div>
 
                                         <div className="p-5 rounded-xl bg-slate-950 border border-cyan-500/30 space-y-2.5">
                                             <div className="w-8 h-8 rounded-lg bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center text-cyan-300 font-bold text-sm">
-                                                2
+                                                3
                                             </div>
                                             <h5 className="text-sm font-bold text-cyan-200">Tutur Merakyat (Feynman)</h5>
                                             <p className="text-xs text-slate-400 leading-relaxed">
-                                                Gunakan bahasa tutur lisan yang mengalir, hidup, dan enak didengar. Hindari istilah teknis kaku agar mudah dicerna oleh siapa pun di warung kopi maupun radio.
+                                                Gunakan bahasa tutur lisan sederhana ala warung kopi yang enak didengar telinga. Bebas dari istilah teknokratis kaku yang membingungkan orang awam.
                                             </p>
                                         </div>
 
                                         <div className="p-5 rounded-xl bg-slate-950 border border-emerald-500/30 space-y-2.5">
                                             <div className="w-8 h-8 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-300 font-bold text-sm">
-                                                3
+                                                4
                                             </div>
                                             <h5 className="text-sm font-bold text-emerald-200">Solutif & Memuaskan</h5>
                                             <p className="text-xs text-slate-400 leading-relaxed">
-                                                Warga terpuaskan oleh kepastian: siapa yang turun ke lapangan, alat apa yang dikerahkan, nomor rujukan SPK, dan nomor kontak posko aduan yang aktif 24 jam.
+                                                Warga terpuaskan oleh kepastian: siapa yang turun ke lokasi hari ini, alat apa yang dikerahkan, nomor rujukan SPK, dan posko aduan 24 jam.
                                             </p>
                                         </div>
                                     </div>

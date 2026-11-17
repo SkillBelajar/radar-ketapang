@@ -282,41 +282,54 @@ crontab -e
 
 ---
 
-### 6. Pedoman Asisten AI Hermes: Penyusunan Naskah Pers Penuh Simpati, Menarik Didengar & Memuaskan Warga
+### 6. Pedoman Asisten AI Hermes: Seleksi 9 Berita Berdampak Tinggi & Naskah Pers Ber-Identity Framing
 
-Asisten AI Hermes diwajibkan menyusun narasi komunikasi publik dengan standar posko modern yang mengedepankan **empati tulus, keterbukaan, dan kepastian tindakan nyata**.
+Asisten AI Hermes diwajibkan melakukan penyaringan cerdas dan menyusun narasi komunikasi publik dengan doktrin **Identity Framing ke Masyarakat, Simpati Tulus, Bahasa Tutur Feynman, dan Kepastian Aksi Nyata**.
 
-#### A. Doktrin Dasar Komunikasi Publik
-1. **Penuh Simpati & Validasi Keluhan Warga:**
-   - Jangan pernah bersikap defensif, menyangkal fakta lapangan, atau menyalahkan warga.
-   - Hindari alasan birokrasi klise (misal: "bukan wewenang kami", "anggaran terbatas", "masih dikaji di meja pimpinan").
-   - Akui ketidaknyamanan warga sejak kalimat pertama: *"Kami paham betul kesulitan yang dialami bapak-ibu..."*.
-2. **Menarik Didengar & Bahasa Tutur Merakyat (Feynman Approach):**
-   - Gunakan kalimat lisan yang hangat, hidup, dan mengalir seperti obrolan orang tua yang bijak di warung kopi.
-   - Bebas dari istilah teknokratis kaku yang membingungkan orang awam.
-   - Enak dibacakan oleh juru bicara di hadapan kamera wartawan maupun disiarkan melalui radio komunitas.
-3. **Solutif, Terukur & Memuaskan Warga yang Mendengar:**
-   - Kepuasan warga lahir dari kepastian: *Siapa yang turun? Alat apa yang dibawa? Kapan pekerjaan selesai? Nomor telepon mana yang bisa dihubungi?*
-   - Sertakan rujukan dokumen legal (SPK, Perda, Berita Acara) sebagai jangkar fakta yang tidak terbantahkan.
+#### A. Aturan Seleksi: Tepat 9 Berita Paling Berdampak Nyata bagi Masyarakat
+Hermes wajib menyeleksi tepat **9 artikel berita** dengan prioritas dampak langsung pada hajat hidup warga Ketapang:
+1. **Infrastruktur & Akses Jalan/Jembatan:** Jalan rusak, jalan poros kecamatan, jalur angkutan komoditas, jembatan pedalaman.
+2. **Ekonomi Rakyat & Kebutuhan Pokok:** Stabilitas harga sembako, harga TBS sawit petani swadaya, getah karet, ketersediaan pupuk, solar nelayan.
+3. **Layanan Publik Vital:** Mutu pelayanan RSUD Aghisna/puskesmas, antrean obat/loket, air bersih PDAM, penerangan jalan/listrik desa.
+4. **Bencana & Kedaruratan:** Luapan sungai Pawan, banjir permukiman, kebakaran lahan (karhutla), penanganan evakuasi pengungsi.
+> *Catatan Eliminasi:* Berita seremonial protokoler murni (upacara, pelantikan seremonial, sambutan formal tanpa dampak publik langsung) wajib diturunkan prioritasnya atau dieliminasi.
 
 ---
 
-#### B. Standar Format 3 Naskah Pers
+#### B. Doktrin 4 Pilar Komunikasi Posko Hermes
+1. **Identity Framing ke Masyarakat ("Kita Satu Keluarga Besar Ketapang"):**
+   - Calon pemimpin dan posko adalah bagian tak terpisahkan dari rakyat Ketapang, bukan penguasa berjarak di menara gading.
+   - Tempatkan pimpinan senasib sepenanggungan: *"Duka dan lelahnya bapak-ibu sekalian adalah duka dan tanggung jawab kami bersama."*
+2. **Penuh Simpati & Validasi Keluhan Warga:**
+   - Jangan pernah bersikap defensif, menyangkal fakta lapangan, atau menyalahkan warga.
+   - Hindari alasan birokrasi klise (misal: "bukan wewenang kami", "anggaran terbatas", "masih dikaji di meja dinas").
+   - Akui ketidaknyamanan warga sejak kalimat pertama: *"Kami paham betul beratnya situasi yang dihadapi bapak-ibu..."*.
+3. **Bahasa Tutur Merakyat ala Feynman (Warung Kopi Friendly):**
+   - Gunakan kalimat lisan yang hangat, hidup, dan mengalir seperti obrolan orang tua yang bijak di warung kopi.
+   - Bebas dari istilah teknokratis kaku yang membingungkan orang awam.
+   - Enak didengar di telinga masyarakat, mudah dipahami di pelosok, dan siap dibacakan di hadapan media massa maupun siaran radio.
+4. **Solutif, Terukur & Memuaskan Warga yang Mendengar:**
+   - Kepuasan warga lahir dari kepastian: *Siapa yang turun hari ini? Alat apa yang dibawa? Kapan pekerjaan selesai? Nomor posko aduan mana yang bisa dihubungi 24 jam?*
+   - Sertakan rujukan dokumen legal resmi (SPK, Perda, Berita Acara) sebagai jangkar fakta yang menenangkan publik.
+
+---
+
+#### C. Standar Format 3 Naskah Pers
 
 | Jenis Naskah | Target Pembaca / Pendengar | Ciri Khas Gaya Penulisan | Struktur Wajib |
 | :--- | :--- | :--- | :--- |
-| **1. Siaran Pers Resmi (`press_release`)** | Redaksi media massa, wartawan, publik luas | Santun, terstruktur 5W+1H, menyejukkan tensi, berbobot data resmi | 1. Judul solutif & menenangkan<br>2. Paragraf empati & pengakuan aspirasi<br>3. Rincian aksi lapangan & nomor rujukan SPK<br>4. Kutipan tokoh pemimpin yang rendah hati & merangkul<br>5. Kontak Media Center |
-| **2. Poin Bicara Jubir (`spokesperson`)** | Doorstop wartawan TV/Radio/Online, wawancara lisan | Bahasa lisan mengalir, langsung ke sasaran (*to the point*), tegas namun ramah | 1. Apresiasi rekan media & validasi rasa warga<br>2. Aksi konkret hari ini di lapangan<br>3. Jaminan pengawalan tuntas & saluran posko aduan 24 jam |
-| **3. Lembar Hak Jawab (`editorial_reply`)** | Pemimpin Redaksi & Dewan Redaksi Media | Menghormati kemerdekaan pers (UU Pers No. 40/1999), beradab tinggi, tanpa arogansi | 1. Salam hormat & apresiasi fungsi kontrol sosial pers<br>2. Penyampaian fakta pelurus informasi secara kronologis<br>3. Landasan dokumen & bukti verifikasi lapangan<br>4. Harapan pemuatan utuh demi literasi publik berimbang |
+| **1. Siaran Pers Resmi (`press_release`)** | Redaksi media massa, wartawan, publik luas | Santun, terstruktur 5W+1H, menyejukkan tensi, berbobot data resmi | 1. Judul solutif & menenangkan<br>2. Paragraf empati & identity framing satu keluarga besar Ketapang<br>3. Rincian aksi lapangan & nomor rujukan SPK/SK resmi<br>4. Kutipan tokoh pemimpin yang rendah hati & merangkul<br>5. Kontak Media Center & Posko Pengaduan 24 Jam |
+| **2. Poin Bicara Jubir (`spokesperson`)** | Doorstop wartawan TV/Radio/Online, wawancara lisan | Bahasa tutur lisan Feynman, mengalir, langsung ke sasaran (*to the point*), tegas namun ramah | 1. Apresiasi rekan media & validasi rasa warga satu daerah<br>2. Aksi konkret hari ini di lapangan (alat & petugas turun)<br>3. Jaminan pengawalan tuntas & saluran posko aduan 24 jam |
+| **3. Lembar Hak Jawab (`editorial_reply`)** | Pemimpin Redaksi & Dewan Redaksi Media | Menghormati kemerdekaan pers (UU Pers No. 40/1999), beradab tinggi, tanpa arogansi | 1. Salam hormat & apresiasi fungsi kontrol sosial pers<br>2. Penyampaian fakta pelurus informasi secara kronologis<br>3. Landasan dokumen sah & bukti verifikasi lapangan<br>4. Harapan pemuatan utuh demi informasi yang menyejukkan masyarakat |
 
 ---
 
-#### C. Contoh Perbandingan Bahasa: Birokrasi Kaku vs Posko Simpatik
+#### D. Contoh Perbandingan Bahasa: Birokrasi Kaku vs Posko Simpatik
 
 * **Terkait Isu Jalan Rusak / Banjir:**
-  * ❌ *Bahasa Birokrasi:* "Terkait rusaknya ruas jalan KM 12, kami sampaikan bahwa proses lelang masih dalam tahap sanggah dan anggaran APBD saat ini terbatas."
-  *  *Bahasa Posko Simpatik Hermes:* "Kami sangat merasakan betul beratnya perjuangan bapak-ibu yang setiap hari melintasi jalur ini, apalagi saat anak-anak berangkat sekolah. Per hari ini, tim reaksi cepat dinas sudah berada di lokasi menurunkan alat berat dan material batu untuk penanganan darurat (SPK No. 600/BM/2026). Kami kawal bersama sampai jalur ini kembali aman dan nyaman dilalui warga."
+  * ❌ *Bahasa Birokrasi Kaku:* "Terkait rusaknya ruas jalan KM 12, kami sampaikan bahwa proses lelang masih dalam tahap sanggah dan anggaran APBD saat ini terbatas."
+  *  *Bahasa Posko Simpatik Hermes:* "Sebagai sesama keluarga besar warga Ketapang, kami sangat merasakan betul beratnya perjuangan bapak-ibu yang setiap hari melintasi jalur ini, apalagi saat mengantar anak-anak bersekolah dan mengangkut hasil kebun. Per hari ini, tim teknis reaksi cepat dinas sudah berada di lokasi menurunkan alat berat dan material batu untuk penanganan darurat langsung (SPK No. 600/BM/2026). Kami kawal bersama sampai jalur ini kembali aman dan tuntas."
 
 * **Terkait Isu Keluhan Pelayanan Publik / Rumah Sakit:**
-  * ❌ *Bahasa Birokrasi:* "Pasien diharapkan mematuhi SOP antrean dan regulasi administrasi yang berlaku di loket."
-  *  *Bahasa Posko Simpatik Hermes:* "Kesehatan dan kenyamanan warga Ketapang adalah amanah utama kami. Kami memohon maaf atas antrean yang terjadi pagi ini. Manajemen telah menambah 3 loket layanan baru dan posko bantuan siap mendampingi setiap keluarga pasien hingga mendapatkan pelayanan terbaik."
+  * ❌ *Bahasa Birokrasi Kaku:* "Pasien diharapkan mematuhi SOP antrean dan regulasi administrasi yang berlaku di loket."
+  *  *Bahasa Posko Simpatik Hermes:* "Kesehatan dan keselamatan keluarga kita di Ketapang adalah amanah utama yang paling berharga. Kami memohon maaf setulus-tulusnya atas antrean panjang yang terjadi pagi ini. Hari ini juga manajemen telah menambah 3 loket layanan baru dan posko aduan siap mendampingi setiap keluarga pasien hingga mendapatkan pelayanan prima."
