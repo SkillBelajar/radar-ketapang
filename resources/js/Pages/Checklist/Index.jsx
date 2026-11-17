@@ -25,7 +25,7 @@ import {
     Info
 } from 'lucide-react';
 
-export default function ChecklistIndex({ steps = [], progress = { total: 10, completed: 0, percent: 0 }, dummyData = {}, appVersion = '1.0 (Release Candidate)' }) {
+export default function ChecklistIndex({ steps = [], progress = { total: 10, completed: 0, percent: 0 }, dummyData = {}, isGuest = false, appVersion = '1.0 (Release Candidate)' }) {
     const { flash = {} } = usePage().props;
 
     // Local state for interactive checklist
@@ -172,6 +172,28 @@ export default function ChecklistIndex({ steps = [], progress = { total: 10, com
                 )}
 
                 {/* Header Title & Mission Command */}
+                {isGuest && (
+                    <div className="p-4 rounded-2xl bg-cyan-950/40 border border-cyan-800/60 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs shadow-lg shadow-cyan-950/20">
+                        <div className="flex items-start sm:items-center space-x-3 text-cyan-200">
+                            <span className="p-2 rounded-xl bg-cyan-900/60 text-cyan-300 shrink-0 text-base">💡</span>
+                            <div>
+                                <span className="font-bold text-white block sm:inline mr-1">
+                                    Mode Terbuka (Tanpa Perlu Login):
+                                </span>
+                                <span className="text-slate-300">
+                                    Anda dapat langsung mencoba mencentang langkah pengujian, melihat prosedur, dan memeriksa contoh data. Bila Anda ingin mencoba halaman yang dibatasi hak akses, silakan masuk dengan salah satu akun di kartu contoh di bawah.
+                                </span>
+                            </div>
+                        </div>
+                        <Link
+                            href="/login"
+                            className="shrink-0 px-4 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-slate-950 font-bold transition shadow-md shadow-cyan-950/50 cursor-pointer"
+                        >
+                            Masuk ke Akun Tim
+                        </Link>
+                    </div>
+                )}
+
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-5">
                     <div>
                         <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-cyan-950/70 border border-cyan-800/60 text-cyan-400 text-xs font-medium tracking-wider mb-2">

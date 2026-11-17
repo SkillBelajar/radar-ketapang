@@ -18,6 +18,13 @@ Route::get('/', function () {
     ]);
 })->name('welcome');
 
+// UAT Checklist & Pengujian Mandiri Step-by-Step (Dapat diakses langsung tanpa proses login)
+Route::get('/checklist', [ChecklistController::class, 'index'])->name('checklist.index');
+Route::post('/checklist/toggle', [ChecklistController::class, 'toggle'])->name('checklist.toggle');
+Route::post('/checklist/save', [ChecklistController::class, 'batchSave'])->name('checklist.save');
+Route::post('/checklist/reset', [ChecklistController::class, 'reset'])->name('checklist.reset');
+Route::post('/checklist/seed-demo', [ChecklistController::class, 'seedDemoData'])->name('checklist.seed-demo');
+
 Route::middleware(['auth'])->group(function () {
     // Slice 5: Dasbor Analisis (Radar Politik & AI Output Berita Pers)
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -28,13 +35,6 @@ Route::middleware(['auth'])->group(function () {
 
     // Slice 7: Modul Evaluasi (Analytics & Audit)
     Route::get('/analytics', [AnalyticsController::class, 'index'])->name('analytics.index');
-
-    // UAT Checklist & Pengujian Mandiri Step-by-Step
-    Route::get('/checklist', [ChecklistController::class, 'index'])->name('checklist.index');
-    Route::post('/checklist/toggle', [ChecklistController::class, 'toggle'])->name('checklist.toggle');
-    Route::post('/checklist/save', [ChecklistController::class, 'batchSave'])->name('checklist.save');
-    Route::post('/checklist/reset', [ChecklistController::class, 'reset'])->name('checklist.reset');
-    Route::post('/checklist/seed-demo', [ChecklistController::class, 'seedDemoData'])->name('checklist.seed-demo');
 
     // Slice 6: In-App Notifications
     Route::post('/notifications/{id}/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');

@@ -174,11 +174,25 @@ class ChecklistController extends Controller
     }
 
     /**
-     * Tampilkan Halaman Checklist UAT Mandiri
+     * Dapatkan ID pengguna (atau fallback ke user admin jika diakses oleh penguji tanpa login).
+     */
+    private function resolveUserId(Request $request): int
+    {
+        if ($user = $request->user()) {
+            return $user->id;
+        }
+
+        return User::where('role', 'admin')->value('id')
+            ?? User::first()?->id
+            ?? 1;
+    }
+
+    /**
+     * Tampilkan Halaman Checklist UAT Mandiri (Terbuka Publik)
      */
     public function index(Request $request): Response
     {
-        $userId = $request->user()->id;
+        $userId = $this->resolveUserId($request);
         $savedChecklists = UatChecklist::where('user_id', $userId)->get()->keyBy('step_key');
         $masterSteps = $this->getMasterChecklist();
 
@@ -243,6 +257,7 @@ class ChecklistController extends Controller
                 'percent' => $progressPercent,
             ],
             'dummyData' => $dummySummary,
+            'isGuest' => !$request->user(),
             'appVersion' => config('app.version', '1.0 (Release Candidate)'),
         ]);
     }
@@ -258,9 +273,11 @@ class ChecklistController extends Controller
             'tester_notes' => 'nullable|string|max:1000',
         ]);
 
+        $userId = $this->resolveUserId($request);
+
         UatChecklist::updateOrCreate(
             [
-                'user_id' => $request->user()->id,
+                'user_id' => $userId,
                 'step_key' => $validated['step_key'],
             ],
             [
@@ -285,7 +302,7 @@ class ChecklistController extends Controller
             'items.*.tester_notes' => 'nullable|string|max:1000',
         ]);
 
-        $userId = $request->user()->id;
+        $userId = $this->resolveUserId($request);
 
         foreach ($validated['items'] as $item) {
             UatChecklist::updateOrCreate(
@@ -309,7 +326,8 @@ class ChecklistController extends Controller
      */
     public function reset(Request $request): RedirectResponse
     {
-        UatChecklist::where('user_id', $request->user()->id)->delete();
+        $userId = $this->resolveUserId($request);
+        UatChecklist::where('user_id', $userId)->delete();
 
         return back()->with('message', 'Checklist berhasil di-reset kembali ke 0%.');
     }

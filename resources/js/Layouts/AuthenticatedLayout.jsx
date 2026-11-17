@@ -84,10 +84,10 @@ export default function AuthenticatedLayout({ header, children }) {
                 };
             default:
                 return {
-                    label: 'PENGGUNA',
-                    code: 'Anggota',
-                    bg: 'bg-cyan-950/70 text-cyan-300 border-cyan-500/50',
-                    dot: 'bg-cyan-400',
+                    label: user ? 'PENGGUNA' : 'PENGUJI UAT',
+                    code: user ? 'Anggota' : 'Mode Terbuka',
+                    bg: user ? 'bg-cyan-950/70 text-cyan-300 border-cyan-500/50' : 'bg-amber-950/70 text-amber-300 border-amber-500/50',
+                    dot: user ? 'bg-cyan-400' : 'bg-amber-400',
                 };
         }
     };
@@ -355,40 +355,57 @@ export default function AuthenticatedLayout({ header, children }) {
                             </div>
 
                             {/* User Info & Role (Desktop) */}
-                            <div className="hidden md:flex items-center space-x-3">
-                                {/* Role Badge */}
-                                <div className={`px-2.5 py-1 rounded-md border font-mono text-xs flex items-center gap-2 ${roleInfo.bg}`}>
-                                    <span className={`w-2 h-2 rounded-full ${roleInfo.dot} animate-pulse`}></span>
-                                    <span className="font-bold">{roleInfo.label}</span>
-                                    <span className="text-[10px] opacity-75 hidden lg:inline">({roleInfo.code})</span>
-                                </div>
-
-                                {/* User Name & Callsign */}
-                                <div className="text-right font-mono">
-                                    <div className="text-xs font-bold text-white leading-tight">
-                                        {user?.name || 'Operator'}
+                            {user ? (
+                                <div className="hidden md:flex items-center space-x-3">
+                                    {/* Role Badge */}
+                                    <div className={`px-2.5 py-1 rounded-md border font-mono text-xs flex items-center gap-2 ${roleInfo.bg}`}>
+                                        <span className={`w-2 h-2 rounded-full ${roleInfo.dot} animate-pulse`}></span>
+                                        <span className="font-bold">{roleInfo.label}</span>
+                                        <span className="text-[10px] opacity-75 hidden lg:inline">({roleInfo.code})</span>
                                     </div>
-                                    <div className="text-[10px] text-cyan-400/80 leading-tight">
-                                        {user?.email}
-                                    </div>
-                                </div>
 
-                                {/* Logout Action */}
-                                <button
-                                    type="button"
-                                    onClick={handleLogout}
-                                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-red-950/60 border border-slate-700 hover:border-red-500/60 text-slate-300 hover:text-red-300 text-xs font-medium transition-all cursor-pointer"
-                                    title="Keluar dari akun Anda"
-                                >
-                                    <LogOut className="w-3.5 h-3.5" />
-                                    <span>KELUAR</span>
-                                </button>
-                            </div>
+                                    {/* User Name & Callsign */}
+                                    <div className="text-right font-mono">
+                                        <div className="text-xs font-bold text-white leading-tight">
+                                            {user.name}
+                                        </div>
+                                        <div className="text-[10px] text-cyan-400/80 leading-tight">
+                                            {user.email}
+                                        </div>
+                                    </div>
+
+                                    {/* Logout Action */}
+                                    <button
+                                        type="button"
+                                        onClick={handleLogout}
+                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-red-950/60 border border-slate-700 hover:border-red-500/60 text-slate-300 hover:text-red-300 text-xs font-medium transition-all cursor-pointer"
+                                        title="Keluar dari akun Anda"
+                                    >
+                                        <LogOut className="w-3.5 h-3.5" />
+                                        <span>KELUAR</span>
+                                    </button>
+                                </div>
+                            ) : (
+                                <div className="hidden md:flex items-center space-x-2.5">
+                                    <div className="px-2.5 py-1 rounded-md border border-amber-500/40 bg-amber-950/50 text-amber-300 font-mono text-xs flex items-center gap-2">
+                                        <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+                                        <span className="font-bold">MODE TERBUKA</span>
+                                        <span className="text-[10px] opacity-75 hidden lg:inline">(Tanpa Login)</span>
+                                    </div>
+                                    <Link
+                                        href="/login"
+                                        className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-slate-950 font-bold text-xs transition-all shadow-md shadow-cyan-950/50 cursor-pointer"
+                                    >
+                                        <User className="w-3.5 h-3.5" />
+                                        <span>MASUK / LOGIN</span>
+                                    </Link>
+                                </div>
+                            )}
 
                             {/* Mobile Menu Button */}
                             <div className="flex md:hidden items-center gap-2">
                                 <div className={`px-2 py-0.5 rounded text-[10px] font-mono border ${roleInfo.bg}`}>
-                                    {roleInfo.label}
+                                    {user ? roleInfo.label : 'TERBUKA'}
                                 </div>
                                 <button
                                     type="button"
@@ -405,16 +422,35 @@ export default function AuthenticatedLayout({ header, children }) {
                 {/* Mobile Drawer Menu */}
                 {mobileNavOpen && (
                     <div className="md:hidden border-b border-cyan-950 bg-slate-950/95 px-4 pt-3 pb-4 space-y-3 font-mono text-xs backdrop-blur-xl">
-                        <div className="p-3 rounded-lg bg-slate-900 border border-slate-800 space-y-1">
-                            <div className="text-[10px] text-slate-400 uppercase">Operator Terautentikasi</div>
-                            <div className="text-sm font-bold text-white">{user?.name}</div>
-                            <div className="text-xs text-cyan-400">{user?.email}</div>
-                            <div className="pt-1">
-                                <span className={`inline-block px-2 py-0.5 rounded text-[10px] border ${roleInfo.bg}`}>
-                                    Role: {roleInfo.label} ({roleInfo.code})
-                                </span>
+                        {user ? (
+                            <div className="p-3 rounded-lg bg-slate-900 border border-slate-800 space-y-1">
+                                <div className="text-[10px] text-slate-400 uppercase">Operator Terautentikasi</div>
+                                <div className="text-sm font-bold text-white">{user.name}</div>
+                                <div className="text-xs text-cyan-400">{user.email}</div>
+                                <div className="pt-1">
+                                    <span className={`inline-block px-2 py-0.5 rounded text-[10px] border ${roleInfo.bg}`}>
+                                        Peran: {roleInfo.label} ({roleInfo.code})
+                                    </span>
+                                </div>
                             </div>
-                        </div>
+                        ) : (
+                            <div className="p-3 rounded-lg bg-amber-950/40 border border-amber-800/60 space-y-2">
+                                <div className="flex items-center justify-between">
+                                    <span className="text-xs font-bold text-amber-300">Mode Terbuka (Tanpa Login)</span>
+                                    <span className="px-1.5 py-0.5 rounded text-[9px] bg-amber-900 text-amber-200">UAT</span>
+                                </div>
+                                <p className="text-[11px] text-slate-300 font-sans">
+                                    Anda sedang mencoba lembar pemeriksaan fitur secara langsung tanpa perlu login.
+                                </p>
+                                <Link
+                                    href="/login"
+                                    className="inline-flex items-center justify-center gap-1.5 w-full py-2 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-slate-950 font-bold text-xs"
+                                >
+                                    <User className="w-3.5 h-3.5" />
+                                    <span>Masuk ke Akun Tim</span>
+                                </Link>
+                            </div>
+                        )}
 
                         <div className="space-y-1">
                             <Link
@@ -492,16 +528,18 @@ export default function AuthenticatedLayout({ header, children }) {
                             </Link>
                         </div>
 
-                        <div className="pt-2 border-t border-slate-800">
-                            <button
-                                type="button"
-                                onClick={handleLogout}
-                                className="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg bg-red-950/60 border border-red-500/60 text-red-300 font-bold hover:bg-red-900/60 transition-colors cursor-pointer"
-                            >
-                                <LogOut className="w-4 h-4" />
-                                <span>KELUAR DARI AKUN</span>
-                            </button>
-                        </div>
+                        {user && (
+                            <div className="pt-2 border-t border-slate-800">
+                                <button
+                                    type="button"
+                                    onClick={handleLogout}
+                                    className="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg bg-red-950/60 border border-red-500/60 text-red-300 font-bold hover:bg-red-900/60 transition-colors cursor-pointer"
+                                >
+                                    <LogOut className="w-4 h-4" />
+                                    <span>KELUAR DARI AKUN</span>
+                                </button>
+                            </div>
+                        )}
                     </div>
                 )}
             </header>
