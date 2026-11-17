@@ -117,7 +117,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                             RADAR POLITIK
                                         </span>
                                         <span className="px-1.5 py-0.2 rounded text-[9px] font-mono bg-cyan-950 text-cyan-400 border border-cyan-800">
-                                            KETAPANG
+                                            MULTI-WILAYAH
                                         </span>
                                     </div>
                                     <span className="text-[10px] text-slate-400 hidden sm:block">

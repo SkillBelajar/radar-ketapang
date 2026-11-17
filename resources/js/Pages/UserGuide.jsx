@@ -421,7 +421,7 @@ if __name__ == "__main__":
                 </div>
             }
         >
-            <Head title="Panduan Pengguna & Asisten Pembaca Berita - Radar Politik Ketapang" />
+            <Head title="Panduan Pengguna & Asisten Pembaca Berita - Radar Politik & Personal Branding" />
 
             <div className="space-y-8">
                 {/* Active Role Quick Banner */}
@@ -607,7 +607,7 @@ if __name__ == "__main__":
                                 </li>
                                 <li className="flex items-start gap-2.5">
                                     <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                                    <span>Pastikan kata kunci pencarian selalu relevan dengan dinamika perbincangan warga di Ketapang.</span>
+                                    <span>Pastikan kata kunci pencarian selalu relevan dengan dinamika perbincangan warga di daerah sasaran Anda.</span>
                                 </li>
                                 <li className="flex items-start gap-2.5">
                                     <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
@@ -736,7 +736,7 @@ if __name__ == "__main__":
                                     </div>
                                     <h4 className="text-white font-bold text-sm">Ambil Topik dari Target Setup</h4>
                                     <p className="text-slate-400 text-[11px] leading-relaxed">
-                                        Hermes secara otomatis membaca seluruh kata kunci topik yang Anda atur di menu <strong>Pengaturan Sasaran</strong> (misal: <em>Bupati Ketapang, Pilkada Ketapang, Infrastruktur</em>) via API <code>GET /target-parameters</code>.
+                                        Hermes secara otomatis membaca seluruh kata kunci topik yang Anda atur di menu <strong>Pengaturan Sasaran</strong> (misal: <em>Pilkada, Calon Kepala Daerah, Infrastruktur Jalan, Sembako</em>) via API <code>GET /target-parameters</code>.
                                     </p>
                                 </div>
 
@@ -1104,7 +1104,7 @@ if __name__ == "__main__":
 
                                         <p className="text-xs text-slate-300 leading-relaxed font-sans pt-1">
                                             Masyarakat yang sedang menghadapi masalah (jalan rusak, antrean pelayanan, banjir, harga sembako) tidak menginginkan bantahan atau alasan birokrasi yang berbelit-belit. 
-                                            Masyarakat ingin <strong className="text-amber-300">dirangkul sebagai satu keluarga besar Ketapang (Identity Framing)</strong>, disapa dengan bahasa yang <strong className="text-cyan-300">hangat, enak didengar, dan mudah dipahami di warung kopi (Pendekatan Feynman)</strong>, serta diberikan <strong className="text-emerald-300">kepastian tindakan nyata hari ini yang melegakan dan memuaskan hati</strong>.
+                                            Masyarakat ingin <strong className="text-amber-300">dirangkul sebagai satu keluarga besar warga (Identity Framing)</strong>, disapa dengan bahasa yang <strong className="text-cyan-300">hangat, enak didengar, dan mudah dipahami di warung kopi (Pendekatan Feynman)</strong>, serta diberikan <strong className="text-emerald-300">kepastian tindakan nyata hari ini yang melegakan dan memuaskan hati</strong>.
                                         </p>
                                     </div>
 
@@ -1120,7 +1120,7 @@ if __name__ == "__main__":
                                             </span>
                                         </div>
                                         <p className="text-xs text-slate-300 leading-relaxed">
-                                            Hermes wajib memprioritaskan tepat <strong>9 berita</strong> yang menyangkut hajat hidup masyarakat Ketapang secara langsung:
+                                            Hermes wajib memprioritaskan tepat <strong>9 berita</strong> yang menyangkut hajat hidup masyarakat di daerah sasaran secara langsung:
                                         </p>
                                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 text-xs">
                                             <div className="p-3 rounded-lg bg-slate-900 border border-slate-800 space-y-1">
@@ -1129,7 +1129,7 @@ if __name__ == "__main__":
                                             </div>
                                             <div className="p-3 rounded-lg bg-slate-900 border border-slate-800 space-y-1">
                                                 <span className="font-bold text-emerald-300 text-[11px]">2. Ekonomi Rakyat</span>
-                                                <p className="text-slate-400 text-[11px]">Harga sembako, stabilitas harga sawit/TBS, getah karet, pupuk petani, subsidi solar nelayan.</p>
+                                                <p className="text-slate-400 text-[11px]">Harga sembako, stabilitas hasil panen/kebun, pupuk petani, subsidi solar nelayan.</p>
                                             </div>
                                             <div className="p-3 rounded-lg bg-slate-900 border border-slate-800 space-y-1">
                                                 <span className="font-bold text-cyan-300 text-[11px]">3. Layanan Publik Dasar</span>
@@ -1137,7 +1137,7 @@ if __name__ == "__main__":
                                             </div>
                                             <div className="p-3 rounded-lg bg-slate-900 border border-slate-800 space-y-1">
                                                 <span className="font-bold text-rose-300 text-[11px]">4. Bencana & Kedaruratan</span>
-                                                <p className="text-slate-400 text-[11px]">Banjir luapan sungai Pawan, karhutla, kabut asap, evakuasi dan bantuan sosial warga.</p>
+                                                <p className="text-slate-400 text-[11px]">Banjir, karhutla, tanah longsor, cuaca ekstrem, evakuasi dan bantuan tanggap darurat warga.</p>
                                             </div>
                                         </div>
                                     </div>
@@ -1150,7 +1150,7 @@ if __name__ == "__main__":
                                             </div>
                                             <h5 className="text-sm font-bold text-purple-200">Identity Framing Merakyat</h5>
                                             <p className="text-xs text-slate-400 leading-relaxed">
-                                                Pemimpin adalah bagian dari keluarga besar warga Ketapang. Bukan pejabat menara gading. Derita dan lelahnya warga adalah kegelisahan yang dirasakan bersama.
+                                                Pemimpin adalah bagian dari keluarga besar warga di daerah pemilihannya. Bukan pejabat menara gading. Derita dan lelahnya warga adalah kegelisahan yang dirasakan bersama.
                                             </p>
                                         </div>
 
@@ -1385,7 +1385,7 @@ if __name__ == "__main__":
                                         Panduan Pemantau Lapangan: Membaca Isu & Mencocokkan Bukti
                                     </h2>
                                     <p className="text-sm text-slate-300 max-w-2xl">
-                                        Panduan praktis bagi Tim Sukses untuk memantau pergerakan berita online di Ketapang, mencermati apabila ada keluhan warga atau fitnah, dan mencocokkannya dengan fakta nyata di lapangan.
+                                        Panduan praktis bagi Tim Sukses untuk memantau pergerakan berita online di daerah target, mencermati apabila ada keluhan warga atau fitnah, dan mencocokkannya dengan fakta nyata di lapangan.
                                     </p>
                                 </div>
                                 <div className="w-12 h-12 rounded-xl bg-emerald-950/80 border border-emerald-500/60 flex items-center justify-center shrink-0">

@@ -162,9 +162,9 @@ class HermesGatewayController extends Controller
             'status' => 'success',
             'app_version' => config('app.version', '1.0 (Release Candidate)'),
             'candidate_profile' => [
-                'name' => $targetSetup->candidate_name ?? 'H. Farhan, S.E., M.Si.',
+                'name' => $targetSetup->candidate_name ?? '',
                 'political_role' => $targetSetup->political_role ?? 'Calon Kepala Daerah (Bupati/Walikota/Gubernur)',
-                'electoral_district' => $targetSetup->electoral_district ?? 'Kabupaten Ketapang',
+                'electoral_district' => $targetSetup->electoral_district ?? 'Daerah Sasaran',
                 'branding_tagline' => $targetSetup->branding_tagline ?? 'Bekerja Nyata untuk Kesejahteraan & Keadilan Warga',
                 'branding_pillars' => $targetSetup->branding_pillars ?? [
                     'Infrastruktur Konektivitas Jalan Poros & Jembatan',
@@ -175,7 +175,7 @@ class HermesGatewayController extends Controller
                 'branding_goal' => $targetSetup->branding_goal ?? 'Membangun persepsi kepemimpinan yang merakyat, cepat tanggap, solutif, dan membela kepentingan masyarakat di ruang publik maupun media sosial.',
                 'persona' => $targetSetup->persona ?? 'Gaya bahasa merakyat, tenang namun tegas, berorientasi solusi nyata, dan mengedepankan empati keluarga besar masyarakat.',
             ],
-            'primary_keywords' => $targetSetup->primary_keywords ?? ['Bupati Ketapang'],
+            'primary_keywords' => $targetSetup->primary_keywords ?? ['Pilkada', 'Politik Daerah'],
             'negative_keywords' => $targetSetup->negative_keywords ?? ['jual beli motor', 'lowongan kerja', 'promo pulsa', 'casino slot'],
             'persona' => $targetSetup->persona ?? 'Gaya bahasa merakyat, tenang namun tegas, berorientasi solusi nyata, dan mengedepankan empati keluarga besar masyarakat.',
             'trusted_press_portals' => [

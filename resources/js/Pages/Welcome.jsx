@@ -33,16 +33,16 @@ export default function Welcome({ appVersion = '1.0 (Release Candidate)' }) {
 
     return (
         <GuestLayout>
-            <Head title="Radar Politik Ketapang - Pantau Berita & Jaga Nama Baik Paslon" />
+            <Head title="Radar Politik & Personal Branding - Pantau Berita & Jaga Nama Baik Tokoh" />
 
-            <div className="max-w-6xl mx-auto w-full space-y-12 py-4">
+            <div className="space-y-12 py-4">
                 {/* Hero Section */}
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
                     <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
                         {/* Friendly Tagline */}
                         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-950/60 border border-cyan-500/40 text-cyan-300 text-xs font-medium shadow-[0_0_15px_rgba(6,182,212,0.15)]">
                             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                            <span>Aplikasi Pemantau Berita Pilkada Ketapang</span>
+                            <span>Platform Intelijen Isu & Personal Branding Politik Multi-Wilayah</span>
                         </div>
 
                         <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white leading-tight">
@@ -53,9 +53,9 @@ export default function Welcome({ appVersion = '1.0 (Release Candidate)' }) {
                         </h1>
 
                         <p className="text-slate-300 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto lg:mx-0">
-                            Aplikasi ini dirancang khusus untuk tim sukses dan humas di Kabupaten Ketapang. 
-                            Tugasnya sederhana: <strong>mengumpulkan berita lokal otomatis</strong>, <strong>mengecek kebenaran isu</strong>, 
-                            dan <strong>menyiapkan draf jawaban resmi</strong> agar tim Anda selalu siap menjawab wartawan dan masyarakat tanpa panik.
+                            Aplikasi ini dirancang untuk tim sukses, konsultan politik, dan figur publik di seluruh daerah. 
+                            Tugasnya sederhana: <strong>mengumpulkan berita aktual otomatis</strong>, <strong>mengecek kebenaran isu</strong>, 
+                            dan <strong>menyiapkan naskah strategis multi-kanal</strong> agar Anda selalu siap menjawab masyarakat, media massa, dan warganet secara percaya diri.
                         </p>
 
                         {/* 3 Manfaat Nyata (Prinsip Feynman) */}
@@ -222,7 +222,7 @@ export default function Welcome({ appVersion = '1.0 (Release Candidate)' }) {
                                 Berita Masuk Otomatis
                             </h3>
                             <p className="text-xs text-slate-400 leading-relaxed">
-                                Sistem membaca portal berita resmi di Kalimantan Barat (seperti Pontianak Post, Antara Kalbar, Suara Pemred, dan Ketapang News). Berita baru langsung masuk ke dasbor Anda tanpa harus dicari manual.
+                                Sistem membaca portal berita resmi nasional dan lokal regional secara otomatis sesuai daerah sasaran dan kata kunci yang Anda tentukan di menu Pengaturan Sasaran.
                             </p>
                         </div>
 
@@ -248,7 +248,7 @@ export default function Welcome({ appVersion = '1.0 (Release Candidate)' }) {
                                 Naskah Jawaban Siap Dipakai
                             </h3>
                             <p className="text-xs text-slate-400 leading-relaxed">
-                                Anda langsung mendapatkan 3 draf siap kirim: Siaran Pers untuk dibagikan ke wartawan, contekan poin bicara untuk wawancara langsung, serta draf surat hak jawab resmi sesuai aturan Dewan Pers.
+                                Anda langsung mendapatkan 5 format naskah strategis: Pernyataan Sikap Tokoh untuk personal branding, Naskah Medsos Viral, Siaran Pers Resmi, Poin Bicara Juru Bicara, dan Lembar Hak Jawab Dewan Pers.
                             </p>
                         </div>
                     </div>
@@ -256,7 +256,7 @@ export default function Welcome({ appVersion = '1.0 (Release Candidate)' }) {
 
                 {/* Footer Note */}
                 <div className="text-center text-xs text-slate-500 font-mono">
-                    Radar Politik Ketapang • Versi {appVersion} • Dirancang untuk kemudahan kerja tim lapangan & humas
+                    Radar Politik & Personal Branding • Versi {appVersion} • Platform Multi-Wilayah untuk Tokoh Politik, Tim Sukses & Humas
                 </div>
             </div>
         </GuestLayout>

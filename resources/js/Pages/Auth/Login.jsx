@@ -32,7 +32,7 @@ export default function Login({ status, appVersion = '1.0 (Release Candidate)' }
 
     return (
         <GuestLayout>
-            <Head title="Portal Akses Tertutup - Radar Politik Ketapang" />
+            <Head title="Portal Akses Tertutup - Radar Politik & Personal Branding" />
 
             <div className="max-w-md w-full mx-auto space-y-6">
                 {/* Security Classification Header Banner */}
@@ -42,10 +42,10 @@ export default function Login({ status, appVersion = '1.0 (Release Candidate)' }
                         <span className="font-medium">Silakan Masuk ke Akun Anda</span>
                     </div>
                     <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-                        Radar Politik Ketapang
+                        Radar Politik & Personal Branding
                     </h1>
                     <p className="text-xs sm:text-sm text-slate-400 font-sans">
-                        Pantau berita lokal, cek kebenaran isu, dan buat tanggapan resmi dengan mudah.
+                        Pantau berita multi-daerah, cek kebenaran isu, dan buat tanggapan resmi dengan mudah.
                     </p>
                 </div>
 

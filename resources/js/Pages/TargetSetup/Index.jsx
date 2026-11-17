@@ -21,7 +21,7 @@ export default function TargetSetupIndex({ targetSetup, recentFeeds = [], totalF
     const { data, setData, post, processing, errors, recentlySuccessful } = useForm({
         candidate_name: targetSetup?.candidate_name || '',
         political_role: targetSetup?.political_role || 'Calon Kepala Daerah (Bupati/Walikota/Gubernur)',
-        electoral_district: targetSetup?.electoral_district || 'Kabupaten Ketapang',
+        electoral_district: targetSetup?.electoral_district || '',
         branding_tagline: targetSetup?.branding_tagline || '',
         branding_pillars: Array.isArray(targetSetup?.branding_pillars) && targetSetup.branding_pillars.length > 0
             ? targetSetup.branding_pillars
@@ -34,7 +34,7 @@ export default function TargetSetupIndex({ targetSetup, recentFeeds = [], totalF
         branding_goal: targetSetup?.branding_goal || '',
         primary_keywords: Array.isArray(targetSetup?.primary_keywords) && targetSetup.primary_keywords.length > 0
             ? targetSetup.primary_keywords 
-            : ['Ketapang', 'Bupati Ketapang', 'Pilkada Ketapang', 'APBD Ketapang', 'Jalan Rusak Ketapang'],
+            : ['Pilkada', 'Calon Kepala Daerah', 'Infrastruktur Jalan', 'Ekonomi Kerakyatan'],
         negative_keywords: Array.isArray(targetSetup?.negative_keywords) && targetSetup.negative_keywords.length > 0
             ? targetSetup.negative_keywords 
             : ['lowongan', 'loker', 'judi', 'slot', 'taruhan', 'olshop'],
@@ -444,7 +444,7 @@ export default function TargetSetupIndex({ targetSetup, recentFeeds = [], totalF
                                                     addPrimaryTag();
                                                 }
                                             }}
-                                            placeholder="Ketik topik atau nama wilayah lalu tekan Enter (contoh: 'Pilkada Ketapang', 'Jalan Rusak')..."
+                                            placeholder="Ketik topik atau nama wilayah lalu tekan Enter (contoh: 'Pilkada', 'Jalan Rusak', 'Harga Pupuk')..."
                                             className="flex-1 bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500"
                                         />
                                         <button

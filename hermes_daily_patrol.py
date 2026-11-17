@@ -127,9 +127,9 @@ def fetch_target_parameters() -> Dict[str, Any]:
         return resp
     logger.warning("   Gagal mengambil parameter via API, menggunakan fallback parameter sasaran.")
     return {
-        "primary_keywords": ["Bupati Ketapang"],
-        "negative_keywords": ["korupsi", "karhutla", "dinasti politik"],
-        "persona": "Pemimpin daerah yang santun, solutif, merakyat, dan melayani warga sepenuh hati.",
+        "primary_keywords": ["Pilkada", "Calon Kepala Daerah", "Infrastruktur Jalan"],
+        "negative_keywords": ["korupsi", "bencana", "dinasti politik"],
+        "persona": "Pemimpin yang santun, solutif, merakyat, dan melayani warga sepenuh hati.",
         "existing_urls": []
     }
 
@@ -474,7 +474,7 @@ def run_daily_patrol(dry_run: bool = False):
 
     params = fetch_target_parameters()
     candidate_profile = params.get("candidate_profile", {})
-    primary_keywords = params.get("primary_keywords", ["Bupati Ketapang"])
+    primary_keywords = params.get("primary_keywords", ["Pilkada", "Calon Kepala Daerah"])
     negative_keywords = params.get("negative_keywords", [])
     persona = params.get("persona", "")
     existing_urls = params.get("existing_urls", [])

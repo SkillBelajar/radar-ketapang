@@ -27,7 +27,7 @@ export default function Forbidden({ auth, status = 403, module = 'Pengaturan Sas
                 </div>
             }
         >
-            <Head title="Akses Terbatas (HTTP 403) - Radar Ketapang" />
+            <Head title="Akses Terbatas (HTTP 403) - Radar Politik" />
 
             <div className="max-w-4xl mx-auto space-y-6">
                 {/* Hero 403 Banner */}
@@ -70,7 +70,7 @@ export default function Forbidden({ auth, status = 403, module = 'Pengaturan Sas
                                     <strong className="text-rose-400">Pengelola Utama (Admin):</strong> Memegang kunci utama sistem, mengelola seluruh pengguna, kata kunci, dan jalannya aplikasi.
                                 </li>
                                 <li>
-                                    <strong className="text-cyan-400">Tim Lapangan (Timses):</strong> Memantau pergerakan berita dan mengatur kata kunci tokoh yang dipantau di Ketapang.
+                                    <strong className="text-cyan-400">Tim Lapangan (Timses):</strong> Memantau pergerakan berita dan mengatur kata kunci tokoh atau daerah yang dipantau.
                                 </li>
                                 <li>
                                     <strong className="text-amber-400">Tim Media (Humas / Juru Bicara):</strong> Difokuskan untuk menyusun siaran pers, pernyataan juru bicara, dan hak jawab di menu <strong>Ruang Media & Pers</strong>.

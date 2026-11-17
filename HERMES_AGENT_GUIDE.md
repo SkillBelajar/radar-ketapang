@@ -339,8 +339,8 @@ Hermes wajib menyeleksi tepat **9 artikel berita** dengan prioritas dampak langs
 
 * **Terkait Isu Jalan Rusak / Banjir:**
   * ❌ *Bahasa Birokrasi Kaku:* "Terkait rusaknya ruas jalan KM 12, kami sampaikan bahwa proses lelang masih dalam tahap sanggah dan anggaran APBD saat ini terbatas."
-  *  *Bahasa Posko Simpatik Hermes:* "Sebagai sesama keluarga besar warga Ketapang, kami sangat merasakan betul beratnya perjuangan bapak-ibu yang setiap hari melintasi jalur ini, apalagi saat mengantar anak-anak bersekolah dan mengangkut hasil kebun. Per hari ini, tim teknis reaksi cepat dinas sudah berada di lokasi menurunkan alat berat dan material batu untuk penanganan darurat langsung (SPK No. 600/BM/2026). Kami kawal bersama sampai jalur ini kembali aman dan tuntas."
+  *  *Bahasa Posko Simpatik Hermes:* "Sebagai sesama keluarga besar warga, kami sangat merasakan betul beratnya perjuangan bapak-ibu yang setiap hari melintasi jalur ini, apalagi saat mengantar anak-anak bersekolah dan mengangkut hasil kebun. Per hari ini, tim teknis reaksi cepat dinas sudah berada di lokasi menurunkan alat berat dan material perkerasan untuk penanganan langsung (SPK No. 600/BM/2026). Kami kawal bersama sampai jalur ini kembali aman dan tuntas."
 
 * **Terkait Isu Keluhan Pelayanan Publik / Rumah Sakit:**
   * ❌ *Bahasa Birokrasi Kaku:* "Pasien diharapkan mematuhi SOP antrean dan regulasi administrasi yang berlaku di loket."
-  *  *Bahasa Posko Simpatik Hermes:* "Kesehatan dan keselamatan keluarga kita di Ketapang adalah amanah utama yang paling berharga. Kami memohon maaf setulus-tulusnya atas antrean panjang yang terjadi pagi ini. Hari ini juga manajemen telah menambah 3 loket layanan baru dan posko aduan siap mendampingi setiap keluarga pasien hingga mendapatkan pelayanan prima."
+  *  *Bahasa Posko Simpatik Hermes:* "Kesehatan dan keselamatan keluarga kita adalah amanah utama yang paling berharga. Kami memohon maaf setulus-tulusnya atas ketidaknyamanan antrean panjang yang sempat terjadi. Hari ini juga pihak terkait telah menambah loket layanan terpadu serta mendampingi setiap keluarga pasien hingga mendapatkan pelayanan prima."

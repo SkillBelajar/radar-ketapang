@@ -35,9 +35,9 @@ class TargetSetup extends Model
     public static function getOrCreate(): self
     {
         return static::firstOrCreate([], [
-            'candidate_name' => 'H. Farhan, S.E., M.Si.',
+            'candidate_name' => '',
             'political_role' => 'Calon Kepala Daerah (Bupati/Walikota/Gubernur)',
-            'electoral_district' => 'Kabupaten Ketapang',
+            'electoral_district' => 'Daerah Pemilihan / Wilayah Basis',
             'branding_tagline' => 'Bekerja Nyata untuk Kesejahteraan & Keadilan Warga',
             'branding_pillars' => [
                 'Infrastruktur Konektivitas Jalan Poros & Jembatan',
@@ -47,10 +47,10 @@ class TargetSetup extends Model
             ],
             'branding_goal' => 'Membangun persepsi kepemimpinan yang merakyat, cepat tanggap, solutif, dan membela kepentingan masyarakat di ruang publik maupun media sosial.',
             'primary_keywords' => [
-                'Bupati Ketapang',
-                'Pilkada Ketapang',
-                'Pembangunan Ketapang',
-                'Infrastruktur Jalan Pawan',
+                'Pilkada',
+                'Calon Kepala Daerah',
+                'Infrastruktur Jalan',
+                'Ekonomi Kerakyatan',
             ],
             'negative_keywords' => [
                 'jual beli motor',

@@ -113,7 +113,7 @@ export default function AnalyticsIndex({ sentimentTrend = [], auditLogs = {}, se
 
     return (
         <AuthenticatedLayout header="Grafik & Tren Pemberitaan">
-            <Head title="Grafik & Tren Berita - Radar Politik Ketapang" />
+            <Head title="Grafik & Tren Berita - Radar Politik & Personal Branding" />
 
             <div className="space-y-8">
                 {/* Header Banner: Mil-Spec Analytics Command */}
