@@ -20,6 +20,7 @@ class DashboardController extends Controller
         $sort = $request->query('sort', 'velocity'); // 'velocity' | 'recent'
         $sentimentFilter = $request->query('sentiment'); // 'positive' | 'neutral' | 'negative' | null
         $alertOnly = $request->boolean('alert_only');
+        $viewMode = $request->query('view', 'spotlight'); // 'spotlight' (Top Ranking) | 'all' (Semua)
 
         // Query news_feeds yang sudah diproses oleh AI (ai_status != 'pending')
         $query = NewsFeed::where('ai_status', '!=', 'pending');
@@ -32,11 +33,18 @@ class DashboardController extends Controller
             $query->where('ai_status', 'integrity_alert');
         }
 
+        $totalMatching = (clone $query)->count();
+
         if ($sort === 'recent') {
             $query->orderBy('published_at', 'desc')->orderBy('id', 'desc');
         } else {
-            // Default: Krisis terpanas di atas (velocity_score DESC)
+            // Default: Krisis terpanas / paling disorot di atas (velocity_score DESC)
             $query->orderBy('velocity_score', 'desc')->orderBy('id', 'desc');
+        }
+
+        // Jika mode ranking spotlight aktif (default), tampilkan hanya 10 berita teratas yang paling disorot
+        if ($viewMode === 'spotlight') {
+            $query->limit(10);
         }
 
         $analyzedFeeds = $query->get()->map(function ($feed) {
@@ -94,7 +102,9 @@ class DashboardController extends Controller
                 'sort' => $sort,
                 'sentiment' => $sentimentFilter,
                 'alert_only' => $alertOnly,
+                'view' => $viewMode,
             ],
+            'totalMatching' => $totalMatching,
             'targetSetup' => $targetSetup ? [
                 'primary_keywords' => $targetSetup->primary_keywords ?? [],
                 'persona' => $targetSetup->persona ?? '',

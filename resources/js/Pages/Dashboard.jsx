@@ -6,7 +6,7 @@ import {
     ExternalLink, Copy, Check, Filter, ArrowUpDown, Layers, Sparkles, 
     Info, Eye, Radio, RefreshCw, Terminal, CheckCircle2, ChevronRight,
     Share2, X, MessageSquare, AlertOctagon, Zap, BarChart3, Newspaper,
-    FileText, Mic, Scale, ArrowUpRight
+    FileText, Mic, Scale, ArrowUpRight, BookOpen
 } from 'lucide-react';
 
 /**
@@ -137,10 +137,9 @@ function ScriptChannelBox({ channel, title, content, modeLabel, modeColor }) {
     );
 }
 
-export default function Dashboard({ feeds = [], stats = {}, filters = {}, targetSetup = {} }) {
+export default function Dashboard({ feeds = [], stats = {}, filters = {}, targetSetup = {}, totalMatching = 0 }) {
     const [selectedFeedForModal, setSelectedFeedForModal] = useState(null);
     const [activeTabPerCard, setActiveTabPerCard] = useState({});
-    const [fetchingNews, setFetchingNews] = useState(false);
 
     const PRESS_FORMATS = [
         { id: 'press_release', label: 'Siaran Pers', title: 'Draf Siaran Pers Resmi (5W+1H)' },
@@ -169,14 +168,6 @@ export default function Dashboard({ feeds = [], stats = {}, filters = {}, target
             if (!newFilters[k]) delete newFilters[k];
         });
         router.get('/dashboard', newFilters, { preserveState: true, preserveScroll: true });
-    };
-
-    const handleFetchNews = () => {
-        setFetchingNews(true);
-        router.post('/dashboard/fetch', {}, {
-            preserveScroll: true,
-            onFinish: () => setFetchingNews(false)
-        });
     };
 
     const getSentimentBadge = (sentiment) => {
@@ -232,18 +223,12 @@ export default function Dashboard({ feeds = [], stats = {}, filters = {}, target
                             </p>
                         </div>
 
-                        {/* Top Action Buttons */}
+                        {/* Top Action Buttons & Mode Indicator */}
                         <div className="flex flex-wrap items-center gap-2.5 self-start md:self-center text-xs">
-                            <button
-                                type="button"
-                                onClick={handleFetchNews}
-                                disabled={fetchingNews}
-                                className="px-3.5 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold flex items-center gap-1.5 shadow-[0_0_15px_rgba(6,182,212,0.4)] transition-all cursor-pointer disabled:opacity-50"
-                                title="Tarik berita online terbaru secara aktual"
-                            >
-                                <RefreshCw className={`w-3.5 h-3.5 ${fetchingNews ? 'animate-spin' : ''}`} />
-                                <span>{fetchingNews ? 'Menarik Berita...' : '⚡ Tarik Berita Baru'}</span>
-                            </button>
+                            <div className="px-3.5 py-2 rounded-xl bg-slate-900/90 border border-emerald-500/40 flex items-center gap-2 shadow-sm font-mono">
+                                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
+                                <span className="text-slate-300 font-sans text-xs">Pasokan: <strong className="text-emerald-300 font-bold">Hermes Push-Only</strong></span>
+                            </div>
 
                             <Link
                                 href="/studio"
@@ -410,6 +395,36 @@ export default function Dashboard({ feeds = [], stats = {}, filters = {}, target
                         </button>
                     </div>
 
+                    {/* View Mode Toggle: Spotlight Ranking vs Semua Berita */}
+                    <div className="flex items-center gap-1.5 bg-slate-950 p-1 rounded-xl border border-slate-800">
+                        <button
+                            type="button"
+                            onClick={() => handleFilterChange('view', 'spotlight')}
+                            className={`px-3 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+                                (filters.view || 'spotlight') === 'spotlight'
+                                    ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 shadow-[0_0_12px_rgba(245,158,11,0.4)]'
+                                    : 'text-slate-400 hover:text-white'
+                            }`}
+                            title="Tampilkan hanya ranking berita yang paling disorot (Top 10)"
+                        >
+                            <Flame className="w-3.5 h-3.5" />
+                            <span>🔥 10 Teratas Paling Disorot</span>
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => handleFilterChange('view', 'all')}
+                            className={`px-3 py-1 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 cursor-pointer ${
+                                filters.view === 'all'
+                                    ? 'bg-slate-800 text-cyan-300 border border-slate-700 font-bold'
+                                    : 'text-slate-400 hover:text-white'
+                            }`}
+                            title="Tampilkan seluruh berita yang masuk"
+                        >
+                            <Layers className="w-3.5 h-3.5" />
+                            <span>Semua Berita ({totalMatching || stats.total_analyzed || feeds.length})</span>
+                        </button>
+                    </div>
+
                     {/* Right: Sorting Toggle */}
                     <div className="flex items-center gap-2">
                         <span className="text-slate-400 text-[11px] flex items-center gap-1">
@@ -443,28 +458,49 @@ export default function Dashboard({ feeds = [], stats = {}, filters = {}, target
                     </div>
                 </div>
 
+                {/* Section Header: Spotlight Status */}
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-2 pb-1">
+                    <div className="flex items-center gap-2.5">
+                        <div className="p-2 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400">
+                            <Flame className="w-4 h-4" />
+                        </div>
+                        <div>
+                            <h2 className="text-sm sm:text-base font-extrabold text-white flex items-center gap-2">
+                                <span>{(filters.view || 'spotlight') === 'spotlight' ? 'Ranking Berita Paling Disorot' : 'Daftar Seluruh Berita Masuk'}</span>
+                                <span className="text-[11px] px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 font-mono font-normal">
+                                    {feeds.length} Berita
+                                </span>
+                            </h2>
+                            <p className="text-[11px] text-slate-400">
+                                {(filters.view || 'spotlight') === 'spotlight'
+                                    ? 'Fokus Utama Posko: Menampilkan 10 berita peringkat teratas dengan skor kecepatan krisis & atensi publik tertinggi yang memerlukan atensi segera.'
+                                    : 'Menampilkan seluruh artikel berita portal yang telah disetor dan dianalisis oleh Hermes Agent.'}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
                 {/* Analyzed Feeds Grid */}
                 {feeds.length === 0 ? (
                     <div className="p-12 text-center rounded-2xl bg-slate-900/60 border border-slate-800 font-mono space-y-3">
                         <Newspaper className="w-10 h-10 text-slate-600 mx-auto animate-pulse" />
                         <h3 className="text-base font-bold text-white">Belum Ada Berita Portal Teranalisis</h3>
                         <p className="text-xs text-slate-400 max-w-md mx-auto leading-relaxed">
-                            Semua artikel berita portal saat ini masih dalam proses penarikan atau belum memenuhi kriteria filter aktif.
+                            Menunggu kiriman data dari Hermes Agent. Jalankan skrip patroli atau masukkan prompt ke asisten AI Hermes untuk mulai mengisi papan pantauan posko.
                         </p>
                         <div className="pt-2">
-                            <button
-                                type="button"
-                                onClick={handleFetchNews}
+                            <Link
+                                href="/user-guide?tab=hermes"
                                 className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold transition-all shadow-lg cursor-pointer"
                             >
-                                <RefreshCw className="w-3.5 h-3.5" />
-                                <span>Tarik Berita Aktual Sekarang</span>
-                            </button>
+                                <BookOpen className="w-3.5 h-3.5" />
+                                <span>Buka Panduan & Token Hermes</span>
+                            </Link>
                         </div>
                     </div>
                 ) : (
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        {feeds.map((feed) => {
+                        {feeds.map((feed, index) => {
                             const sentimentInfo = getSentimentBadge(feed.sentiment);
                             const isIntegrityAlert = feed.ai_status === 'integrity_alert';
                             const factAnchor = typeof feed.fact_anchor === 'string' ? JSON.parse(feed.fact_anchor || '{}') : (feed.fact_anchor || {});
@@ -475,7 +511,9 @@ export default function Dashboard({ feeds = [], stats = {}, filters = {}, target
                                 <div 
                                     key={feed.id}
                                     className={`rounded-2xl border transition-all duration-300 flex flex-col justify-between overflow-hidden shadow-xl ${
-                                        isIntegrityAlert 
+                                        index === 0
+                                            ? 'bg-gradient-to-b from-slate-900 to-amber-950/20 border-amber-500/60 ring-1 ring-amber-400/40 shadow-[0_0_25px_rgba(245,158,11,0.2)]'
+                                            : isIntegrityAlert 
                                             ? 'bg-gradient-to-b from-slate-900 to-red-950/30 border-red-500/60 shadow-[0_0_20px_rgba(239,68,68,0.2)]'
                                             : feed.velocity_score >= 75
                                             ? 'bg-slate-900/95 border-rose-500/40 hover:border-rose-400 shadow-[0_0_15px_rgba(244,63,94,0.15)]'
@@ -486,6 +524,19 @@ export default function Dashboard({ feeds = [], stats = {}, filters = {}, target
                                     <div className="p-5 space-y-4">
                                         <div className="flex flex-wrap items-center justify-between gap-2 font-mono text-xs">
                                             <div className="flex items-center gap-2">
+                                                {/* Spotlight Rank Ribbon */}
+                                                <span className={`px-2.5 py-1 rounded-md text-[10px] font-black tracking-wider flex items-center gap-1 ${
+                                                    index === 0
+                                                        ? 'bg-amber-400 text-slate-950 font-extrabold shadow-[0_0_12px_rgba(251,191,36,0.6)] border border-amber-300'
+                                                        : index === 1
+                                                        ? 'bg-slate-200 text-slate-900 font-extrabold shadow-sm border border-white'
+                                                        : index === 2
+                                                        ? 'bg-amber-700 text-amber-100 font-bold border border-amber-600'
+                                                        : 'bg-slate-950 text-slate-400 border border-slate-800'
+                                                }`}>
+                                                    {index === 0 ? '🥇 #1 PALING DISOROT' : index === 1 ? '🥈 #2 SOROTAN TINGGI' : index === 2 ? '🥉 #3 PRIORITAS' : `#${index + 1} TERPANTAU`}
+                                                </span>
+
                                                 <span className="px-2.5 py-1 rounded-md bg-slate-950 border border-slate-700/80 text-cyan-300 font-bold text-[10px]">
                                                     {feed.source || 'Portal Pers'}
                                                 </span>

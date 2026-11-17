@@ -74,10 +74,11 @@ Untuk setiap berita yang diperoleh dari Google News, lakukan analisis intelijen:
    - tuduhan: Inti klaim, keluhan, atau kritik di dalam berita.
    - fakta_lapangan: Fakta objektif dan realitas tindakan penanganan di lapangan.
    - dokumen_rujukan: SPK dinas, Perda, data BPS, atau rilis resmi instansi.
-5. scripts (3 Draf Naskah Pers Pendekatan Feynman):
-   - press_release: Draf siaran pers resmi berstruktur 5W+1H lengkap dengan kutipan tokoh.
-   - spokesperson: Poin wawancara doorstop wartawan lapangan (lugas, berdata, santun).
-   - editorial_reply: Draf surat permohonan hak jawab sesuai UU Pers No. 40/1999 ke redaksi media.
+5. scripts (3 Draf Naskah Pers - Doktrin Simpatik, Menarik Didengar & Memuaskan Masyarakat):
+   Doktrin Utama: Singkirkan bahasa birokrasi kaku, jangan menyalahkan warga, dan jangan mencari alasan. Bangun empati nyata, gunakan bahasa merakyat yang enak didengar telinga warga awam di warung kopi/jalan, dan berikan kepastian solusi yang tuntas dan memuaskan hati publik.
+   - press_release (Draf Siaran Pers Resmi): Format 5W+1H yang sejuk dan solutif. Mengakui kesulitan warga dengan empati tulus, menjelaskan aksi nyata tim lapangan (beserta data/SPK), dan kutipan tokoh yang rendah hati serta merangkul.
+   - spokesperson (Poin Bicara Juru Bicara Doorstop / Audio): 3-4 butir poin lisan langsung yang enak didengar, bahasa tutur hangat merakyat tanpa jargon teknis, langsung menjawab kegelisahan warga, dan menegaskan pintu posko/aduan terbuka 24 jam.
+   - editorial_reply (Lembar Hak Jawab Redaksi Media): Mengacu pada UU Pers No. 40/1999 dan Kode Etik Jurnalistik. Bahasa sangat beradab dan menghargai kemitraan pers, menyodorkan klarifikasi data lapangan tanpa nada arogansi atau ancaman somasi, sehingga redaksi dan publik terpuaskan oleh kejelasan fakta.
 
 Langkah 4: Kirimkan (Push) Paket Berita & Hasil Analisis ke Sistem
 Kirim seluruh paket berita hasil analisis dalam satu payload:
@@ -278,3 +279,44 @@ crontab -e
 # Tambahkan baris ini (jalan setiap hari jam 07:00):
 0 7 * * * cd /home/x/workspace/radar-ketapang && /usr/bin/python3 hermes_daily_patrol.py >> /var/log/hermes_daily_patrol.log 2>&1
 ```
+
+---
+
+### 6. Pedoman Asisten AI Hermes: Penyusunan Naskah Pers Penuh Simpati, Menarik Didengar & Memuaskan Warga
+
+Asisten AI Hermes diwajibkan menyusun narasi komunikasi publik dengan standar posko modern yang mengedepankan **empati tulus, keterbukaan, dan kepastian tindakan nyata**.
+
+#### A. Doktrin Dasar Komunikasi Publik
+1. **Penuh Simpati & Validasi Keluhan Warga:**
+   - Jangan pernah bersikap defensif, menyangkal fakta lapangan, atau menyalahkan warga.
+   - Hindari alasan birokrasi klise (misal: "bukan wewenang kami", "anggaran terbatas", "masih dikaji di meja pimpinan").
+   - Akui ketidaknyamanan warga sejak kalimat pertama: *"Kami paham betul kesulitan yang dialami bapak-ibu..."*.
+2. **Menarik Didengar & Bahasa Tutur Merakyat (Feynman Approach):**
+   - Gunakan kalimat lisan yang hangat, hidup, dan mengalir seperti obrolan orang tua yang bijak di warung kopi.
+   - Bebas dari istilah teknokratis kaku yang membingungkan orang awam.
+   - Enak dibacakan oleh juru bicara di hadapan kamera wartawan maupun disiarkan melalui radio komunitas.
+3. **Solutif, Terukur & Memuaskan Warga yang Mendengar:**
+   - Kepuasan warga lahir dari kepastian: *Siapa yang turun? Alat apa yang dibawa? Kapan pekerjaan selesai? Nomor telepon mana yang bisa dihubungi?*
+   - Sertakan rujukan dokumen legal (SPK, Perda, Berita Acara) sebagai jangkar fakta yang tidak terbantahkan.
+
+---
+
+#### B. Standar Format 3 Naskah Pers
+
+| Jenis Naskah | Target Pembaca / Pendengar | Ciri Khas Gaya Penulisan | Struktur Wajib |
+| :--- | :--- | :--- | :--- |
+| **1. Siaran Pers Resmi (`press_release`)** | Redaksi media massa, wartawan, publik luas | Santun, terstruktur 5W+1H, menyejukkan tensi, berbobot data resmi | 1. Judul solutif & menenangkan<br>2. Paragraf empati & pengakuan aspirasi<br>3. Rincian aksi lapangan & nomor rujukan SPK<br>4. Kutipan tokoh pemimpin yang rendah hati & merangkul<br>5. Kontak Media Center |
+| **2. Poin Bicara Jubir (`spokesperson`)** | Doorstop wartawan TV/Radio/Online, wawancara lisan | Bahasa lisan mengalir, langsung ke sasaran (*to the point*), tegas namun ramah | 1. Apresiasi rekan media & validasi rasa warga<br>2. Aksi konkret hari ini di lapangan<br>3. Jaminan pengawalan tuntas & saluran posko aduan 24 jam |
+| **3. Lembar Hak Jawab (`editorial_reply`)** | Pemimpin Redaksi & Dewan Redaksi Media | Menghormati kemerdekaan pers (UU Pers No. 40/1999), beradab tinggi, tanpa arogansi | 1. Salam hormat & apresiasi fungsi kontrol sosial pers<br>2. Penyampaian fakta pelurus informasi secara kronologis<br>3. Landasan dokumen & bukti verifikasi lapangan<br>4. Harapan pemuatan utuh demi literasi publik berimbang |
+
+---
+
+#### C. Contoh Perbandingan Bahasa: Birokrasi Kaku vs Posko Simpatik
+
+* **Terkait Isu Jalan Rusak / Banjir:**
+  * ❌ *Bahasa Birokrasi:* "Terkait rusaknya ruas jalan KM 12, kami sampaikan bahwa proses lelang masih dalam tahap sanggah dan anggaran APBD saat ini terbatas."
+  *  *Bahasa Posko Simpatik Hermes:* "Kami sangat merasakan betul beratnya perjuangan bapak-ibu yang setiap hari melintasi jalur ini, apalagi saat anak-anak berangkat sekolah. Per hari ini, tim reaksi cepat dinas sudah berada di lokasi menurunkan alat berat dan material batu untuk penanganan darurat (SPK No. 600/BM/2026). Kami kawal bersama sampai jalur ini kembali aman dan nyaman dilalui warga."
+
+* **Terkait Isu Keluhan Pelayanan Publik / Rumah Sakit:**
+  * ❌ *Bahasa Birokrasi:* "Pasien diharapkan mematuhi SOP antrean dan regulasi administrasi yang berlaku di loket."
+  *  *Bahasa Posko Simpatik Hermes:* "Kesehatan dan kenyamanan warga Ketapang adalah amanah utama kami. Kami memohon maaf atas antrean yang terjadi pagi ini. Manajemen telah menambah 3 loket layanan baru dan posko bantuan siap mendampingi setiap keluarga pasien hingga mendapatkan pelayanan terbaik."

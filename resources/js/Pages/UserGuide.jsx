@@ -5,7 +5,8 @@ import {
     Shield, Key, Users, Radio, Bell, AlertTriangle, 
     Zap, Share2, CheckCircle2, ChevronRight, Terminal, 
     Sliders, FileText, ArrowRight, Eye, RefreshCw, Cpu, Activity,
-    Copy, Check, Code, ExternalLink, Play, Sparkles, BookOpen, Layers
+    Copy, Check, Code, ExternalLink, Play, Sparkles, BookOpen, Layers,
+    HeartHandshake, MessageSquare, Quote, Flame
 } from 'lucide-react';
 
 export default function UserGuide({ apiBaseUrl = 'https://radar.pawandigital.id/api/v1/hermes', hasToken = true, maskedToken = null, plainToken = null }) {
@@ -27,7 +28,7 @@ export default function UserGuide({ apiBaseUrl = 'https://radar.pawandigital.id/
     const [copiedField, setCopiedField] = useState(null);
     const [showPlainToken, setShowPlainToken] = useState(false);
     const [isGeneratingToken, setIsGeneratingToken] = useState(false);
-    const [hermesSubTab, setHermesSubTab] = useState('prompt'); // 'prompt' | 'script' | 'contract' | 'curl'
+    const [hermesSubTab, setHermesSubTab] = useState('prompt'); // 'prompt' | 'script' | 'contract' | 'curl' | 'doctrine'
 
     const handleCopy = (text, fieldKey) => {
         if (!navigator.clipboard) return;
@@ -112,10 +113,23 @@ Untuk setiap berita yang diperoleh dari Google News, lakukan analisis intelijen:
    - tuduhan: Inti klaim, keluhan, atau kritik di dalam berita.
    - fakta_lapangan: Fakta objektif dan realitas tindakan penanganan di lapangan.
    - dokumen_rujukan: SPK dinas, Perda, data BPS, atau rilis resmi instansi.
-5. scripts (3 Draf Naskah Pers Pendekatan Feynman):
-   - press_release: Draf siaran pers resmi berstruktur 5W+1H lengkap dengan kutipan tokoh.
-   - spokesperson: Poin wawancara doorstop wartawan lapangan (lugas, berdata, santun).
-   - editorial_reply: Draf surat permohonan hak jawab sesuai UU Pers No. 40/1999 ke redaksi media.
+5. scripts (3 Draf Naskah Pers - Doktrin Simpatik, Menarik Didengar & Memuaskan Masyarakat):
+   Pedoman Wajib Hermes:
+   - Doktrin Inti: Singkirkan bahasa birokrasi kaku, jangan menyalahkan warga, dan jangan mencari dalih birokratis. Bangun empati nyata, gunakan bahasa tutur merakyat yang enak didengar telinga warga awam (di warung kopi/jalanan), dan berikan kepastian solusi yang tuntas dan memuaskan hati publik.
+   - press_release (Draf Siaran Pers Resmi):
+     * Format 5W+1H yang sejuk dan solutif.
+     * Paragraf 1: Mengakui persoalan dengan empati mendalam atas apa yang dirasakan warga di lapangan.
+     * Paragraf 2: Rincian aksi penanganan konkret (alat/bantuan/personel yang diterjunkan) beserta nomor rujukan/SPK.
+     * Paragraf 3: Kutipan langsung calon/tokoh yang rendah hati, berterima kasih atas kontrol sosial pers/masyarakat, dan mengajak gotong royong menjaga ketertiban.
+   - spokesperson (Poin Bicara Juru Bicara Doorstop / Audio):
+     * 3-4 butir poin lisan langsung yang enak didengar dan mudah dipahami siapa saja (hindari jargon teknis).
+     * Butir 1 (Validasi Rasa Warga): "Kami sangat memahami kegelisahan bapak-ibu... terima kasih rekan-rekan media sudah mengingatkan kami."
+     * Butir 2 (Aksi Nyata & Kepastian): Rincian tindakan nyata yang sedang bergerak hari ini di lokasi.
+     * Butir 3 (Keterbukaan): "Posko aduan terbuka 24 jam. Kami siap dikritik dan kami kawal sampai tuntas."
+   - editorial_reply (Lembar Hak Jawab Redaksi Media):
+     * Mengacu pada UU Pers No. 40/1999 dan Kode Etik Jurnalistik Dewan Pers.
+     * Bahasa sangat beradab, elegan, menghormati pers sebagai pilar demokrasi.
+     * Menyajikan data klarifikasi faktual secara runtut tanpa arogansi atau ancaman somasi, sehingga redaksi dan pembaca terpuaskan oleh kejelasan fakta.
 
 Langkah 4: Kirimkan (Push) Paket Berita & Hasil Analisis ke Sistem
 Kirim seluruh paket berita hasil analisis dalam satu payload:
@@ -221,9 +235,9 @@ def run_hermes_daily_patrol():
                             "dokumen_rujukan": "Surat Perintah Kerja (SPK) No. 600/2026 / Perda Pemkab Ketapang"
                         },
                         "scripts": {
-                            "press_release": f"SIARAN PERS RESMI: Terkait '{title}', Pemkab Ketapang memastikan pelayanan dan pembangunan tetap berjalan sesuai agenda.",
-                            "spokesperson": f"POIN BICARA JUBIR: Mengenai '{title}', kami pastikan penanganan sudah berjalan di lapangan.",
-                            "editorial_reply": "SURAT HAK JAWAB: Permohonan klarifikasi dan data penanganan lapangan sesuai UU Pers No. 40/1999."
+                            "press_release": f"SIARAN PERS RESMI: Terkait '{title}', Pemkab Ketapang menyampaikan empati mendalam atas aspirasi warga. Tim lapangan telah diterjunkan dan pimpinan memastikan penanganan tuntas demi kenyamanan warga.",
+                            "spokesperson": f"POIN BICARA JUBIR: 'Terima kasih rekan media dan warga sudah mengingatkan. Kami merasakan kesulitan warga terkait {title}. Hari ini tim teknis bergerak di lokasi dan posko aduan dibuka 24 jam.'",
+                            "editorial_reply": f"SURAT HAK JAWAB PERS (UU 40/1999): Mengapresiasi fungsi kontrol pers, berikut kami sampaikan klarifikasi fakta lapangan dan dokumen resmi agar masyarakat mendapatkan informasi berimbang."
                         }
                     })
         except Exception as e:
@@ -753,6 +767,19 @@ if __name__ == "__main__":
                                     <Terminal className="w-3.5 h-3.5 text-cyan-400" />
                                     <span>4. Uji Manual via cURL Terminal</span>
                                 </button>
+
+                                <button
+                                    type="button"
+                                    onClick={() => setHermesSubTab('doctrine')}
+                                    className={`px-3.5 py-2 rounded-xl transition-all flex items-center gap-2 cursor-pointer ${
+                                        hermesSubTab === 'doctrine'
+                                            ? 'bg-amber-950 text-amber-300 border border-amber-500/60 font-bold shadow-[0_0_12px_rgba(245,158,11,0.2)]'
+                                            : 'text-slate-400 hover:text-white hover:bg-slate-950'
+                                    }`}
+                                >
+                                    <HeartHandshake className="w-3.5 h-3.5 text-amber-400" />
+                                    <span>5. Pedoman Naskah Pers (Simpati & Merakyat)</span>
+                                </button>
                             </div>
 
                             {/* SUBTAB 1: SYSTEM PROMPT */}
@@ -934,6 +961,187 @@ if __name__ == "__main__":
                                                 &nbsp;&nbsp;&nbsp;&nbsp;-H "Accept: application/json" \<br />
                                                 &nbsp;&nbsp;&nbsp;&nbsp;-d '&#123;"articles":[&#123;"title":"...","source":"Antara Kalbar","url":"...","velocity_score":25,"sentiment":"positive","scripts":&#123;...&#125;&#125;]&#125;'
                                                 </code>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* SUBTAB 5: PEDOMAN NASKAH PERS SIMPATIK & MERAKYAT */}
+                            {hermesSubTab === 'doctrine' && (
+                                <div className="space-y-6 animate-fadeIn">
+                                    {/* Banner Doktrin Utama */}
+                                    <div className="p-6 rounded-2xl bg-gradient-to-r from-amber-950/60 via-slate-900 to-rose-950/40 border border-amber-500/40 shadow-xl space-y-3">
+                                        <div className="flex items-center gap-3">
+                                            <div className="p-2.5 rounded-xl bg-amber-500/20 border border-amber-500/50 text-amber-300">
+                                                <HeartHandshake className="w-6 h-6" />
+                                            </div>
+                                            <div>
+                                                <h4 className="text-base font-extrabold text-white flex items-center gap-2">
+                                                    <span>Pedoman Naskah Pers Asisten AI Hermes</span>
+                                                    <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 font-mono uppercase">
+                                                        Simpatik, Merakyat & Memuaskan
+                                                    </span>
+                                                </h4>
+                                                <p className="text-xs text-slate-300">
+                                                    Standar wajib saat menyusun Siaran Pers Resmi, Poin Bicara Juru Bicara (Doorstop), dan Lembar Hak Jawab Redaksi.
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <p className="text-xs text-slate-300 leading-relaxed font-sans pt-1">
+                                            Masyarakat yang sedang menghadapi masalah (jalan rusak, antrean pelayanan, air pasang, harga komoditas) tidak menginginkan bantahan atau alasan birokrasi yang berbelit-belit. 
+                                            Masyarakat ingin <strong className="text-amber-300">didengar dengan penuh empati</strong>, disapa dengan bahasa yang <strong className="text-cyan-300">hangat dan mudah dipahami di warung kopi</strong>, serta diberikan <strong className="text-emerald-300">kepastian tindakan nyata yang melegakan hati</strong>.
+                                        </p>
+                                    </div>
+
+                                    {/* 3 Pilar Komunikasi Posko */}
+                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                        <div className="p-5 rounded-xl bg-slate-950 border border-amber-500/30 space-y-2.5">
+                                            <div className="w-8 h-8 rounded-lg bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-300 font-bold text-sm">
+                                                1
+                                            </div>
+                                            <h5 className="text-sm font-bold text-amber-200">Penuh Simpati & Validasi</h5>
+                                            <p className="text-xs text-slate-400 leading-relaxed">
+                                                Jangan defensif atau menyalahkan masyarakat. Awali kalimat dengan memvalidasi langsung kesulitan yang dirasakan warga. Tunjukkan bahwa pimpinan hadir dan peduli.
+                                            </p>
+                                        </div>
+
+                                        <div className="p-5 rounded-xl bg-slate-950 border border-cyan-500/30 space-y-2.5">
+                                            <div className="w-8 h-8 rounded-lg bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center text-cyan-300 font-bold text-sm">
+                                                2
+                                            </div>
+                                            <h5 className="text-sm font-bold text-cyan-200">Tutur Merakyat (Feynman)</h5>
+                                            <p className="text-xs text-slate-400 leading-relaxed">
+                                                Gunakan bahasa tutur lisan yang mengalir, hidup, dan enak didengar. Hindari istilah teknis kaku agar mudah dicerna oleh siapa pun di warung kopi maupun radio.
+                                            </p>
+                                        </div>
+
+                                        <div className="p-5 rounded-xl bg-slate-950 border border-emerald-500/30 space-y-2.5">
+                                            <div className="w-8 h-8 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-300 font-bold text-sm">
+                                                3
+                                            </div>
+                                            <h5 className="text-sm font-bold text-emerald-200">Solutif & Memuaskan</h5>
+                                            <p className="text-xs text-slate-400 leading-relaxed">
+                                                Warga terpuaskan oleh kepastian: siapa yang turun ke lapangan, alat apa yang dikerahkan, nomor rujukan SPK, dan nomor kontak posko aduan yang aktif 24 jam.
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    {/* Format 3 Naskah Pers Rinci */}
+                                    <div className="space-y-4">
+                                        <h4 className="text-xs font-mono uppercase tracking-wider text-slate-400 font-bold">
+                                            Rincian Format & Struktur 3 Naskah Pers:
+                                        </h4>
+
+                                        {/* 1. Siaran Pers Resmi */}
+                                        <div className="p-5 rounded-xl bg-slate-950 border border-slate-800 space-y-3">
+                                            <div className="flex items-center justify-between">
+                                                <div className="flex items-center gap-2">
+                                                    <span className="p-1.5 rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-500/40">
+                                                        <FileText className="w-4 h-4" />
+                                                    </span>
+                                                    <h5 className="text-sm font-bold text-white">1. Siaran Pers Resmi (press_release)</h5>
+                                                </div>
+                                                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-900 text-cyan-300 border border-slate-800">
+                                                    Distribusi: Media Massa & Portal Berita
+                                                </span>
+                                            </div>
+
+                                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                                                <div className="p-3 rounded-lg bg-slate-900 border border-slate-800 space-y-1">
+                                                    <div className="font-bold text-amber-300 text-[11px]">Paragraf 1: Validasi & Empati</div>
+                                                    <p className="text-slate-400 text-[11px] leading-relaxed">
+                                                        Menyampaikan apresiasi atas perhatian media/warga dan mengakui dengan jujur kesulitan yang dirasakan masyarakat.
+                                                    </p>
+                                                </div>
+                                                <div className="p-3 rounded-lg bg-slate-900 border border-slate-800 space-y-1">
+                                                    <div className="font-bold text-emerald-300 text-[11px]">Paragraf 2: Aksi Nyata Lapangan</div>
+                                                    <p className="text-slate-400 text-[11px] leading-relaxed">
+                                                        Merinci personel teknis yang turun, alat/logistik yang dikerahkan, dan nomor rujukan dokumen kerja (SPK/SK).
+                                                    </p>
+                                                </div>
+                                                <div className="p-3 rounded-lg bg-slate-900 border border-slate-800 space-y-1">
+                                                    <div className="font-bold text-cyan-300 text-[11px]">Paragraf 3: Kutipan Rendah Hati</div>
+                                                    <p className="text-slate-400 text-[11px] leading-relaxed">
+                                                        Kutipan langsung pimpinan: hadir untuk melayani, berterima kasih atas kontrol sosial pers, dan mengajak gotong royong.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* 2. Poin Bicara Juru Bicara Doorstop */}
+                                        <div className="p-5 rounded-xl bg-slate-950 border border-slate-800 space-y-3">
+                                            <div className="flex items-center justify-between">
+                                                <div className="flex items-center gap-2">
+                                                    <span className="p-1.5 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/40">
+                                                        <MessageSquare className="w-4 h-4" />
+                                                    </span>
+                                                    <h5 className="text-sm font-bold text-white">2. Poin Bicara Juru Bicara (spokesperson)</h5>
+                                                </div>
+                                                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-900 text-amber-300 border border-slate-800">
+                                                    Format: Doorstop Wartawan / Siaran Radio
+                                                </span>
+                                            </div>
+
+                                            <div className="p-3.5 rounded-lg bg-slate-900 border border-slate-800 space-y-2 text-xs font-mono text-slate-300">
+                                                <p className="text-amber-300 font-bold font-sans">Rumus 3 Poin Bicara Lisan:</p>
+                                                <div className="space-y-1.5 pl-2 border-l-2 border-amber-500/50">
+                                                    <p>• <strong>Poin 1 (Terima Kasih & Empati):</strong> <em>"Terima kasih rekan media dan warga yang sudah mengingatkan. Kami merasakan betul beban bapak-ibu di lapangan..."</em></p>
+                                                    <p>• <strong>Poin 2 (Aksi Hari Ini):</strong> <em>"Instruksi pimpinan tegas: hari ini tim teknis dinas sudah di lokasi membawa material dan alat penanganan cepat..."</em></p>
+                                                    <p>• <strong>Poin 3 (Keterbukaan & Kepastian):</strong> <em>"Rujukan anggarannya jelas (SPK No. 600). Posko aduan kami buka 24 jam dan kami kawal bersama warga sampai tuntas."</em></p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* 3. Lembar Hak Jawab Redaksi */}
+                                        <div className="p-5 rounded-xl bg-slate-950 border border-slate-800 space-y-3">
+                                            <div className="flex items-center justify-between">
+                                                <div className="flex items-center gap-2">
+                                                    <span className="p-1.5 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
+                                                        <Quote className="w-4 h-4" />
+                                                    </span>
+                                                    <h5 className="text-sm font-bold text-white">3. Lembar Hak Jawab Redaksi Pers (editorial_reply)</h5>
+                                                </div>
+                                                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-900 text-emerald-300 border border-slate-800">
+                                                    Payung Hukum: UU Pers No. 40/1999
+                                                </span>
+                                            </div>
+
+                                            <div className="p-3.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-300 leading-relaxed font-sans space-y-2">
+                                                <p>
+                                                    Disusun secara elegan, beradab tinggi, dan menghargai peran pers sebagai mitra pengawal demokrasi daerah. 
+                                                    Menyajikan klarifikasi data faktual secara kronologis tanpa nada menggurui atau mengancam somasi. Menutup dengan apresiasi kepada redaksi demi menjaga ruang publik yang berimbang dan menyejukkan.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Contoh Kasus Komparasi Nyata */}
+                                    <div className="p-5 rounded-xl bg-slate-950 border border-slate-800 space-y-3">
+                                        <h5 className="text-xs font-mono uppercase tracking-wider text-slate-400 font-bold">
+                                            Contoh Kasus Komparasi: Birokrasi Kaku vs Posko Simpatik
+                                        </h5>
+
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                                            <div className="p-4 rounded-xl bg-rose-950/20 border border-rose-500/30 space-y-2">
+                                                <div className="text-rose-400 font-bold flex items-center gap-1.5">
+                                                    <span>❌ Bahasa Birokrasi Kaku (Memicu Kekecewaan Warga):</span>
+                                                </div>
+                                                <p className="text-slate-300 italic leading-relaxed">
+                                                    "Terkait kerusakan jalan di lokasi tersebut, kami sampaikan bahwa proses lelang masih menunggu penetapan dan alokasi anggaran APBD sangat terbatas. Masyarakat dimohon bersabar mematuhi regulasi."
+                                                </p>
+                                                <p className="text-[11px] text-rose-300 font-mono">Dampak: Warga merasa diabaikan dan amarah publik meningkat.</p>
+                                            </div>
+
+                                            <div className="p-4 rounded-xl bg-emerald-950/20 border border-emerald-500/30 space-y-2">
+                                                <div className="text-emerald-400 font-bold flex items-center gap-1.5">
+                                                    <span> Bahasa Posko Simpatik Hermes (Menenangkan & Memuaskan):</span>
+                                                </div>
+                                                <p className="text-slate-200 leading-relaxed">
+                                                    "Kami sangat memahami beratnya perjuangan bapak-ibu yang setiap hari melintasi jalur ini, apalagi saat mengantar anak sekolah. Hari ini tim reaksi cepat dinas sudah berada di lokasi menurunkan alat berat dan batu uruk untuk penanganan darurat (SPK No. 600/BM/2026). Kami kawal bersama sampai jalur ini kembali aman dan nyaman."
+                                                </p>
+                                                <p className="text-[11px] text-emerald-300 font-mono">Dampak: Warga merasa didengar, tensi mereda, dan publik terpuaskan.</p>
                                             </div>
                                         </div>
                                     </div>

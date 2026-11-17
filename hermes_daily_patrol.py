@@ -131,29 +131,33 @@ def analyze_article(title: str, source: str, url: str, content: str, persona: st
         fakta = f"Program kemasyarakatan dan pelayanan publik di Ketapang berjalan konsisten sesuai agenda pembangunan."
         dokumen = "Laporan Kinerja Pemerintah Daerah (LKPD) Triwulan 2026"
 
-    # Penyusunan 3 Naskah Tanggapan Pers (Feynman Approach)
+    # Penyusunan 3 Naskah Tanggapan Pers (Doktrin Simpatik, Menarik Didengar & Memuaskan Warga)
     scripts = {
         "press_release": (
-            f"SIARAN PERS RESMI // PEMERINTAH DAERAH KABUPATEN KETAPANG\n\n"
-            f"KETAPANG — Terkait pemberitaan media massa mengenai '{title}', Pemerintah Daerah bersama instansi terkait menyampaikan penjelasan resmi:\n\n"
-            f"1. Langkah Cepat: Pemerintah Daerah telah menurunkan tim penanganan di lapangan guna memastikan pelayanan publik dan keselamatan warga tetap menjadi prioritas utama.\n"
-            f"2. Data Riil: {fakta}\n"
-            f"3. Komitmen: Kami senantiasa terbuka menerima aspirasi masyarakat dan masukan dari rekan-rekan insan pers demi kemajuan Kabupaten Ketapang.\n\n"
-            f"Narahubung Media Center: Humas Pemkab Ketapang / 0812-XXXX-XXXX"
+            "SIARAN PERS RESMI // PEMERINTAH DAERAH KABUPATEN KETAPANG\n\n"
+            f"Judul: Respons Cepat dan Perhatian Penuh Pemkab Ketapang Terkait '{title}'\n\n"
+            f"KETAPANG — Menyikapi perkembangan pemberitaan dan aspirasi warga terkait '{title}', Pemerintah Kabupaten Ketapang menyampaikan empati mendalam dan rasa terima kasih atas setiap masukan yang disampaikan masyarakat maupun rekan-rekan pers.\n\n"
+            f"1. Validasi Masalah & Empati: Kami memahami betul kegelisahan dan ketidaknyamanan yang dirasakan warga di lapangan. Aspirasi ini menjadi prioritas utama kami untuk segera dituntaskan.\n"
+            f"2. Aksi Lapangan Nyata: {fakta}. Seluruh penanganan di lokasi dikawal langsung oleh satuan teknis terkait berdasarkan {dokumen}.\n"
+            f"3. Arahan Tokoh Pemimpin: 'Pemerintah hadir bukan untuk membela diri atau berdebat, melainkan untuk melayani dan mendengarkan. Kami pastikan setiap persoalan dikawal sampai tuntas demi kemaslahatan warga Ketapang.'\n\n"
+            "Posko layanan aduan dan pusat informasi resmi terbuka penuh untuk masyarakat.\n"
+            "Narahubung Media Center: Humas Pemerintah Daerah Kabupaten Ketapang"
         ),
         "spokesperson": (
-            f"POIN BICARA JURU BICARA (DOORSTOP WARTAWAN):\n"
-            f"- Salam pembuka: Terima kasih atas atensi rekan-rekan media hari ini.\n"
-            f"- Poin inti: Mengenai '{title}', kami pastikan penanganannya sudah terjadwal dan tim teknis sudah berada di lokasi sejak pagi.\n"
-            f"- Penegasan: Kami meminta masyarakat tetap tenang dan mengedepankan informasi dari sumber resmi terverifikasi."
+            "POIN BICARA JURU BICARA (DOORSTOP WARTAWAN // BAHASA TUTUR MERAKYAT):\n"
+            f"- 'Pertama-tama, terima kasih banyak rekan-rekan media dan warga yang sudah mengingatkan kami. Kami merasakan betul apa yang menjadi keluhan bapak-ibu warga di lapangan terkait {title}.'\n"
+            "- 'Instruksi pimpinan sangat tegas: tim teknis dinas sudah langsung bergerak di lokasi untuk penanganan cepat. Kami tidak menunda-nunda.'\n"
+            f"- 'Rujukan dan anggarannya jelas ({dokumen}), jadi warga tidak perlu khawatir. Kami kawal bersama-sama sampai tuntas dan posko aduan kami buka 24 jam untuk siapa saja yang ingin mengecek.'\n"
         ),
         "editorial_reply": (
-            f"SURAT PERMOHONAN HAK JAWAB & KLARIFIKASI PERS (UU NO. 40/1999)\n\n"
+            "SURAT HAK JAWAB & PERMOHONAN KEBERIMBANGAN PERS (UU NO. 40/1999)\n\n"
             f"Kepada Yth. Pemimpin Redaksi {source}\n\n"
-            f"Menindaklanjuti artikel berita berjudul \"{title}\", kami bermaksud menggunakan hak jawab resmi untuk melengkapi informasi dengan data faktual lapangan sebagai berikut:\n"
-            f"Rujukan Dokumen: {dokumen}.\n"
-            f"Fakta Penanganan: {fakta}.\n"
-            f"Demikian permohonan hak jawab ini kami sampaikan demi prinsip keberimbangan berita."
+            "Dengan hormat,\n"
+            f"Menindaklanjuti artikel berita berjudul \"{title}\", kami sangat mengapresiasi fungsi kontrol sosial rekan-rekan insan pers yang senantiasa menjadi mitra strategis kemajuan Ketapang.\n\n"
+            "Demi menyajikan informasi yang utuh, berimbang, dan menenangkan masyarakat, perkenankan kami menyampaikan fakta lapangan dan data verifikasi terbaru:\n"
+            f"1. Fakta Penanganan Nyata: {fakta}\n"
+            f"2. Landasan Dokumen & Prosedur: {dokumen}\n\n"
+            "Besar harapan kami hak jawab ini dapat dimuat secara utuh sesuai amanat UU Pers No. 40/1999 dan Kode Etik Jurnalistik demi literasi publik yang mencerahkan. Atas kerja sama dan dedikasi rekan-rekan redaksi, kami haturkan terima kasih yang sebesar-besarnya.\n"
         )
     }
 

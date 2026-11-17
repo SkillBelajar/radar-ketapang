@@ -207,9 +207,9 @@ class HermesGatewayController extends Controller
 
         foreach ($articles as $index => $item) {
             $validator = Validator::make($item, [
-                'title' => 'required|string|max:255',
-                'source' => 'required|string|max:100',
-                'url' => 'required|string|max:500',
+                'title' => 'required|string|max:500',
+                'source' => 'required|string|max:150',
+                'url' => 'required|string|max:2000',
                 'published_at' => 'nullable|date',
                 'raw_content' => 'required|string',
                 'velocity_score' => 'required|integer|min:0|max:100',
