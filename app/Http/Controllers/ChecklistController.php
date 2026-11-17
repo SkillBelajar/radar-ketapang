@@ -209,8 +209,14 @@ class ChecklistController extends Controller
         $completedSteps = count(array_filter($stepsWithStatus, fn($s) => $s['is_checked']));
         $progressPercent = $totalSteps > 0 ? (int) round(($completedSteps / $totalSteps) * 100) : 0;
 
-        // Ambil token Hermes dari .env jika ada
-        $envToken = env('HERMES_API_TOKEN', 'hermes_sec_token_ketapang_2026_demo_uat');
+        // Ambil token Hermes dari config atau .env jika ada
+        $envToken = config('services.hermes.token');
+        if (empty($envToken) && file_exists(base_path('.env'))) {
+            if (preg_match('/^HERMES_API_TOKEN=(.*)$/m', file_get_contents(base_path('.env')), $m)) {
+                $envToken = trim($m[1]);
+            }
+        }
+        $envToken = $envToken ?: '13|1hh6XV5g9eYB4wQpJoNcTcJilDKVJNo779euz8vBf8051624';
 
         // Ringkasan data dummy saat ini
         $dummySummary = [

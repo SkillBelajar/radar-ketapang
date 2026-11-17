@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Head, usePage } from '@inertiajs/react';
+import { Head, usePage, router } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { 
     Shield, Key, Users, Radio, Bell, AlertTriangle, 
@@ -26,6 +26,7 @@ export default function UserGuide({ apiBaseUrl = 'https://radar.pawandigital.id/
 
     const [copiedField, setCopiedField] = useState(null);
     const [showPlainToken, setShowPlainToken] = useState(false);
+    const [isGeneratingToken, setIsGeneratingToken] = useState(false);
     const [hermesSubTab, setHermesSubTab] = useState('prompt'); // 'prompt' | 'script' | 'contract' | 'curl'
 
     const handleCopy = (text, fieldKey) => {
@@ -35,7 +36,17 @@ export default function UserGuide({ apiBaseUrl = 'https://radar.pawandigital.id/
         setTimeout(() => setCopiedField(null), 2000);
     };
 
-    const effectiveToken = plainToken || '3|JshViAe7W1LpcmJYWEQu0LNsmvHLshWqVBQFm7ks4eed8e1d';
+    const handleGenerateNewToken = () => {
+        if (confirm('Terbitkan kunci akses Hermes baru? Token lama akan digantikan dengan token baru.')) {
+            setIsGeneratingToken(true);
+            router.post(route('user-guide.generate-token'), {}, {
+                preserveScroll: true,
+                onFinish: () => setIsGeneratingToken(false),
+            });
+        }
+    };
+
+    const effectiveToken = plainToken || '13|1hh6XV5g9eYB4wQpJoNcTcJilDKVJNo779euz8vBf8051624';
     const displayToken = showPlainToken 
         ? effectiveToken 
         : (maskedToken || (effectiveToken.slice(0, 5) + '••••••••••••••••' + effectiveToken.slice(-5)));
@@ -589,9 +600,20 @@ if __name__ == "__main__":
                                             {copiedField === 'token' ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
                                         </button>
                                     </div>
-                                    <div className="text-[10px] text-slate-500 flex items-center justify-between">
-                                        <span>Diperlukan agar asisten diizinkan menyetor data</span>
-                                        <span className="text-cyan-400">Aman & Terenkripsi</span>
+                                    <div className="text-[10px] text-slate-500 flex items-center justify-between pt-1">
+                                        <span>Status: <strong className="text-emerald-400">Aktif di Database</strong></span>
+                                        {userRole === 'admin' && (
+                                            <button
+                                                type="button"
+                                                disabled={isGeneratingToken}
+                                                onClick={handleGenerateNewToken}
+                                                className="text-[10px] px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-cyan-400 hover:text-cyan-300 font-bold border border-slate-700 flex items-center gap-1 transition-all cursor-pointer"
+                                                title="Terbitkan Token Baru jika masa berlaku habis"
+                                            >
+                                                <RefreshCw className={`w-3 h-3 ${isGeneratingToken ? 'animate-spin' : ''}`} />
+                                                <span>{isGeneratingToken ? 'Menerbitkan...' : 'Buat Token Baru'}</span>
+                                            </button>
+                                        )}
                                     </div>
                                 </div>
                             </div>

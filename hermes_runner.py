@@ -42,7 +42,7 @@ def get_env_token():
                         return line.strip().split("=", 1)[1].strip("\"'")
         except Exception:
             pass
-    return "10|8hkSeWC4hwuHI4Ipe3PsMH3TbHDdh48n3Zwt9qIqd660e197"
+    return "13|1hh6XV5g9eYB4wQpJoNcTcJilDKVJNo779euz8vBf8051624"
 
 API_BASE = os.getenv("RADAR_API_URL", "https://radar.pawandigital.id/api/v1/hermes")
 HERMES_TOKEN = get_env_token()

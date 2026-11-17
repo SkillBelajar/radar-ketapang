@@ -27,14 +27,14 @@ Tugas Anda adalah:
 
 Kredensial Sambungan:
 - Base URL: https://radar.pawandigital.id/api/v1/hermes
-- Token Akses: Bearer 12|KonMQMooBI1zpSyEKONWZv5NEvE4AMtGu0BS5pMq3a7fcf6f
+- Token Akses: Bearer 13|1hh6XV5g9eYB4wQpJoNcTcJilDKVJNo779euz8vBf8051624
 
 Langkah Kerja Otomatis:
 
 Langkah 1: Ambil Topik Pantauan dari Pengaturan Sasaran (/target-setup)
 Kirim permintaan HTTP GET ke:
 GET https://radar.pawandigital.id/api/v1/hermes/target-parameters
-Header: Authorization: Bearer 12|KonMQMooBI1zpSyEKONWZv5NEvE4AMtGu0BS5pMq3a7fcf6f
+Header: Authorization: Bearer 13|1hh6XV5g9eYB4wQpJoNcTcJilDKVJNo779euz8vBf8051624
 
 Dari respons sistem, baca data berikut:
 - primary_keywords: Daftar topik yang sedang dipantau (contoh: ["Bupati Ketapang", "Pilkada Ketapang", "Pembangunan Ketapang", "Infrastruktur Jalan Pawan"]).
@@ -84,7 +84,7 @@ Kirim seluruh paket berita hasil analisis dalam satu payload:
 POST https://radar.pawandigital.id/api/v1/hermes/push-news
 Header:
   Content-Type: application/json
-  Authorization: Bearer 12|KonMQMooBI1zpSyEKONWZv5NEvE4AMtGu0BS5pMq3a7fcf6f
+  Authorization: Bearer 13|1hh6XV5g9eYB4wQpJoNcTcJilDKVJNo779euz8vBf8051624
 
 Format Body JSON:
 {
@@ -197,7 +197,7 @@ Token otomatis tersimpan di file `.env` sebagai `HERMES_API_TOKEN`.
 - **Contoh Request:**
   ```bash
   curl -s -X GET "https://radar.pawandigital.id/api/v1/hermes/target-parameters" \
-       -H "Authorization: Bearer 12|KonMQMooBI1zpSyEKONWZv5NEvE4AMtGu0BS5pMq3a7fcf6f" \
+       -H "Authorization: Bearer 13|1hh6XV5g9eYB4wQpJoNcTcJilDKVJNo779euz8vBf8051624" \
        -H "Accept: application/json"
   ```
 - **Contoh Respons:**
@@ -222,7 +222,7 @@ Token otomatis tersimpan di file `.env` sebagai `HERMES_API_TOKEN`.
   ```bash
   curl -s -X POST "https://radar.pawandigital.id/api/v1/hermes/push-news" \
        -H "Content-Type: application/json" \
-       -H "Authorization: Bearer 12|KonMQMooBI1zpSyEKONWZv5NEvE4AMtGu0BS5pMq3a7fcf6f" \
+       -H "Authorization: Bearer 13|1hh6XV5g9eYB4wQpJoNcTcJilDKVJNo779euz8vBf8051624" \
        -d '{
          "articles": [
            {
