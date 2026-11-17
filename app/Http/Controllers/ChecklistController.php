@@ -29,11 +29,11 @@ class ChecklistController extends Controller
                 'summary' => 'Memastikan pembagian tugas berjalan rapi antara Pengelola Utama, Tim Lapangan, dan Tim Media.',
                 'steps' => [
                     'Keluar dari akun saat ini lalu masuk dengan akun Tim Media (influencer@radar.com / password).',
-                    'Coba buka menu "Pengaturan Sasaran" (/target-setup). Pastikan muncul pesan Akses Terbatas (HTTP 403), karena menu ini khusus pengelola.',
-                    'Masuk kembali sebagai Tim Lapangan (timses@radar.com / password) untuk memeriksa akses posko berita dan ruang naskah pers.',
+                    'Buka menu "Pengaturan Sasaran" (/target-setup) di bilah atas. Pastikan sistem menampilkan halaman Akses Terbatas (HTTP 403), karena menu ini khusus untuk Pengelola Utama dan Tim Lapangan.',
+                    'Masuk kembali sebagai Tim Lapangan (timses@radar.com / password) untuk memeriksa akses ke Papan Berita dan Ruang Media & Pers.',
                     'Masuk kembali sebagai Pengelola Utama (admin@radar.com / password) untuk mendapatkan kendali penuh ke semua menu.',
                 ],
-                'target_url' => '/login',
+                'target_url' => '/target-setup',
                 'role_required' => 'Semua Peran',
             ],
             [

@@ -8,19 +8,24 @@ use App\Models\TargetSetup;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use Inertia\Response;
+use Inertia\Response as InertiaResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class TargetSetupController extends Controller
 {
     /**
      * Display the Target Setup & Credible Feed Hub dashboard.
      */
-    public function index(Request $request): Response
+    public function index(Request $request): InertiaResponse|Response
     {
         // Enforce RBAC: Only 'admin' and 'timses' roles are authorized
         $user = $request->user();
         if (!$user || !in_array($user->role, ['admin', 'timses'])) {
-            abort(403, 'Akses Ditolak: Modul Konfigurasi Target Pantauan hanya dapat diakses oleh Administrator Utama dan Tim Sukses.');
+            return Inertia::render('Errors/Forbidden', [
+                'status' => 403,
+                'module' => 'Pengaturan Sasaran & Kata Kunci',
+                'userRole' => $user?->role ?? 'influencer',
+            ])->toResponse($request)->setStatusCode(403);
         }
 
         $targetSetup = TargetSetup::getOrCreate();

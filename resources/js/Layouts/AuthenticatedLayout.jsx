@@ -179,19 +179,25 @@ export default function AuthenticatedLayout({ header, children }) {
                                     <span>LEMBAR PENGUJIAN</span>
                                 </Link>
 
-                                {['admin', 'timses'].includes(user?.role) && (
-                                    <Link
-                                        href="/target-setup"
-                                        className={`px-3 py-1.5 rounded-lg flex items-center gap-1.5 font-bold transition-all ${
-                                            url.startsWith('/target-setup')
-                                                ? 'bg-emerald-950/80 text-emerald-300 border border-emerald-500/50 shadow-[0_0_12px_rgba(16,185,129,0.25)]'
-                                                : 'text-slate-300 hover:text-white hover:bg-slate-900 border border-slate-800'
-                                        }`}
-                                    >
-                                        <Radio className="w-3.5 h-3.5 text-emerald-400" />
-                                        <span>ATUR KATA KUNCI</span>
-                                    </Link>
-                                )}
+                                <Link
+                                    href="/target-setup"
+                                    className={`px-3 py-1.5 rounded-lg flex items-center gap-1.5 font-bold transition-all ${
+                                        url.startsWith('/target-setup')
+                                            ? 'bg-emerald-950/80 text-emerald-300 border border-emerald-500/50 shadow-[0_0_12px_rgba(16,185,129,0.25)]'
+                                            : user?.role === 'influencer'
+                                            ? 'text-slate-400 hover:text-rose-300 hover:bg-slate-900 border border-slate-800'
+                                            : 'text-slate-300 hover:text-white hover:bg-slate-900 border border-slate-800'
+                                    }`}
+                                    title={user?.role === 'influencer' ? 'Pengaturan Sasaran (Akses Dibatasi Khusus Pengelola & Timses)' : 'Pengaturan Sasaran & Kata Kunci'}
+                                >
+                                    <Radio className={`w-3.5 h-3.5 ${user?.role === 'influencer' ? 'text-rose-400' : 'text-emerald-400'}`} />
+                                    <span>PENGATURAN SASARAN</span>
+                                    {user?.role === 'influencer' && (
+                                        <span className="text-[9px] px-1.5 py-0.2 rounded bg-rose-950/90 text-rose-300 border border-rose-500/50 font-mono">
+                                            403
+                                        </span>
+                                    )}
+                                </Link>
 
                                 <Link
                                     href="/user-guide"
@@ -533,19 +539,26 @@ export default function AuthenticatedLayout({ header, children }) {
                                 Lembar Pengujian (UAT)
                             </Link>
 
-                            {['admin', 'timses'].includes(user?.role) && (
-                                <Link
-                                    href="/target-setup"
-                                    className={`block px-3 py-2 rounded-lg font-bold ${
-                                        url.startsWith('/target-setup')
-                                            ? 'bg-emerald-950 text-emerald-300 border border-emerald-500/50'
-                                            : 'text-slate-300 hover:bg-slate-900 border border-slate-800'
-                                    }`}
-                                >
-                                    <Radio className="w-3.5 h-3.5 inline mr-2 text-emerald-400" />
-                                    Atur Kata Kunci
-                                </Link>
-                            )}
+                            <Link
+                                href="/target-setup"
+                                className={`flex items-center justify-between px-3 py-2 rounded-lg font-bold ${
+                                    url.startsWith('/target-setup')
+                                        ? 'bg-emerald-950 text-emerald-300 border border-emerald-500/50'
+                                        : user?.role === 'influencer'
+                                        ? 'text-slate-400 hover:bg-slate-900 border border-slate-800'
+                                        : 'text-slate-300 hover:bg-slate-900 border border-slate-800'
+                                }`}
+                            >
+                                <div className="flex items-center gap-2">
+                                    <Radio className={`w-3.5 h-3.5 ${user?.role === 'influencer' ? 'text-rose-400' : 'text-emerald-400'}`} />
+                                    <span>Pengaturan Sasaran</span>
+                                </div>
+                                {user?.role === 'influencer' && (
+                                    <span className="text-[10px] px-1.5 py-0.5 rounded bg-rose-950 text-rose-300 border border-rose-500/50 font-mono">
+                                        Terkunci (403)
+                                    </span>
+                                )}
+                            </Link>
 
                             <Link
                                 href="/user-guide"
