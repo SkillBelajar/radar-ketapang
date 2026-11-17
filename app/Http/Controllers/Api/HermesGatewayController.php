@@ -145,4 +145,151 @@ class HermesGatewayController extends Controller
             ],
         ], 200);
     }
+
+    /**
+     * GET /api/v1/hermes/target-parameters
+     * 
+     * Memberikan kata kunci dan instruksi pemantauan terkini kepada Hermes Agent.
+     */
+    public function targetParameters(): JsonResponse
+    {
+        $targetSetup = TargetSetup::getOrCreate();
+
+        return response()->json([
+            'status' => 'success',
+            'app_version' => config('app.version', '1.0 (Release Candidate)'),
+            'primary_keywords' => $targetSetup->primary_keywords ?? ['Bupati Ketapang'],
+            'negative_keywords' => $targetSetup->negative_keywords ?? ['korupsi', 'dinasti politik', 'karhutla'],
+            'persona' => $targetSetup->persona ?? 'Calon pemimpin daerah yang santun, rekam jejak birokrasi transparan, mengutamakan percepatan infrastruktur konektivitas pedalaman Ketapang.',
+            'trusted_press_portals' => [
+                'Antara Kalbar' => 'https://kalbar.antaranews.com',
+                'Pontianak Post' => 'https://pontianakpost.jawapos.com',
+                'Suara Pemred Kalbar' => 'https://suarapemredkalbar.com',
+                'Tribun Pontianak' => 'https://pontianak.tribunnews.com',
+            ],
+            'instructions' => [
+                'role' => 'Hermes bertindak sebagai Agen Intelijen & Analis Berita Independen.',
+                'task' => 'Cari berita harian berdasarkan kata kunci di atas, lakukan analisis mendalam, lalu kirimkan paket berita lengkap beserta hasil analisis ke endpoint push_endpoint.',
+                'push_endpoint' => url('/api/v1/hermes/push-news'),
+                'scoring_rules' => [
+                    'sentiment' => 'positive, neutral, negative',
+                    'velocity_score' => '0 (tenang) hingga 100 (krisis viral)',
+                    'fact_anchor' => 'petakan tuduhan vs fakta lapangan vs dokumen rujukan',
+                    'scripts' => 'susun 3 naskah: press_release, spokesperson, editorial_reply',
+                ],
+            ],
+        ], 200);
+    }
+
+    /**
+     * POST /api/v1/hermes/push-news
+     * 
+     * Menerima kiriman berita baru harian yang SUDAH dianalisis oleh Hermes Agent.
+     * Sistem web tidak mengambil berita sendiri, melainkan menerima push dari Hermes.
+     */
+    public function pushNews(Request $request): JsonResponse
+    {
+        $payload = $request->all();
+        $articles = isset($payload['articles']) && is_array($payload['articles'])
+            ? $payload['articles']
+            : (isset($payload['title']) ? [$payload] : []);
+
+        if (empty($articles)) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Format payload tidak sesuai. Kirimkan array "articles" atau objek artikel berita tunggal.',
+            ], 422);
+        }
+
+        $savedCount = 0;
+        $updatedCount = 0;
+        $processed = [];
+
+        foreach ($articles as $index => $item) {
+            $validator = Validator::make($item, [
+                'title' => 'required|string|max:255',
+                'source' => 'required|string|max:100',
+                'url' => 'required|string|max:500',
+                'published_at' => 'nullable|date',
+                'raw_content' => 'required|string',
+                'velocity_score' => 'required|integer|min:0|max:100',
+                'sentiment' => 'required|string|in:positive,neutral,negative',
+                'status' => 'nullable|string|in:success,integrity_alert,analyzed',
+                'fact_anchor' => 'nullable|array',
+                'scripts' => 'nullable|array',
+            ], [
+                'title.required' => "Judul artikel index {$index} wajib diisi.",
+                'source.required' => "Sumber media index {$index} wajib diisi.",
+                'url.required' => "URL artikel index {$index} wajib diisi.",
+                'raw_content.required' => "Isi berita index {$index} wajib diisi.",
+                'velocity_score.required' => "Skor suhu kecepatan krisis index {$index} wajib diisi.",
+                'sentiment.required' => "Sentimen index {$index} wajib diisi (positive/neutral/negative).",
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => "Validasi artikel pada index {$index} gagal.",
+                    'errors' => $validator->errors(),
+                ], 422);
+            }
+
+            $validated = $validator->validated();
+
+            // Hindari duplikasi berdasarkan URL berita yang sama
+            $newsFeed = NewsFeed::where('url', $validated['url'])->first();
+            $isNew = false;
+
+            if (!$newsFeed) {
+                $newsFeed = new NewsFeed();
+                $newsFeed->url = $validated['url'];
+                $isNew = true;
+            }
+
+            $newsFeed->title = $validated['title'];
+            $newsFeed->source = $validated['source'];
+            $newsFeed->published_at = !empty($validated['published_at']) ? $validated['published_at'] : now();
+            $newsFeed->raw_content = $validated['raw_content'];
+            $newsFeed->velocity_score = $validated['velocity_score'];
+            $newsFeed->sentiment = $validated['sentiment'];
+            $newsFeed->status = 'analyzed';
+            $newsFeed->ai_status = $validated['status'] ?? ($validated['velocity_score'] >= 85 && $validated['sentiment'] === 'negative' ? 'integrity_alert' : 'success');
+            $newsFeed->fact_anchor = $validated['fact_anchor'] ?? null;
+            $newsFeed->scripts = $validated['scripts'] ?? null;
+            $newsFeed->save();
+
+            if ($isNew) {
+                $savedCount++;
+            } else {
+                $updatedCount++;
+            }
+
+            // Kirim notifikasi jika krisis hangat (score >= 40) atau integrity_alert
+            if ($newsFeed->velocity_score >= 40 || $newsFeed->ai_status === 'integrity_alert') {
+                $users = User::all();
+                if ($users->isNotEmpty()) {
+                    Notification::send($users, new NewCrisisAlert($newsFeed));
+                }
+            }
+
+            $processed[] = [
+                'id' => $newsFeed->id,
+                'title' => $newsFeed->title,
+                'source' => $newsFeed->source,
+                'velocity_score' => $newsFeed->velocity_score,
+                'sentiment' => $newsFeed->sentiment,
+                'ai_status' => $newsFeed->ai_status,
+                'status' => $newsFeed->status,
+            ];
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => "Berhasil memproses kiriman berita dari Hermes Agent: {$savedCount} berita baru disimpan, {$updatedCount} berita diperbarui.",
+            'total_received' => count($articles),
+            'new_saved' => $savedCount,
+            'updated' => $updatedCount,
+            'data' => $processed,
+        ], 200);
+    }
 }

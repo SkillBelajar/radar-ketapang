@@ -101,51 +101,51 @@ headers = {
     "Content-Type": "application/json"
 }
 
-def run_hermes_cycle():
-    # 1. Ambil berita pending
-    print("Memeriksa berita pending...")
-    res = requests.get(f"{API_BASE}/fetch-news", headers=headers, timeout=20)
-    data = res.json()
+def run_hermes_daily_patrol():
+    # 1. Ambil parameter target kata kunci terkini dari sistem
+    print("1. Mengambil parameter target kata kunci...")
+    res = requests.get(f"{API_BASE}/target-parameters", headers=headers, timeout=20)
+    params = res.json()
+    keywords = params.get("primary_keywords", ["Bupati Ketapang"])
     
-    total = data.get("total_pending", 0)
-    if total == 0:
-        print("Tidak ada berita pending.")
-        return
-
-    print(f"Ditemukan {total} berita siap diproses!")
-    instructions = data.get("instructions", {})
-    persona = instructions.get("target_parameters", {}).get("persona", "")
-    
-    for item in data.get("data", []):
-        print(f"Memproses #{item['id']}: {item['title']}...")
-        
-        # 2. Panggil Model LLM Hermes dengan prompt kontekstual
-        # prompt = build_hermes_prompt(item, persona)
-        # response_ai = call_hermes_model(prompt)
-        
-        # 3. Kirim kembali hasil ke Webhook Laravel
-        payload = {
-            "news_id": item["id"],
-            "status": "success", # atau "integrity_alert"
-            "velocity_score": 85,
-            "sentiment": "negative",
+    # 2. Cari berita online harian & lakukan analisis intelijen AI
+    print(f"2. Menganalisis berita harian terkini...")
+    articles_payload = [
+        {
+            "title": "Penyaluran Bantuan Sembako Warga Terdampak Banjir Berjalan Lancar",
+            "source": "Antara Kalbar",
+            "url": "https://kalbar.antaranews.com/berita/bantuan-sembako-ketapang",
+            "published_at": "2026-11-17T09:00:00Z",
+            "raw_content": "Pemerintah Daerah bersama Satgas BPBD Ketapang menyalurkan paket sembako...",
+            "velocity_score": 25,
+            "sentiment": "positive",
+            "status": "success",
             "fact_anchor": {
-                "tuduhan": "Klaim lawan politik...",
-                "fakta_lapangan": "Data fakta terverifikasi di lapangan...",
-                "dokumen_rujukan": "SK Dinas PUPR Ketapang 2026"
+                "tuduhan": "Tidak ada tuduhan negatif",
+                "fakta_lapangan": "Bantuan logistik telah diserahterimakan",
+                "dokumen_rujukan": "Berita Acara BPBD No. 440/2026"
             },
             "scripts": {
-                "press_release": "Draf Siaran Pers 5W+1H...",
-                "spokesperson": "Poin wawancara doorstop...",
-                "editorial_reply": "Lembar Hak Jawab UU Pers No. 40/1999..."
+                "press_release": "Siaran Pers: Pemkab Ketapang Salurkan Bantuan...",
+                "spokesperson": "Poin Juru Bicara: Penyaluran logistik tuntas...",
+                "editorial_reply": "Apresiasi peliputan pers lokal..."
             }
         }
-        
-        post_res = requests.post(f"{API_BASE}/webhook", headers=headers, json=payload, timeout=20)
-        print(f"Status kirim webhook #{item['id']}: {post_res.status_code}")
+    ]
+    
+    # 3. Kirim paket berita + hasil analisis ke sistem (Push Ingestion)
+    print("3. Mengirimkan (push) berita dan analisis ke sistem...")
+    post_res = requests.post(
+        f"{API_BASE}/push-news",
+        headers=headers,
+        json={"articles": articles_payload},
+        timeout=30
+    )
+    print(f"Status kirim push: {post_res.status_code}")
+    print(post_res.json())
 
 if __name__ == "__main__":
-    run_hermes_cycle()`;
+    run_hermes_daily_patrol()`;
 
     const sampleWebhookSuccess = `{
   "news_id": 4,
@@ -571,7 +571,7 @@ if __name__ == "__main__":
                                     }`}
                                 >
                                     <Code className="w-3.5 h-3.5 text-cyan-400" />
-                                    <span>2. Runner Python (hermes_runner.py)</span>
+                                    <span>2. Pengiriman Harian (hermes_daily_patrol.py)</span>
                                 </button>
 
                                 <button
@@ -584,7 +584,7 @@ if __name__ == "__main__":
                                     }`}
                                 >
                                     <Layers className="w-3.5 h-3.5 text-cyan-400" />
-                                    <span>3. Format JSON Webhook</span>
+                                    <span>3. Format JSON Berita & Analisis (Push)</span>
                                 </button>
 
                                 <button
@@ -597,7 +597,7 @@ if __name__ == "__main__":
                                     }`}
                                 >
                                     <Terminal className="w-3.5 h-3.5 text-cyan-400" />
-                                    <span>4. Uji Cepat via cURL</span>
+                                    <span>4. Uji Cepat via cURL (Push & Target)</span>
                                 </button>
                             </div>
 
@@ -644,10 +644,10 @@ if __name__ == "__main__":
                                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                                         <div>
                                             <h4 className="text-sm font-bold text-white">
-                                                Program Penjalur Otomatis (hermes_runner.py)
+                                                Program Pengiriman Berita Harian (hermes_daily_patrol.py)
                                             </h4>
                                             <p className="text-xs text-slate-400">
-                                                File telah tersedia di folder proyek: <code>/home/x/workspace/radar-ketapang/hermes_runner.py</code>
+                                                File telah tersedia di folder proyek: <code>/home/x/workspace/radar-ketapang/hermes_daily_patrol.py</code>
                                             </p>
                                         </div>
                                         <button
@@ -676,12 +676,12 @@ if __name__ == "__main__":
                                     {/* Command Execution Guide */}
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                                         <div className="p-3 rounded-lg bg-slate-950 border border-slate-800">
-                                            <div className="text-slate-400 text-[10px] mb-1 font-bold">JALANKAN SEKALI BACA:</div>
-                                            <code className="text-cyan-300">python hermes_runner.py</code>
+                                            <div className="text-slate-400 text-[10px] mb-1 font-bold">EKSEKUSI PATROLI SEKARANG:</div>
+                                            <code className="text-cyan-300">python3 hermes_daily_patrol.py</code>
                                         </div>
                                         <div className="p-3 rounded-lg bg-slate-950 border border-slate-800">
-                                            <div className="text-slate-400 text-[10px] mb-1 font-bold">JALANKAN TERUS-MENERUS (TIAP 30 DETIK):</div>
-                                            <code className="text-emerald-300">python hermes_runner.py --loop</code>
+                                            <div className="text-slate-400 text-[10px] mb-1 font-bold">UJI SIMULASI (DRY-RUN):</div>
+                                            <code className="text-emerald-300">python3 hermes_daily_patrol.py --dry-run</code>
                                         </div>
                                     </div>
                                 </div>
@@ -742,10 +742,10 @@ if __name__ == "__main__":
                                     <div className="space-y-3 text-xs">
                                         <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
                                             <div className="flex items-center justify-between text-slate-400">
-                                                <span className="font-bold text-cyan-400">1. UJI AMBIL BERITA YANG BELUM DIPROSES</span>
+                                                <span className="font-bold text-cyan-400">1. AMBIL KATA KUNCI SASARAN & PERSONA</span>
                                                 <button
                                                     type="button"
-                                                    onClick={() => handleCopy(`curl -s -X GET "${apiBaseUrl}/fetch-news" -H "Authorization: Bearer ***" -H "Accept: application/json"`, 'curlGet')}
+                                                    onClick={() => handleCopy(`curl -s -X GET "${apiBaseUrl}/target-parameters" -H "Authorization: Bearer ${effectiveToken}" -H "Accept: application/json"`, 'curlGet')}
                                                     className="text-slate-400 hover:text-white flex items-center gap-1 text-[11px] cursor-pointer"
                                                 >
                                                     {copiedField === 'curlGet' ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
@@ -753,8 +753,8 @@ if __name__ == "__main__":
                                                 </button>
                                             </div>
                                             <div className="p-3 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 font-mono overflow-x-auto">
-                                                <code>curl -s -X GET "{apiBaseUrl}/fetch-news" \<br />
-                                                &nbsp;&nbsp;&nbsp;&nbsp;-H "Authorization: Bearer ***" \<br />
+                                                <code>curl -s -X GET "{apiBaseUrl}/target-parameters" \<br />
+                                                &nbsp;&nbsp;&nbsp;&nbsp;-H "Authorization: Bearer {effectiveToken}" \<br />
                                                 &nbsp;&nbsp;&nbsp;&nbsp;-H "Accept: application/json"
                                                 </code>
                                             </div>
@@ -762,10 +762,10 @@ if __name__ == "__main__":
 
                                         <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
                                             <div className="flex items-center justify-between text-slate-400">
-                                                <span className="font-bold text-emerald-400">2. UJI SETOR HASIL ANALISIS</span>
+                                                <span className="font-bold text-emerald-400">2. KIRIM BERITA + HASIL ANALISIS (PUSH INGESTION)</span>
                                                 <button
                                                     type="button"
-                                                    onClick={() => handleCopy(`curl -s -X POST "${apiBaseUrl}/webhook" -H "Authorization: Bearer ***" -H "Content-Type: application/json" -H "Accept: application/json" -d '{"news_id":1,"status":"success","velocity_score":80,"sentiment":"negative","fact_anchor":{"tuduhan":"Kelambatan jalan","fakta_lapangan":"Pekerjaan fisik aktif","dokumen_rujukan":"SPK DPU-PR"},"scripts":{"press_release":"Draf Siaran Pers","spokesperson":"Poin Wawancara","editorial_reply":"Hak Jawab"}}'`, 'curlPost')}
+                                                    onClick={() => handleCopy(`curl -s -X POST "${apiBaseUrl}/push-news" -H "Authorization: Bearer ${effectiveToken}" -H "Content-Type: application/json" -H "Accept: application/json" -d '{"articles":[{"title":"Contoh Berita Positif","source":"Antara Kalbar","url":"https://kalbar.antaranews.com/berita/contoh-1","published_at":"2026-11-17T09:00:00Z","raw_content":"Isi berita...","velocity_score":25,"sentiment":"positive","status":"success","fact_anchor":{"tuduhan":"Tidak ada","fakta_lapangan":"Pekerjaan berjalan lancar","dokumen_rujukan":"SPK DPU-PR"},"scripts":{"press_release":"Siaran Pers","spokesperson":"Poin Bicara","editorial_reply":"Apresiasi pers"}}]}'`, 'curlPost')}
                                                     className="text-slate-400 hover:text-white flex items-center gap-1 text-[11px] cursor-pointer"
                                                 >
                                                     {copiedField === 'curlPost' ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
@@ -773,11 +773,11 @@ if __name__ == "__main__":
                                                 </button>
                                             </div>
                                             <div className="p-3 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 font-mono overflow-x-auto">
-                                                <code>curl -s -X POST "{apiBaseUrl}/webhook" \<br />
-                                                &nbsp;&nbsp;&nbsp;&nbsp;-H "Authorization: Bearer ***" \<br />
+                                                <code>curl -s -X POST "{apiBaseUrl}/push-news" \<br />
+                                                &nbsp;&nbsp;&nbsp;&nbsp;-H "Authorization: Bearer {effectiveToken}" \<br />
                                                 &nbsp;&nbsp;&nbsp;&nbsp;-H "Content-Type: application/json" \<br />
                                                 &nbsp;&nbsp;&nbsp;&nbsp;-H "Accept: application/json" \<br />
-                                                &nbsp;&nbsp;&nbsp;&nbsp;-d '&#123;"news_id":1,"status":"success","velocity_score":80,"sentiment":"negative","fact_anchor":&#123;...&#125;,"scripts":&#123;...&#125;&#125;'
+                                                &nbsp;&nbsp;&nbsp;&nbsp;-d '&#123;"articles":[&#123;"title":"...","source":"Antara Kalbar","url":"...","velocity_score":25,"sentiment":"positive","scripts":&#123;...&#125;&#125;]&#125;'
                                                 </code>
                                             </div>
                                         </div>
