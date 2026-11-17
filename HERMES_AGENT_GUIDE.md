@@ -6,6 +6,87 @@ Dokumen ini adalah referensi definitif bagi Administrator dan Operator AI untuk 
 
 ---
 
+## ⚡ PANDUAN CEPAT: APA SAJA YANG PERLU DI-COPY PASTE KE HERMES?
+
+Tergantung pada cara Anda mengoperasikan Hermes, pilih **salah satu**:
+
+### PILIHAN 1: Jika Anda Menggunakan Hermes Chat / AI Agent CLI (Copy Teks Prompt)
+Salin teks prompt di bawah ini lalu tempelkan (*paste*) langsung ke Hermes Anda:
+
+```text
+Peran Anda:
+Agen Intelijen Media & Analis Komunikasi Politik Pilkada Kabupaten Ketapang.
+
+Misi Utama:
+Sistem Radar Politik bekerja dalam mode Push-Only (murni pasif). Tugas Anda setiap hari adalah mencari berita terkini, menganalisis suhu dan naskah pers, lalu mengirimkan seluruh hasilnya ke sistem Radar Politik.
+
+Kredensial Sambungan:
+- Base URL: https://radar.pawandigital.id/api/v1/hermes
+- Token Akses: Bearer 12|KonMQMooBI1zpSyEKONWZv5NEvE4AMtGu0BS5pMq3a7fcf6f
+
+Langkah Kerja Otomatis:
+1. Baca target kata kunci pantauan dan profil persona dari server:
+   GET https://radar.pawandigital.id/api/v1/hermes/target-parameters
+   Header: Authorization: Bearer 12|KonMQMooBI1zpSyEKONWZv5NEvE4AMtGu0BS5pMq3a7fcf6f
+
+2. Cari berita online harian di portal pers daerah Kalbar (Antara Kalbar, Pontianak Post, Suara Pemred Kalbar, Tribun Pontianak).
+
+3. Lakukan analisis intelijen untuk setiap artikel:
+   - velocity_score (0 tenang s/d 100 krisis viral).
+   - sentiment ('positive', 'neutral', atau 'negative').
+   - status ('integrity_alert' jika fitnah murni / survei palsu; 'success' jika pemberitaan umum).
+   - fact_anchor (tuduhan, fakta_lapangan, dokumen_rujukan).
+   - scripts (press_release, spokesperson, editorial_reply).
+
+4. Kirimkan seluruh paket berita dan analisis ke server Radar Politik:
+   POST https://radar.pawandigital.id/api/v1/hermes/push-news
+   Header:
+     Content-Type: application/json
+     Authorization: Bearer 12|KonMQMooBI1zpSyEKONWZv5NEvE4AMtGu0BS5pMq3a7fcf6f
+   Format Body JSON:
+   {
+     "articles": [
+       {
+         "title": "Judul Berita",
+         "source": "Nama Media",
+         "url": "https://...",
+         "published_at": "2026-11-17T09:00:00Z",
+         "raw_content": "Ringkasan isi berita...",
+         "velocity_score": 85,
+         "sentiment": "negative",
+         "status": "success",
+         "fact_anchor": {
+           "tuduhan": "...",
+           "fakta_lapangan": "...",
+           "dokumen_rujukan": "..."
+         },
+         "scripts": {
+           "press_release": "...",
+           "spokesperson": "...",
+           "editorial_reply": "..."
+         }
+       }
+     ]
+   }
+```
+
+---
+
+### PILIHAN 2: Jika Menggunakan Skrip Otomasi Harian (Tanpa Ketik Ulang)
+File program sudah dibuat dan tersimpan di server Anda di:
+`/home/x/workspace/radar-ketapang/hermes_daily_patrol.py`
+
+Cukup jalankan di terminal:
+```bash
+python3 /home/x/workspace/radar-ketapang/hermes_daily_patrol.py
+```
+Atau pasang di `crontab -e` agar jalan setiap hari jam 07:00 pagi:
+```bash
+0 7 * * * /usr/bin/python3 /home/x/workspace/radar-ketapang/hermes_daily_patrol.py >> /var/log/hermes_patrol.log 2>&1
+```
+
+---
+
 ### 1. Arsitektur Push-Only (Hermes Pengirim Mandiri Berita & Analisis)
 
 Sistem web Radar Politik dirancang **murni pasif**:

@@ -41,50 +41,62 @@ export default function UserGuide({ apiBaseUrl = 'https://radar.pawandigital.id/
         : (maskedToken || (effectiveToken.slice(0, 5) + '••••••••••••••••' + effectiveToken.slice(-5)));
 
     // System prompt string ready for Hermes
-    const hermesPromptText = `Kamu adalah Analis Komunikasi Politik & Manajemen Krisis Pers untuk Pilkada Kabupaten Ketapang.
-Tugasmu memproses artikel portal berita online secara objektif berdasarkan target tokoh dan parameter persona:
+    const hermesPromptText = `Peran Anda:
+Agen Intelijen Media & Analis Komunikasi Politik Pilkada Kabupaten Ketapang.
 
-Input Berita:
-- Judul: {title}
-- Media Sumber: {source} ({url})
-- Waktu Terbit: {published_at}
-- Isi Berita: {raw_content}
+Misi Utama:
+Sistem Radar Politik menggunakan arsitektur Push-Only. Tugas Anda setiap hari adalah mencari berita terkini, menganalisis suhu dan naskah pers, lalu mengirimkan seluruh hasilnya ke sistem Radar Politik.
 
-Target Persona: {persona}
-Kata Kunci Pantauan: {primary_keywords}
+Langkah Kerja Otomatis:
+1. Membaca target kata kunci & persona calon dari sistem:
+   GET ${apiBaseUrl}/target-parameters
+   Header: Authorization: Bearer ${effectiveToken}
 
-Tugas Evaluasi:
-1. Hitung Velocity Score (0-100): Seberapa cepat dan luas isu ini berpotensi meledak di publik.
-2. Tentukan Sentimen: 'positive', 'neutral', atau 'negative'.
-3. Uji Integritas (Integrity Check):
-   - Jika berita berupa kampanye hitam fitnah murni tanpa dasar/pencatutan nama lembaga resmi (seperti survei palsu), set status = 'integrity_alert'.
-   - Jika kritik wajar, pemberitaan kebijakan, atau pencapaian daerah, set status = 'success'.
-4. Ekstraksi Fact-Anchor:
-   - tuduhan: inti tuduhan atau kritik miring.
-   - fakta_lapangan: fakta objektif dan kinerja riil tokoh di lapangan.
-   - dokumen_rujukan: surat dinas, data BPS, atau rilis resmi rujukan.
-5. Susun 3 Format Naskah Pers (HANYA jika status = 'success'):
-   - press_release: Rilis pers resmi berstruktur 5W+1H lengkap dengan kutipan tokoh dan narahubung media center.
-   - spokesperson: Poin bicara wawancara doorstop wartawan lapangan (lugas, berdata, santun).
-   - editorial_reply: Draf surat hak jawab redaksi sesuai mekanisme UU Pers No. 40/1999.
+2. Memantau portal pers daerah Kalbar (Antara Kalbar, Pontianak Post, Suara Pemred Kalbar, Tribun Pontianak) sesuai kata kunci pantauan.
 
-Output WAJIB berupa JSON valid MURNI tanpa markdown wrap:
-{
-  "news_id": {id},
-  "status": "success" | "integrity_alert",
-  "velocity_score": 0-100,
-  "sentiment": "positive" | "neutral" | "negative",
-  "fact_anchor": {
-    "tuduhan": "...",
-    "fakta_lapangan": "...",
-    "dokumen_rujukan": "..."
-  },
-  "scripts": {
-    "press_release": "...",
-    "spokesperson": "...",
-    "editorial_reply": "..."
-  }
-}`;
+3. Menganalisis artikel yang ditemukan:
+   - velocity_score (0-100): Seberapa cepat isu berpotensi meluas di publik.
+   - sentiment: 'positive', 'neutral', atau 'negative'.
+   - status: 'integrity_alert' (jika fitnah murni/survei palsu), atau 'success' (pemberitaan umum/kebijakan).
+   - fact_anchor:
+     * tuduhan: Inti kritik atau tuduhan di berita.
+     * fakta_lapangan: Bukti kinerja atau realitas di lapangan.
+     * dokumen_rujukan: SPK dinas, perda, atau rilis resmi instansi.
+   - scripts:
+     * press_release: Rilis pers resmi berstruktur 5W+1H dengan kutipan tokoh.
+     * spokesperson: Poin wawancara doorstop wartawan lapangan (lugas, berdata, santun).
+     * editorial_reply: Draf surat permohonan hak jawab sesuai UU Pers No. 40/1999.
+
+4. Mengirimkan (push) paket berita dan hasil analisis ke sistem:
+   POST ${apiBaseUrl}/push-news
+   Header:
+     Content-Type: application/json
+     Authorization: Bearer ${effectiveToken}
+   Body JSON:
+   {
+     "articles": [
+       {
+         "title": "Judul Berita",
+         "source": "Nama Media",
+         "url": "https://...",
+         "published_at": "2026-11-17T09:00:00Z",
+         "raw_content": "Ringkasan isi berita...",
+         "velocity_score": 85,
+         "sentiment": "negative",
+         "status": "success",
+         "fact_anchor": {
+           "tuduhan": "...",
+           "fakta_lapangan": "...",
+           "dokumen_rujukan": "..."
+         },
+         "scripts": {
+           "press_release": "...",
+           "spokesperson": "...",
+           "editorial_reply": "..."
+         }
+       }
+     ]
+   }`;
 
     // Python runner code ready for Hermes worker
     const pythonRunnerCode = `import os
@@ -103,32 +115,34 @@ headers = {
 
 def run_hermes_daily_patrol():
     # 1. Ambil parameter target kata kunci terkini dari sistem
-    print("1. Mengambil parameter target kata kunci...")
+    print("1. Mengambil parameter target kata kunci dari Radar Politik...")
     res = requests.get(f"{API_BASE}/target-parameters", headers=headers, timeout=20)
     params = res.json()
     keywords = params.get("primary_keywords", ["Bupati Ketapang"])
+    persona = params.get("persona", "")
+    print(f"   Kata kunci pantauan: {keywords}")
     
     # 2. Cari berita online harian & lakukan analisis intelijen AI
-    print(f"2. Menganalisis berita harian terkini...")
+    print("2. Mencari & menganalisis berita harian terkini...")
     articles_payload = [
         {
-            "title": "Penyaluran Bantuan Sembako Warga Terdampak Banjir Berjalan Lancar",
+            "title": "Penyaluran Bantuan Sembako Korban Banjir di Tumbang Titi Berjalan Lancar",
             "source": "Antara Kalbar",
-            "url": "https://kalbar.antaranews.com/berita/bantuan-sembako-ketapang",
+            "url": "https://kalbar.antaranews.com/berita/bantuan-sembako-tumbang-titi",
             "published_at": "2026-11-17T09:00:00Z",
-            "raw_content": "Pemerintah Daerah bersama Satgas BPBD Ketapang menyalurkan paket sembako...",
+            "raw_content": "Pemerintah Daerah bersama Satgas BPBD Ketapang menyalurkan paket sembako dan obat-obatan...",
             "velocity_score": 25,
             "sentiment": "positive",
             "status": "success",
             "fact_anchor": {
                 "tuduhan": "Tidak ada tuduhan negatif",
-                "fakta_lapangan": "Bantuan logistik telah diserahterimakan",
-                "dokumen_rujukan": "Berita Acara BPBD No. 440/2026"
+                "fakta_lapangan": "Bantuan logistik telah diserahterimakan langsung kepada aparat desa",
+                "dokumen_rujukan": "Berita Acara BPBD Ketapang No. 440/2026"
             },
             "scripts": {
-                "press_release": "Siaran Pers: Pemkab Ketapang Salurkan Bantuan...",
-                "spokesperson": "Poin Juru Bicara: Penyaluran logistik tuntas...",
-                "editorial_reply": "Apresiasi peliputan pers lokal..."
+                "press_release": "Siaran Pers: Pemkab Ketapang Salurkan Bantuan Tanggap Darurat...",
+                "spokesperson": "Poin Juru Bicara: Penyaluran logistik tuntas dan warga terpantau aman...",
+                "editorial_reply": "Apresiasi atas peliputan pers yang objektif..."
             }
         }
     ]
@@ -148,37 +162,53 @@ if __name__ == "__main__":
     run_hermes_daily_patrol()`;
 
     const sampleWebhookSuccess = `{
-  "news_id": 4,
-  "status": "success",
-  "velocity_score": 85,
-  "sentiment": "negative",
-  "fact_anchor": {
-    "tuduhan": "Keterlambatan perbaikan jalan poros Sandai - Nanga Tayap.",
-    "fakta_lapangan": "Alat berat dan material aspal sudah dimobilisasi di 3 titik kritis sejak awal pekan.",
-    "dokumen_rujukan": "Surat Perintah Kerja (SPK) DPU-PR Ketapang No. 602/B/2026."
-  },
-  "scripts": {
-    "press_release": "SIARAN PERS RESMI // MEDIA CENTER KETAPANG\\n\\nKETAPANG — Menanggapi sorotan publik terkait perbaikan jalan Sandai, Media Center menegaskan komitmen nyata akselerasi fisik di lapangan...\\n\\nNarahubung Media Center: 0812-XXXX-XXXX.",
-    "spokesperson": "DOORSTOP TALKING POINTS (JURU BICARA):\\n1. Penanganan fisik sudah berjalan sejak awal pekan.\\n2. Cuaca ekstrem sempat menjadi tantangan logistik material aspal.\\n3. Ditargetkan fungsional mulus sebelum puncak mobilitas warga.",
-    "editorial_reply": "SURAT HAK JAWAB & KLARIFIKASI PERS (UU NO. 40/1999)\\nKepada Yth. Redaksi Media Bersangkutan\\n\\nMenindaklanjuti pemberitaan tertanggal 16 November 2026, kami menyampaikan hak jawab resmi untuk meluruskan fakta pekerjaan di lapangan."
-  }
+  "articles": [
+    {
+      "title": "Percepatan Pembangunan Jalan Poros Sandai - Nanga Tayap Terus Dipacu",
+      "source": "Pontianak Post",
+      "url": "https://pontianakpost.jawapos.com/ketapang/16/11/2026/jalan-sandai",
+      "published_at": "2026-11-17T08:30:00Z",
+      "raw_content": "Pemerintah Daerah Kabupaten Ketapang melalui Dinas PU mengerahkan alat berat guna mempercepat perbaikan jalan poros utama menjelang musim hujan...",
+      "velocity_score": 30,
+      "sentiment": "positive",
+      "status": "success",
+      "fact_anchor": {
+        "tuduhan": "Tidak ada tuduhan negatif",
+        "fakta_lapangan": "Alat berat dan material aspal sudah dimobilisasi di 3 titik kritis sejak awal pekan.",
+        "dokumen_rujukan": "Surat Perintah Kerja (SPK) DPU-PR Ketapang No. 602/B/2026."
+      },
+      "scripts": {
+        "press_release": "SIARAN PERS RESMI // MEDIA CENTER KETAPANG\\n\\nKETAPANG — Penanganan infrastruktur konektivitas pedalaman terus diprioritaskan...",
+        "spokesperson": "DOORSTOP TALKING POINTS (JURU BICARA):\\n1. Mobilisasi alat berat sudah tuntas di lokasi.\\n2. Target pengerjaan selesai sebelum puncak musim hujan.",
+        "editorial_reply": "Apresiasi atas peliputan pers lokal yang objektif dan berimbang."
+      }
+    }
+  ]
 }`;
 
     const sampleWebhookIntegrity = `{
-  "news_id": 5,
-  "status": "integrity_alert",
-  "velocity_score": 95,
-  "sentiment": "negative",
-  "fact_anchor": {
-    "tuduhan": "Penyebaran infografis hasil survei elektabilitas palsu.",
-    "fakta_lapangan": "Bawaslu Ketapang telah mengeluarkan pernyataan resmi bahwa infografis tersebut hoaks.",
-    "dokumen_rujukan": "Siaran Klarifikasi Bawaslu Kabupaten Ketapang & UU Pemilu."
-  },
-  "scripts": {
-    "press_release": "",
-    "spokesperson": "",
-    "editorial_reply": ""
-  }
+  "articles": [
+    {
+      "title": "Beredar Kabar Hoaks Hasil Survei Elektabilitas Palsu Mencatut Lembaga Resmi",
+      "source": "Suara Pemred Kalbar",
+      "url": "https://suarapemredkalbar.com/berita/hoaks-survei-palsu-ketapang",
+      "published_at": "2026-11-17T09:15:00Z",
+      "raw_content": "Beredar selebaran digital yang mengatasnamakan lembaga survei nasional dengan data palsu yang mendiskreditkan calon di media sosial...",
+      "velocity_score": 95,
+      "sentiment": "negative",
+      "status": "integrity_alert",
+      "fact_anchor": {
+        "tuduhan": "Penyebaran infografis hasil survei elektabilitas palsu.",
+        "fakta_lapangan": "Bawaslu dan lembaga survei bersangkutan telah mengonfirmasi bahwa selebaran tersebut hoaks.",
+        "dokumen_rujukan": "Surat Edaran Bawaslu Kabupaten Ketapang & UU Pemilu No. 7/2017."
+      },
+      "scripts": {
+        "press_release": "SIARAN PERS TANGGAP FITNAH // MEDIA CENTER\\n\\nKami mengecam keras produksi informasi palsu yang mencederai demokrasi di Kabupaten Ketapang...",
+        "spokesperson": "POIN BICARA JUBIR: Kami telah berkoordinasi dengan Bawaslu dan aparat penegak hukum untuk mengusut pembuat dan penyebar dokumen palsu ini.",
+        "editorial_reply": "Permohonan klarifikasi dan pencabutan rujukan informasi hoaks sesuai Pedoman Pemberitaan Media Siber."
+      }
+    }
+  ]
 }`;
 
     return (
@@ -461,7 +491,7 @@ if __name__ == "__main__":
                                         </button>
                                     </div>
                                     <div className="text-[10px] text-slate-500">
-                                        Pintu Pengambilan: <code>/fetch-news</code> | Pintu Kirim: <code>/webhook</code>
+                                        Pintu Sasaran: <code>/target-parameters</code> | Pintu Kirim Berita: <code>/push-news</code>
                                     </div>
                                 </div>
 
@@ -500,7 +530,7 @@ if __name__ == "__main__":
                         <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800">
                             <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-4 flex items-center gap-2">
                                 <Activity className="w-4 h-4 text-cyan-400" />
-                                <span>3 Langkah Kerja Asisten Cerdas Membaca Berita</span>
+                                <span>3 Langkah Kerja Asisten Cerdas (Mode Push-Only)</span>
                             </h3>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
                                 <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
@@ -508,11 +538,11 @@ if __name__ == "__main__":
                                         <span className="text-[10px] px-2 py-0.5 rounded bg-cyan-950 text-cyan-400 border border-cyan-800 font-bold">
                                             LANGKAH 1
                                         </span>
-                                        <span className="text-slate-500 text-[11px]">Ambil Berita</span>
+                                        <span className="text-slate-500 text-[11px]">GET /target-parameters</span>
                                     </div>
-                                    <h4 className="text-white font-bold text-sm">Tarik Berita Baru</h4>
+                                    <h4 className="text-white font-bold text-sm">Ambil Sasaran Pantauan</h4>
                                     <p className="text-slate-400 text-[11px] leading-relaxed">
-                                        Asisten mengambil berita online terbaru yang menyebutkan nama calon atau topik yang sedang dipantau di Ketapang.
+                                        Hermes membaca target kata kunci nama calon, topik prioritas, dan kata kunci negatif yang aktif dari sistem Radar Politik.
                                     </p>
                                 </div>
 
@@ -521,11 +551,11 @@ if __name__ == "__main__":
                                         <span className="text-[10px] px-2 py-0.5 rounded bg-purple-950 text-purple-400 border border-purple-800 font-bold">
                                             LANGKAH 2
                                         </span>
-                                        <span className="text-slate-500 text-[11px]">Pahami Isu</span>
+                                        <span className="text-slate-500 text-[11px]">Cari & Analisis Isu</span>
                                     </div>
-                                    <h4 className="text-white font-bold text-sm">Baca & Ukur Suhu Berita</h4>
+                                    <h4 className="text-white font-bold text-sm">Patroli Media & Bedah Berita</h4>
                                     <p className="text-slate-400 text-[11px] leading-relaxed">
-                                        Asisten membaca isi berita, menentukan apakah nadanya kabar baik atau tuduhan, mencocokkan fakta, dan menyusun draf klarifikasi.
+                                        Hermes menelusuri portal pers terpercaya Kalbar, menghitung skor suhu krisis (0-100), memvalidasi fakta vs tuduhan, dan menyusun 3 naskah pers.
                                     </p>
                                 </div>
 
@@ -534,11 +564,11 @@ if __name__ == "__main__":
                                         <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800 font-bold">
                                             LANGKAH 3
                                         </span>
-                                        <span className="text-slate-500 text-[11px]">Setor Hasil</span>
+                                        <span className="text-slate-500 text-[11px]">POST /push-news</span>
                                     </div>
-                                    <h4 className="text-white font-bold text-sm">Kirim Hasil & Nyalakan Lonceng</h4>
+                                    <h4 className="text-white font-bold text-sm">Setor Paket Berita & Analisis</h4>
                                     <p className="text-slate-400 text-[11px] leading-relaxed">
-                                        Hasil analisis disimpan ke dasbor. Bila ada berita fitnah atau kabar buruk yang hangat, sistem langsung membunyikan tanda lonceng ke tim.
+                                        Hermes mengirim paket berita lengkap ke Radar. Berita langsung tayang di Papan Berita & Ruang Naskah, dan alarm krisis berbunyi jika suhu tinggi.
                                     </p>
                                 </div>
                             </div>
@@ -546,58 +576,89 @@ if __name__ == "__main__":
 
                         {/* Interactive Blueprint Tabs */}
                         <div className="p-6 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-5">
+                            {/* Petunjuk Copy-Paste Cepat */}
+                            <div className="p-4 rounded-xl bg-gradient-to-r from-cyan-950/50 via-slate-900 to-indigo-950/50 border border-cyan-800/60 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                <div className="space-y-1">
+                                    <div className="flex items-center gap-2">
+                                        <Sparkles className="w-4 h-4 text-cyan-400" />
+                                        <h4 className="text-sm font-black text-white uppercase tracking-wide">
+                                            Yang Mana yang Harus Di-Copy ke Hermes?
+                                        </h4>
+                                    </div>
+                                    <p className="text-xs text-slate-300 leading-relaxed">
+                                        <strong>Pilih salah satu sesuai kebutuhan Anda:</strong> Jika Anda menggunakan <strong>Hermes Chat / AI Agent CLI</strong>, salin teks di <strong>Tab 1 (Prompt Agen)</strong>. Jika ingin <strong>otomatis jalan setiap hari di terminal/cron</strong>, gunakan file di <strong>Tab 2 (Skrip Python)</strong>.
+                                    </p>
+                                </div>
+                                <div className="flex items-center gap-2 shrink-0">
+                                    <button
+                                        type="button"
+                                        onClick={() => setHermesSubTab('prompt')}
+                                        className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${hermesSubTab === 'prompt' ? 'bg-cyan-500 text-slate-950 shadow-sm' : 'bg-slate-800 text-slate-300 hover:text-white'}`}
+                                    >
+                                        1. Salin Prompt Chat
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => setHermesSubTab('script')}
+                                        className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${hermesSubTab === 'script' ? 'bg-cyan-500 text-slate-950 shadow-sm' : 'bg-slate-800 text-slate-300 hover:text-white'}`}
+                                    >
+                                        2. Lihat Skrip Python
+                                    </button>
+                                </div>
+                            </div>
+
                             {/* Sub-tab navigation */}
                             <div className="flex flex-wrap items-center gap-2 border-b border-slate-800 pb-3 text-xs">
                                 <button
                                     type="button"
                                     onClick={() => setHermesSubTab('prompt')}
-                                    className={`px-3.5 py-2 rounded-xl transition-all flex items-center gap-2 ${
+                                    className={`px-3.5 py-2 rounded-xl transition-all flex items-center gap-2 cursor-pointer ${
                                         hermesSubTab === 'prompt'
                                             ? 'bg-cyan-950 text-cyan-300 border border-cyan-500/60 font-bold'
                                             : 'text-slate-400 hover:text-white hover:bg-slate-950'
                                     }`}
                                 >
                                     <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-                                    <span>1. System Prompt Hermes</span>
+                                    <span>1. Prompt Agen Hermes (Copy ke Chat)</span>
                                 </button>
 
                                 <button
                                     type="button"
                                     onClick={() => setHermesSubTab('script')}
-                                    className={`px-3.5 py-2 rounded-xl transition-all flex items-center gap-2 ${
+                                    className={`px-3.5 py-2 rounded-xl transition-all flex items-center gap-2 cursor-pointer ${
                                         hermesSubTab === 'script'
                                             ? 'bg-cyan-950 text-cyan-300 border border-cyan-500/60 font-bold'
                                             : 'text-slate-400 hover:text-white hover:bg-slate-950'
                                     }`}
                                 >
                                     <Code className="w-3.5 h-3.5 text-cyan-400" />
-                                    <span>2. Pengiriman Harian (hermes_daily_patrol.py)</span>
+                                    <span>2. Skrip Harian (hermes_daily_patrol.py)</span>
                                 </button>
 
                                 <button
                                     type="button"
                                     onClick={() => setHermesSubTab('contract')}
-                                    className={`px-3.5 py-2 rounded-xl transition-all flex items-center gap-2 ${
+                                    className={`px-3.5 py-2 rounded-xl transition-all flex items-center gap-2 cursor-pointer ${
                                         hermesSubTab === 'contract'
                                             ? 'bg-cyan-950 text-cyan-300 border border-cyan-500/60 font-bold'
                                             : 'text-slate-400 hover:text-white hover:bg-slate-950'
                                     }`}
                                 >
                                     <Layers className="w-3.5 h-3.5 text-cyan-400" />
-                                    <span>3. Format JSON Berita & Analisis (Push)</span>
+                                    <span>3. Format Data JSON (Push Payload)</span>
                                 </button>
 
                                 <button
                                     type="button"
                                     onClick={() => setHermesSubTab('curl')}
-                                    className={`px-3.5 py-2 rounded-xl transition-all flex items-center gap-2 ${
+                                    className={`px-3.5 py-2 rounded-xl transition-all flex items-center gap-2 cursor-pointer ${
                                         hermesSubTab === 'curl'
                                             ? 'bg-cyan-950 text-cyan-300 border border-cyan-500/60 font-bold'
                                             : 'text-slate-400 hover:text-white hover:bg-slate-950'
                                     }`}
                                 >
                                     <Terminal className="w-3.5 h-3.5 text-cyan-400" />
-                                    <span>4. Uji Cepat via cURL (Push & Target)</span>
+                                    <span>4. Uji Manual via cURL Terminal</span>
                                 </button>
                             </div>
 
@@ -606,11 +667,12 @@ if __name__ == "__main__":
                                 <div className="space-y-4 animate-fadeIn">
                                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                                         <div>
-                                            <h4 className="text-sm font-bold text-white">
-                                                Pedoman Berpikir Asisten Pembaca Berita
+                                            <h4 className="text-sm font-bold text-white flex items-center gap-2">
+                                                <span>Pedoman Peran Asisten Hermes (System Prompt)</span>
+                                                <span className="text-[10px] px-2 py-0.5 rounded bg-cyan-950 text-cyan-400 border border-cyan-800 font-bold">Untuk Chat / AI Agent</span>
                                             </h4>
                                             <p className="text-xs text-slate-400">
-                                                Instruksi yang diberikan kepada asisten cerdas agar membaca berita, mencocokkan fakta, dan menyusun draf rilis pers.
+                                                Salin instruksi ini dan tempelkan (paste) langsung ke Hermes Agent Anda saat memulai sesi tugas pemantauan harian.
                                             </p>
                                         </div>
                                         <button
@@ -626,7 +688,7 @@ if __name__ == "__main__":
                                             ) : (
                                                 <>
                                                     <Copy className="w-4 h-4" />
-                                                    <span>Salin Pedoman Asisten</span>
+                                                    <span>Salin Instruksi Prompt</span>
                                                 </>
                                             )}
                                         </button>
