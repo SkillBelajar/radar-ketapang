@@ -24,6 +24,7 @@ Route::post('/checklist/toggle', [ChecklistController::class, 'toggle'])->name('
 Route::post('/checklist/save', [ChecklistController::class, 'batchSave'])->name('checklist.save');
 Route::post('/checklist/reset', [ChecklistController::class, 'reset'])->name('checklist.reset');
 Route::post('/checklist/seed-demo', [ChecklistController::class, 'seedDemoData'])->name('checklist.seed-demo');
+Route::post('/checklist/test-hermes', [ChecklistController::class, 'testHermesApi'])->name('checklist.test-hermes');
 
 Route::middleware(['auth'])->group(function () {
     // Slice 5: Dasbor Analisis (Radar Politik & AI Output Berita Pers)

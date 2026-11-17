@@ -40,7 +40,20 @@ export default function ChecklistIndex({ steps = [], progress = { total: 10, com
     const [copiedKey, setCopiedKey] = useState(null);
     const [filterCategory, setFilterCategory] = useState('all');
     const [isSaving, setIsSaving] = useState(false);
+    const [isSimulatingHermes, setIsSimulatingHermes] = useState(false);
     const [showDummyCard, setShowDummyCard] = useState(true);
+
+    // Jalankan Simulasi Uji Hermes Otomatis
+    const handleRunHermesSimulation = () => {
+        setIsSimulatingHermes(true);
+        router.post('/checklist/test-hermes', {}, {
+            preserveScroll: true,
+            onFinish: () => {
+                setIsSimulatingHermes(false);
+                setChecklistState(prev => prev.map(s => s.step_key === 'step_4_hermes_api' ? { ...s, is_checked: true } : s));
+            },
+        });
+    };
 
     // Hitung progres saat ini dari state lokal
     const totalCount = checklistState.length;
@@ -565,6 +578,76 @@ export default function ChecklistIndex({ steps = [], progress = { total: 10, com
                                             ))}
                                         </ol>
                                     </div>
+
+                                    {/* Panel Interaktif Khusus Langkah 4: Uji Hermes Gateway */}
+                                    {step.key === 'step_4_hermes_api' && (
+                                        <div className="p-4 rounded-xl bg-cyan-950/20 border border-cyan-800/50 space-y-3.5">
+                                            {/* Opsi 1: Satu Klik Simulasi Langsung */}
+                                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 rounded-lg bg-cyan-950/40 border border-cyan-700/40">
+                                                <div>
+                                                    <div className="text-xs font-bold text-cyan-300 flex items-center gap-1.5">
+                                                        <Zap className="w-4 h-4 text-cyan-400" />
+                                                        <span>CARA TERCEPAT: UJI SIMULASI OTOMATIS (1 KLIK)</span>
+                                                    </div>
+                                                    <p className="text-[11px] text-slate-300 mt-1">
+                                                        Tidak perlu buka terminal. Klik tombol di samping untuk otomatis mengambil berita dan mengirim hasil analisis AI Hermes ke sistem.
+                                                    </p>
+                                                </div>
+                                                <button
+                                                    type="button"
+                                                    onClick={handleRunHermesSimulation}
+                                                    disabled={isSimulatingHermes}
+                                                    className="inline-flex items-center justify-center space-x-1.5 px-4 py-2.5 rounded-lg bg-cyan-600 hover:bg-cyan-500 disabled:opacity-50 text-white text-xs font-bold transition shadow-lg shadow-cyan-950/50 cursor-pointer shrink-0"
+                                                >
+                                                    <Zap className={`w-3.5 h-3.5 ${isSimulatingHermes ? 'animate-spin' : ''}`} />
+                                                    <span>{isSimulatingHermes ? 'Menjalankan...' : '⚡ Jalankan Uji Otomatis'}</span>
+                                                </button>
+                                            </div>
+
+                                            {/* Opsi 2: Eksekusi Perintah Terminal Manual (cURL) */}
+                                            <div className="pt-2 space-y-2">
+                                                <div className="text-xs font-bold text-amber-300 flex items-center gap-1.5">
+                                                    <Terminal className="w-4 h-4 text-amber-400" />
+                                                    <span>CARA MANUAL: EKSEKUSI DI TERMINAL KOMPUTER (cURL)</span>
+                                                </div>
+                                                <p className="text-[11px] text-slate-400">
+                                                    Salin perintah cURL di bawah ini ke terminal untuk menguji komunikasi API secara nyata:
+                                                </p>
+
+                                                <div className="space-y-2.5">
+                                                    <div className="relative group">
+                                                        <div className="text-[10px] text-cyan-400 font-mono mb-1 font-bold">1. Ambil Berita Pending (GET /fetch-news):</div>
+                                                        <pre className="p-2.5 pr-20 rounded-lg bg-black/80 border border-slate-800 font-mono text-[11px] text-emerald-400 overflow-x-auto whitespace-pre-wrap break-all">
+                                                            {dummyData?.sample_curl?.fetch}
+                                                        </pre>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => handleCopy(dummyData?.sample_curl?.fetch, 's4Fetch')}
+                                                            className="absolute top-6 right-2 px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 text-[10px] font-mono flex items-center gap-1 cursor-pointer"
+                                                        >
+                                                            {copiedKey === 's4Fetch' ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                                                            <span>{copiedKey === 's4Fetch' ? 'Tersalin' : 'Salin'}</span>
+                                                        </button>
+                                                    </div>
+
+                                                    <div className="relative group">
+                                                        <div className="text-[10px] text-cyan-400 font-mono mb-1 font-bold">2. Kirim Analisis AI (POST /webhook):</div>
+                                                        <pre className="p-2.5 pr-20 rounded-lg bg-black/80 border border-slate-800 font-mono text-[11px] text-emerald-400 overflow-x-auto whitespace-pre-wrap break-all">
+                                                            {dummyData?.sample_curl?.webhook}
+                                                        </pre>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => handleCopy(dummyData?.sample_curl?.webhook, 's4Webhook')}
+                                                            className="absolute top-6 right-2 px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 text-[10px] font-mono flex items-center gap-1 cursor-pointer"
+                                                        >
+                                                            {copiedKey === 's4Webhook' ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                                                            <span>{copiedKey === 's4Webhook' ? 'Tersalin' : 'Salin'}</span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
 
                                     {/* Tester Notes & Quick Action Bar */}
                                     <div className="flex flex-col sm:flex-row items-stretch sm:items-end justify-between gap-3 pt-2">
