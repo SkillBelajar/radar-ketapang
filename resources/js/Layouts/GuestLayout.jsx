@@ -25,11 +25,11 @@ export default function GuestLayout({ children, title }) {
                                         RADAR POLITIK
                                     </span>
                                     <span className="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-mono tracking-widest uppercase bg-cyan-950/80 text-cyan-400 border border-cyan-800/60 rounded">
-                                        KETAPANG
+                                        SAAS REPUTASI
                                     </span>
                                 </div>
                                 <p className="text-[11px] text-slate-400 tracking-tight hidden sm:block">
-                                    Pemantau Berita & Reputasi Tokoh Ketapang
+                                    Pemantau Berita & Reputasi Tokoh Politik
                                 </p>
                             </div>
                         </div>
@@ -106,10 +106,10 @@ export default function GuestLayout({ children, title }) {
                         <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 text-xs text-slate-400 text-center sm:text-left">
                             <span className="flex items-center gap-1.5 font-mono text-cyan-400">
                                 <Radio className="w-3.5 h-3.5" />
-                                <span>Radar Politik Ketapang</span>
+                                <span>Radar Politik & Manajemen Reputasi</span>
                             </span>
                             <span className="hidden sm:inline text-slate-700">|</span>
-                            <span>&copy; {new Date().getFullYear()} Aplikasi Pemantau Berita Pilkada</span>
+                            <span>&copy; {new Date().getFullYear()} Aplikasi Pemantau Berita & Isu Publik</span>
                         </div>
 
                         {/* Prominent Mandatory Version Footer Badge */}

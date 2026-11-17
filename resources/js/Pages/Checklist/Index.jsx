@@ -162,7 +162,7 @@ export default function ChecklistIndex({ steps = [], progress = { total: 10, com
 
     return (
         <AuthenticatedLayout>
-            <Head title="Lembar Pemeriksaan Sistem // Radar Berita Ketapang" />
+            <Head title="Lembar Pemeriksaan Sistem // Radar Politik & Reputasi" />
 
             <div className="py-6 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-6">
 

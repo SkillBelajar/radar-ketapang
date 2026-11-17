@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\NewsFeed;
+use App\Models\TargetSetup;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -20,12 +21,13 @@ class AnalyticsController extends Controller
         $startDate = Carbon::now()->subDays(6)->startOfDay();
 
         // Ambil semua berita dalam rentang 7 hari terakhir
-        $recentFeeds = NewsFeed::whereBetween('published_at', [$startDate, $endDate])
-            ->orWhere(function ($query) use ($startDate, $endDate) {
-                $query->whereNull('published_at')
-                    ->whereBetween('created_at', [$startDate, $endDate]);
-            })
-            ->get();
+        $recentFeeds = NewsFeed::where(function ($query) use ($startDate, $endDate) {
+            $query->whereBetween('published_at', [$startDate, $endDate])
+                ->orWhere(function ($sub) use ($startDate, $endDate) {
+                    $sub->whereNull('published_at')
+                        ->whereBetween('created_at', [$startDate, $endDate]);
+                });
+        })->get();
 
         $sentimentTrend = [];
         $dayNamesIndo = [
@@ -138,6 +140,50 @@ class AnalyticsController extends Controller
                 ];
             });
 
+        $targetSetup = TargetSetup::getOrCreate();
+        $targetTopic = !empty($targetSetup->primary_keywords) ? $targetSetup->primary_keywords[0] : 'Sasaran Terpantau';
+
+        $totalPositive = $allProcessed->where('sentiment', 'positive')->count();
+        $totalNegative = $allProcessed->where('sentiment', 'negative')->count();
+        $totalNeutral = $allProcessed->where('sentiment', 'neutral')->count();
+        $netScore = $totalPositive - $totalNegative;
+
+        $positivePct = $totalProcessed > 0 ? round(($totalPositive / $totalProcessed) * 100, 1) : 0;
+        $negativePct = $totalProcessed > 0 ? round(($totalNegative / $totalProcessed) * 100, 1) : 0;
+        $neutralPct = $totalProcessed > 0 ? round(($totalNeutral / $totalProcessed) * 100, 1) : 0;
+
+        if ($netScore > 0) {
+            $dominanceStatus = 'POSITIF';
+            $dominanceBadgeClass = 'text-emerald-400 bg-emerald-950/80 border-emerald-500/50';
+            $dominanceLabel = "Topik {$targetTopic} Cenderung Positif (+{$netScore})";
+            $dominanceDescription = "Pemberitaan saat ini didominasi kabar baik dan respon positif warga ({$positivePct}% positif).";
+        } elseif ($netScore < 0) {
+            $dominanceStatus = 'NEGATIF';
+            $dominanceBadgeClass = 'text-rose-400 bg-rose-950/80 border-rose-500/50';
+            $dominanceLabel = "Topik {$targetTopic} Cenderung Negatif ({$netScore})";
+            $dominanceDescription = "Pemberitaan didominasi keluhan atau isu kritis ({$negativePct}% negatif). Butuh percepatan rilis & tanggapan.";
+        } else {
+            $dominanceStatus = 'SEIMBANG';
+            $dominanceBadgeClass = 'text-slate-300 bg-slate-900 border-slate-700';
+            $dominanceLabel = "Topik {$targetTopic} Posisi Seimbang (0)";
+            $dominanceDescription = "Jumlah berita bernada positif dan kritik dalam posisi seimbang.";
+        }
+
+        $sentimentSummary = [
+            'targetTopic' => $targetTopic,
+            'totalPositive' => $totalPositive,
+            'totalNegative' => $totalNegative,
+            'totalNeutral' => $totalNeutral,
+            'netScore' => $netScore,
+            'positivePct' => $positivePct,
+            'negativePct' => $negativePct,
+            'neutralPct' => $neutralPct,
+            'dominanceStatus' => $dominanceStatus,
+            'dominanceLabel' => $dominanceLabel,
+            'dominanceDescription' => $dominanceDescription,
+            'dominanceBadgeClass' => $dominanceBadgeClass,
+        ];
+
         $auditLogs = [
             'totalProcessed' => $totalProcessed,
             'integrityAlertsCount' => $integrityAlertsCount,
@@ -148,11 +194,13 @@ class AnalyticsController extends Controller
             'avgVelocity' => $avgVelocity,
             'trustIndexScore' => $totalProcessed > 0 ? round((($proactiveScriptsCount + $weeklyCrisisAverted) / $totalProcessed) * 100, 1) : 94.2,
             'recentActions' => $recentActions,
+            'sentimentSummary' => $sentimentSummary,
         ];
 
         return Inertia::render('Analytics/Index', [
             'sentimentTrend' => $sentimentTrend,
             'auditLogs' => $auditLogs,
+            'sentimentSummary' => $sentimentSummary,
             'appVersion' => config('app.version', '1.0 (Release Candidate)'),
         ]);
     }

@@ -154,22 +154,33 @@ class HermesGatewayController extends Controller
     public function targetParameters(): JsonResponse
     {
         $targetSetup = TargetSetup::getOrCreate();
+        $existingUrls = NewsFeed::latest('id')->take(500)->pluck('url')->toArray();
+        $existingTitles = NewsFeed::latest('id')->take(200)->pluck('title')->toArray();
+        $totalNews = NewsFeed::count();
 
         return response()->json([
             'status' => 'success',
             'app_version' => config('app.version', '1.0 (Release Candidate)'),
             'primary_keywords' => $targetSetup->primary_keywords ?? ['Bupati Ketapang'],
             'negative_keywords' => $targetSetup->negative_keywords ?? ['korupsi', 'dinasti politik', 'karhutla'],
-            'persona' => $targetSetup->persona ?? 'Calon pemimpin daerah yang santun, rekam jejak birokrasi transparan, mengutamakan percepatan infrastruktur konektivitas pedalaman Ketapang.',
+            'persona' => $targetSetup->persona ?? 'Calon pemimpin daerah yang santun, rekam jejak birokrasi transparan, solutif, dan merakyat.',
             'trusted_press_portals' => [
                 'Antara Kalbar' => 'https://kalbar.antaranews.com',
                 'Pontianak Post' => 'https://pontianakpost.jawapos.com',
                 'Suara Pemred Kalbar' => 'https://suarapemredkalbar.com',
                 'Tribun Pontianak' => 'https://pontianak.tribunnews.com',
             ],
+            'existing_urls' => $existingUrls,
+            'existing_titles' => $existingTitles,
+            'total_existing_news' => $totalNews,
             'instructions' => [
-                'role' => 'Hermes bertindak sebagai Agen Intelijen & Analis Berita Independen.',
-                'task' => 'Cari berita harian berdasarkan kata kunci di atas, lakukan analisis mendalam, lalu kirimkan paket berita lengkap beserta hasil analisis ke endpoint push_endpoint.',
+                'role' => 'Hermes bertindak sebagai Agen Intelijen & Analis Berita Independen Multi-Target Politik.',
+                'crontab_schedule' => 'Jalankan otomatis setiap hari pukul 05:00 WIB (0 5 * * *).',
+                'anti_duplication' => 'WAJIB: Periksa existing_urls dan existing_titles. JANGAN PERNAH mengambil ulang berita yang sudah ada di sistem.',
+                'freshness_rule' => 'Ambil HANYA berita terbaru (terbit 24-48 jam terakhir). Jangan ambil berita basi.',
+                'selection_rule' => 'Pilih TEPAT 9 berita paling berdampak nyata bagi target politik yang aktif (bukan seremonial).',
+                'identity_framing' => 'Susun naskah dengan empati mendalam (Identity Framing Warga), gaya tutur santun & merakyat ala Feynman, serta kepastian solusi nyata yang memuaskan.',
+                'task' => 'Cari berita harian berdasarkan target politik di atas, eliminasi berita lama & duplikat, lakukan analisis mendalam, lalu kirimkan 9 paket berita lengkap ke push_endpoint.',
                 'push_endpoint' => url('/api/v1/hermes/push-news'),
                 'scoring_rules' => [
                     'sentiment' => 'positive, neutral, negative',

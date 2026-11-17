@@ -8,10 +8,10 @@ import {
 import {
     BarChart3, TrendingUp, ShieldAlert, ShieldCheck, CheckCircle2,
     AlertTriangle, Sparkles, Activity, FileText, ArrowUpRight,
-    ArrowDownRight, Layers, RefreshCw, Cpu, Radio, Eye
+    ArrowDownRight, Layers, RefreshCw, Cpu, Radio, Eye, Clock
 } from 'lucide-react';
 
-export default function AnalyticsIndex({ sentimentTrend = [], auditLogs = {} }) {
+export default function AnalyticsIndex({ sentimentTrend = [], auditLogs = {}, sentimentSummary = {} }) {
     const { appVersion = '1.0 (Release Candidate)' } = usePage().props;
 
     // Chart mode toggle: 'line' vs 'bar' vs 'area'
@@ -29,6 +29,22 @@ export default function AnalyticsIndex({ sentimentTrend = [], auditLogs = {} }) 
     const avgVelocity = auditLogs?.avgVelocity || 0;
     const trustIndexScore = auditLogs?.trustIndexScore || 94.2;
     const recentActions = auditLogs?.recentActions || [];
+
+    // Nilai & Evaluasi Tren Sentimen Sasaran Politik
+    const summary = sentimentSummary?.targetTopic ? sentimentSummary : (auditLogs?.sentimentSummary || {
+        targetTopic: 'Sasaran Politik',
+        totalPositive: proactiveScriptsCount,
+        totalNegative: defensiveScriptsCount,
+        totalNeutral: Math.max(0, totalProcessed - proactiveScriptsCount - defensiveScriptsCount),
+        netScore: proactiveScriptsCount - defensiveScriptsCount,
+        positivePct: totalProcessed > 0 ? Math.round((proactiveScriptsCount / totalProcessed) * 100) : 0,
+        negativePct: totalProcessed > 0 ? Math.round((defensiveScriptsCount / totalProcessed) * 100) : 0,
+        neutralPct: totalProcessed > 0 ? Math.round((Math.max(0, totalProcessed - proactiveScriptsCount - defensiveScriptsCount) / totalProcessed) * 100) : 0,
+        dominanceStatus: (proactiveScriptsCount - defensiveScriptsCount) > 0 ? 'POSITIF' : (proactiveScriptsCount - defensiveScriptsCount) < 0 ? 'NEGATIF' : 'SEIMBANG',
+        dominanceLabel: (proactiveScriptsCount - defensiveScriptsCount) > 0 ? `Topik Sasaran Cenderung Positif (+${proactiveScriptsCount - defensiveScriptsCount})` : `Topik Sasaran Cenderung Negatif (${proactiveScriptsCount - defensiveScriptsCount})`,
+        dominanceDescription: 'Rekapitulasi tren nada pemberitaan dari pemindaian harian.',
+        dominanceBadgeClass: (proactiveScriptsCount - defensiveScriptsCount) >= 0 ? 'text-emerald-400 bg-emerald-950/80 border-emerald-500/50' : 'text-rose-400 bg-rose-950/80 border-rose-500/50',
+    });
 
     // Filtered actions list
     const filteredActions = recentActions.filter((action) => {
@@ -122,7 +138,7 @@ export default function AnalyticsIndex({ sentimentTrend = [], auditLogs = {} }) 
                                 <span>Tren Nada Berita & Riwayat Pemeriksaan</span>
                             </h1>
                             <p className="text-xs sm:text-sm text-slate-300 max-w-2xl font-sans leading-relaxed">
-                                Pantau arah pemberitaan media lokal Ketapang selama seminggu terakhir. Grafik ini menunjukkan apakah pemberitaan sedang didominasi kabar positif, informasi netral, atau kritik yang perlu ditanggapi.
+                                Pantau arah pemberitaan media terkait sasaran politik (<span className="text-purple-300 font-bold">{summary.targetTopic}</span>) selama sepekan terakhir. Grafik ini diperbarui otomatis setiap fajar pukul 05:00 WIB via Hermes Patroli untuk mengukur pergeseran opini publik secara akurat tanpa duplikasi berita.
                             </p>
                         </div>
 
@@ -143,6 +159,70 @@ export default function AnalyticsIndex({ sentimentTrend = [], auditLogs = {} }) 
                                 <span>Ruang Media & Pers</span>
                             </Link>
                         </div>
+                    </div>
+                </div>
+
+                {/* Evaluasi Nilai Tren Sentimen Topik Politik (Update Rutin Crontab 05:00 WIB) */}
+                <div className="rounded-2xl bg-gradient-to-br from-slate-900 via-slate-900/95 to-slate-950 border border-slate-800 p-6 shadow-xl relative overflow-hidden">
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-800">
+                        <div className="space-y-1">
+                            <div className="flex items-center gap-2">
+                                <span className={`px-2.5 py-0.5 rounded-full text-xs font-bold border ${summary.dominanceBadgeClass}`}>
+                                    {summary.dominanceStatus === 'POSITIF' ? '📈 TREN POSITIF' : summary.dominanceStatus === 'NEGATIF' ? '⚠️ TREN KRITIS / NEGATIF' : '⚖️ TREN SEIMBANG'}
+                                </span>
+                                <span className="text-xs text-slate-400 font-mono flex items-center gap-1">
+                                    <Clock className="w-3.5 h-3.5 text-cyan-400" />
+                                    Patroli Harian 05:00 WIB
+                                </span>
+                            </div>
+                            <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                                <span>Nilai Tren Topik:</span>
+                                <span className="text-purple-300 underline decoration-purple-500/50">{summary.targetTopic}</span>
+                            </h2>
+                            <p className="text-xs text-slate-300 font-sans">
+                                {summary.dominanceDescription}
+                            </p>
+                        </div>
+
+                        {/* Nilai Sentimen Bersih (Net Shift Score) */}
+                        <div className="flex items-center gap-4 bg-slate-950/80 border border-slate-800 rounded-xl p-3.5 px-5 self-start md:self-auto">
+                            <div>
+                                <span className="text-[10px] uppercase tracking-wider text-slate-400 block font-semibold">SKOR BERSIH (NET SCORE)</span>
+                                <div className="flex items-center gap-2 mt-0.5">
+                                    <span className={`text-2xl font-black font-mono ${summary.netScore > 0 ? 'text-emerald-400' : summary.netScore < 0 ? 'text-rose-400' : 'text-slate-300'}`}>
+                                        {summary.netScore > 0 ? `+${summary.netScore}` : summary.netScore}
+                                    </span>
+                                    <span className="text-xs text-slate-400 font-sans">
+                                        ({summary.totalPositive} Positif vs {summary.totalNegative} Negatif)
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Progress Bar Sentimen Komparatif */}
+                    <div className="mt-5 space-y-2">
+                        <div className="flex justify-between items-center text-xs">
+                            <span className="text-emerald-400 font-bold flex items-center gap-1.5">
+                                <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
+                                Positif: {summary.totalPositive} Berita ({summary.positivePct}%)
+                            </span>
+                            <span className="text-slate-400 font-medium">
+                                Netral: {summary.totalNeutral} Berita ({summary.neutralPct}%)
+                            </span>
+                            <span className="text-rose-400 font-bold flex items-center gap-1.5">
+                                <span className="w-2 h-2 rounded-full bg-rose-400"></span>
+                                Negatif: {summary.totalNegative} Berita ({summary.negativePct}%)
+                            </span>
+                        </div>
+                        <div className="h-3 w-full bg-slate-950 rounded-full overflow-hidden flex border border-slate-800/80">
+                            <div style={{ width: `${summary.positivePct}%` }} className="bg-emerald-500 transition-all duration-500" title={`Positif: ${summary.positivePct}%`}></div>
+                            <div style={{ width: `${summary.neutralPct}%` }} className="bg-slate-600 transition-all duration-500" title={`Netral: ${summary.neutralPct}%`}></div>
+                            <div style={{ width: `${summary.negativePct}%` }} className="bg-rose-500 transition-all duration-500" title={`Negatif: ${summary.negativePct}%`}></div>
+                        </div>
+                        <p className="text-[11px] text-slate-400 font-sans italic pt-1">
+                            * Data grafik tren di bawah terbentuk dari akumulasi 9 berita terbaru yang disetor setiap pagi jam 05:00 WIB oleh Agen Hermes dengan mekanisme anti-duplikasi artikel.
+                        </p>
                     </div>
                 </div>
 
@@ -346,10 +426,10 @@ export default function AnalyticsIndex({ sentimentTrend = [], auditLogs = {} }) 
                     {/* Quick Insight Strip */}
                     <div className="mt-4 pt-4 border-t border-slate-800/80 grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
                         <div className="p-3 rounded-xl bg-slate-950/60 border border-slate-800">
-                            <span className="text-slate-400 block text-[11px]">ARAH BERITA:</span>
+                            <span className="text-slate-400 block text-[11px]">ARAH BERITA & NILAI:</span>
                             <span className="text-white font-bold flex items-center gap-1.5 mt-0.5">
-                                <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
-                                Dominan Positif & Aman
+                                <span className={`w-2 h-2 rounded-full ${summary.netScore > 0 ? 'bg-emerald-400' : summary.netScore < 0 ? 'bg-rose-400' : 'bg-slate-400'}`}></span>
+                                {summary.dominanceStatus === 'POSITIF' ? `Dominan Positif (+${summary.netScore})` : summary.dominanceStatus === 'NEGATIF' ? `Dominan Negatif (${summary.netScore})` : 'Posisi Seimbang (0)'}
                             </span>
                         </div>
                         <div className="p-3 rounded-xl bg-slate-950/60 border border-slate-800">

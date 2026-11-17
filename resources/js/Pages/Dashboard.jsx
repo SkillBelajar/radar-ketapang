@@ -198,7 +198,7 @@ export default function Dashboard({ feeds = [], stats = {}, filters = {}, target
 
     return (
         <AuthenticatedLayout header="Papan Pantauan Berita & Tanggapan Cepat">
-            <Head title="Papan Pantauan Berita - Radar Politik Ketapang" />
+            <Head title="Papan Pantauan Berita - Radar Politik & Reputasi" />
 
             <div className="space-y-6">
                 {/* Tactical Command Banner */}
@@ -209,17 +209,17 @@ export default function Dashboard({ feeds = [], stats = {}, filters = {}, target
                             <div className="flex items-center gap-2">
                                 <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-cyan-950 text-cyan-300 border border-cyan-500/40 text-[11px] font-medium">
                                     <Activity className="w-3 h-3 text-cyan-400 animate-pulse" />
-                                    PEMANTAU BERITA KETAPANG
+                                    PEMANTAU BERITA SASARAN POLITIK
                                 </span>
                                 <span className="text-slate-400 text-xs">
-                                    Sumber: <strong className="text-cyan-400">Portal Berita Resmi Kalbar</strong>
+                                    Sumber: <strong className="text-cyan-400">Portal Media Pers & Google News</strong>
                                 </span>
                             </div>
                             <h1 className="text-xl md:text-2xl font-extrabold text-white tracking-tight">
                                 Papan Pantauan Isu & Berita Terkini
                             </h1>
                             <p className="text-slate-300 text-xs md:text-sm max-w-2xl leading-relaxed">
-                                Semua berita dari media lokal Ketapang terkumpul di sini secara otomatis. Cek berita mana yang hangat, bandingkan tuduhan dengan fakta sebenarnya, dan gunakan draf jawaban resmi siap pakai.
+                                Semua berita seputar sasaran politik terkumpul di sini secara otomatis via Hermes. Cek berita mana yang hangat, bandingkan tuduhan dengan fakta sebenarnya, dan gunakan draf jawaban resmi siap pakai.
                             </p>
                         </div>
 

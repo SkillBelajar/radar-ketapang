@@ -609,7 +609,7 @@ export default function AuthenticatedLayout({ header, children }) {
                     <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-xs">
                         <div className="flex items-center gap-2 text-slate-400">
                             <Radio className="w-3.5 h-3.5 text-cyan-400" />
-                            <span>Radar Politik Ketapang • Sistem Pemantau Isu Berita</span>
+                            <span>Radar Politik • Sistem Pemantau Isu Berita & Manajemen Reputasi</span>
                         </div>
 
                         {user && (
