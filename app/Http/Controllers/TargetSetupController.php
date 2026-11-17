@@ -62,7 +62,7 @@ class TargetSetupController extends Controller
             'persona' => $validated['persona'],
         ]);
 
-        return redirect()->back()->with('success', 'Konfigurasi target pantauan & doktrin persona berhasil disimpan ke sistem radar.');
+        return redirect()->back()->with('success', 'Pengaturan kata kunci dan profil tokoh berhasil disimpan.');
     }
 
     /**
@@ -79,7 +79,7 @@ class TargetSetupController extends Controller
         try {
             FetchNewsFeedJob::dispatch()->onQueue('feeds');
             (new FetchNewsFeedJob())->handle();
-            return redirect()->back()->with('success', 'Berhasil menjalankan worker penarikan berita sampel (+3 item baru ditambahkan ke antrean).');
+            return redirect()->back()->with('success', 'Berhasil mengambil berita contoh baru (+3 berita ditambahkan).');
         } catch (\Throwable $e) {
             return redirect()->back()->with('error', 'Gagal memicu penarikan feed: ' . $e->getMessage());
         }

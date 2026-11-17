@@ -315,7 +315,7 @@ class ChecklistController extends Controller
     }
 
     /**
-     * Segarkan / Muat Ulang Data Dummy Siap Uji
+     * Segarkan / Muat Ulang Contoh Data Siap Uji
      */
     public function seedDemoData(): RedirectResponse
     {
@@ -324,6 +324,6 @@ class ChecklistController extends Controller
             '--force' => true,
         ]);
 
-        return back()->with('message', 'Data dummy pengujian (berita krisis, notifikasi, dan target setup) berhasil disegarkan!');
+        return back()->with('message', 'Contoh data berita dan notifikasi berhasil dimuat ulang!');
     }
 }

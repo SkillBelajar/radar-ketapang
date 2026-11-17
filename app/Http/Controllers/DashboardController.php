@@ -109,9 +109,9 @@ class DashboardController extends Controller
     {
         try {
             (new FetchNewsFeedJob())->handle();
-            return redirect()->back()->with('success', 'Berhasil menarik 3 berita portal online terkini ke sistem radar.');
+            return redirect()->back()->with('success', 'Berhasil menarik 3 berita terbaru dari media online.');
         } catch (\Throwable $e) {
-            return redirect()->back()->with('error', 'Gagal menarik berita aktual: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Gagal menarik berita: ' . $e->getMessage());
         }
     }
 }
