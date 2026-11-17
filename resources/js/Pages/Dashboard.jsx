@@ -142,6 +142,8 @@ export default function Dashboard({ feeds = [], stats = {}, filters = {}, target
     const [activeTabPerCard, setActiveTabPerCard] = useState({});
 
     const PRESS_FORMATS = [
+        { id: 'candidate_statement', label: 'Sikap Tokoh', title: 'Pernyataan Sikap Tokoh / Calon Pemimpin' },
+        { id: 'social_caption', label: 'Medsos Viral', title: 'Naskah Media Sosial Personal Branding' },
         { id: 'press_release', label: 'Siaran Pers', title: 'Draf Siaran Pers Resmi (5W+1H)' },
         { id: 'spokesperson', label: 'Juru Bicara', title: 'Poin Pernyataan Juru Bicara (Doorstop)' },
         { id: 'editorial_reply', label: 'Hak Jawab', title: 'Lembar Hak Jawab Redaksi (UU Pers)' },
@@ -149,6 +151,12 @@ export default function Dashboard({ feeds = [], stats = {}, filters = {}, target
 
     const getScriptForFormat = (scripts, formatId) => {
         if (!scripts) return '';
+        if (formatId === 'candidate_statement') {
+            return scripts.candidate_statement || scripts.candidate_quote || scripts.spokesperson || '';
+        }
+        if (formatId === 'social_caption') {
+            return scripts.social_caption || scripts.instagram || scripts.x || scripts.tiktok || '';
+        }
         if (formatId === 'press_release') {
             return scripts.press_release || scripts.instagram || scripts.x || scripts.tiktok || '';
         }
@@ -221,6 +229,17 @@ export default function Dashboard({ feeds = [], stats = {}, filters = {}, target
                             <p className="text-slate-300 text-xs md:text-sm max-w-2xl leading-relaxed">
                                 Semua berita seputar sasaran politik terkumpul di sini secara otomatis via Hermes. Cek berita mana yang hangat, bandingkan tuduhan dengan fakta sebenarnya, dan gunakan draf jawaban resmi siap pakai.
                             </p>
+                            {targetSetup?.candidate_name && (
+                                <div className="pt-1 flex flex-wrap items-center gap-2 text-xs">
+                                    <span className="px-2 py-0.5 rounded-md bg-amber-950/80 border border-amber-500/40 text-amber-300 font-semibold flex items-center gap-1.5">
+                                        <Sparkles className="w-3 h-3 text-amber-400" />
+                                        Personal Branding: <strong>{targetSetup.candidate_name}</strong>
+                                    </span>
+                                    <span className="text-slate-400 text-[11px]">
+                                        ({targetSetup.political_role}) • Dapil: {targetSetup.electoral_district}
+                                    </span>
+                                </div>
+                            )}
                         </div>
 
                         {/* Top Action Buttons & Mode Indicator */}

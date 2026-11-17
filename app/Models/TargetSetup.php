@@ -12,12 +12,19 @@ class TargetSetup extends Model
     protected $table = 'target_setups';
 
     protected $fillable = [
+        'candidate_name',
+        'political_role',
+        'electoral_district',
+        'branding_tagline',
+        'branding_pillars',
+        'branding_goal',
         'primary_keywords',
         'negative_keywords',
         'persona',
     ];
 
     protected $casts = [
+        'branding_pillars' => 'array',
         'primary_keywords' => 'array',
         'negative_keywords' => 'array',
     ];
@@ -28,6 +35,17 @@ class TargetSetup extends Model
     public static function getOrCreate(): self
     {
         return static::firstOrCreate([], [
+            'candidate_name' => 'H. Farhan, S.E., M.Si.',
+            'political_role' => 'Calon Kepala Daerah (Bupati/Walikota/Gubernur)',
+            'electoral_district' => 'Kabupaten Ketapang',
+            'branding_tagline' => 'Bekerja Nyata untuk Kesejahteraan & Keadilan Warga',
+            'branding_pillars' => [
+                'Infrastruktur Konektivitas Jalan Poros & Jembatan',
+                'Stabilitas Harga Sembako, Pupuk & Hasil Tani/Kebun',
+                'Peningkatan Mutu Puskesmas & Layanan RS Bebas Pungli',
+                'Pembukaan Lapangan Kerja Pemuda & Dukungan UMKM',
+            ],
+            'branding_goal' => 'Membangun persepsi kepemimpinan yang merakyat, cepat tanggap, solutif, dan membela kepentingan masyarakat di ruang publik maupun media sosial.',
             'primary_keywords' => [
                 'Bupati Ketapang',
                 'Pilkada Ketapang',
@@ -40,7 +58,7 @@ class TargetSetup extends Model
                 'promo pulsa',
                 'casino slot',
             ],
-            'persona' => 'Gaya bahasa merakyat, tegas, santun, dan solutif berbasis data pembangunan Ketapang.',
+            'persona' => 'Gaya bahasa merakyat, tenang namun tegas, berorientasi solusi nyata, dan mengedepankan empati keluarga besar masyarakat.',
         ]);
     }
 }

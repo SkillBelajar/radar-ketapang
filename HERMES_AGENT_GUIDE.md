@@ -323,13 +323,15 @@ Hermes wajib menyeleksi tepat **9 artikel berita** dengan prioritas dampak langs
 
 ---
 
-#### C. Standar Format 3 Naskah Pers
+#### C. Standar Format 5 Naskah Strategis (Personal Branding Tokoh Politik & Pers)
 
-| Jenis Naskah | Target Pembaca / Pendengar | Ciri Khas Gaya Penulisan | Struktur Wajib |
+| Jenis Naskah | Target Pembaca / Kanal | Ciri Khas Gaya Penulisan | Struktur Wajib |
 | :--- | :--- | :--- | :--- |
-| **1. Siaran Pers Resmi (`press_release`)** | Redaksi media massa, wartawan, publik luas | Santun, terstruktur 5W+1H, menyejukkan tensi, berbobot data resmi | 1. Judul solutif & menenangkan<br>2. Paragraf empati & identity framing satu keluarga besar masyarakat<br>3. Rincian aksi lapangan & nomor rujukan SPK/SK resmi<br>4. Kutipan tokoh pemimpin yang rendah hati & merangkul<br>5. Kontak Media Center & Posko Pengaduan 24 Jam |
-| **2. Poin Bicara Jubir (`spokesperson`)** | Doorstop wartawan TV/Radio/Online, wawancara lisan | Bahasa tutur lisan Feynman, mengalir, langsung ke sasaran (*to the point*), tegas namun ramah | 1. Apresiasi rekan media & validasi rasa warga<br>2. Aksi konkret hari ini di lapangan (alat & petugas turun)<br>3. Jaminan pengawalan tuntas & saluran posko aduan 24 jam |
-| **3. Lembar Hak Jawab (`editorial_reply`)** | Pemimpin Redaksi & Dewan Redaksi Media | Menghormati kemerdekaan pers (UU Pers No. 40/1999), beradab tinggi, tanpa arogansi | 1. Salam hormat & apresiasi fungsi kontrol sosial pers<br>2. Penyampaian fakta pelurus informasi secara kronologis<br>3. Landasan dokumen sah & bukti verifikasi lapangan<br>4. Harapan pemuatan utuh demi informasi yang menyejukkan masyarakat |
+| **1. Sikap Tokoh Politik (`candidate_statement`)** | Media massa, baliho digital, quote card medsos | Sudut pandang orang pertama tokoh/calon pemimpin, empati tulus, mengangkat pilar perjuangan | 1. Pembuka empati pribadi tokoh kepada beban warga<br>2. Sikap tegas & solusi konkret yang diperjuangkan tokoh<br>3. Ajakan persatuan gotong royong warga |
+| **2. Medsos Personal Branding (`social_caption`)** | Instagram Reels, TikTok, Facebook, X | Bahasa hidup kekinian, persuasif, hook emosional kuat, hashtags branding | 1. Kalimat hook menggugah empati visual<br>2. Rangkuman komitmen advokasi tokoh di lapangan<br>3. Pertanyaan pemantik interaksi netizen & hashtags branding |
+| **3. Siaran Pers Resmi (`press_release`)** | Redaksi media massa, wartawan, portal online | Santun, terstruktur 5W+1H, menyejukkan tensi, berbobot data resmi | 1. Judul solutif & menenangkan<br>2. Paragraf empati & identity framing satu keluarga besar<br>3. Rincian aksi lapangan & nomor rujukan SPK/SK resmi<br>4. Kutipan tokoh pemimpin yang rendah hati & merangkul<br>5. Kontak Media Center & Posko Pengaduan 24 Jam |
+| **4. Poin Bicara Jubir (`spokesperson`)** | Doorstop wartawan TV/Radio/Online, dialog warung kopi | Bahasa tutur lisan Feynman, mengalir, langsung ke sasaran (*to the point*), tegas namun ramah | 1. Apresiasi rekan media & validasi rasa warga<br>2. Aksi konkret hari ini di lapangan (alat & petugas turun)<br>3. Jaminan pengawalan tuntas & saluran posko aduan 24 jam |
+| **5. Lembar Hak Jawab (`editorial_reply`)** | Pemimpin Redaksi & Dewan Redaksi Media | Menghormati kemerdekaan pers (UU Pers No. 40/1999), beradab tinggi, tanpa arogansi | 1. Salam hormat & apresiasi fungsi kontrol sosial pers<br>2. Penyampaian fakta pelurus informasi secara kronologis<br>3. Landasan dokumen sah & bukti verifikasi lapangan<br>4. Harapan pemuatan utuh demi informasi yang menyejukkan masyarakat |
 
 ---
 

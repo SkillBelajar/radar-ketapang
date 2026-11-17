@@ -36,12 +36,21 @@ class StudioController extends Controller
             'high_crisis_count' => NewsFeed::where('ai_status', 'success')->whereNotNull('scripts')->where('velocity_score', '>=', 75)->count(),
         ];
 
+        $targetSetup = \App\Models\TargetSetup::getOrCreate();
+
         return Inertia::render('Studio/Index', [
             'newsFeeds' => $newsFeeds,
             'stats' => $stats,
             'filters' => [
                 'platform' => $platform,
                 'sentiment' => $sentimentFilter,
+            ],
+            'targetSetup' => [
+                'candidate_name' => $targetSetup->candidate_name ?? 'Tokoh Kandidat',
+                'political_role' => $targetSetup->political_role ?? 'Kandidat Politik',
+                'electoral_district' => $targetSetup->electoral_district ?? 'Wilayah Pemilihan',
+                'branding_tagline' => $targetSetup->branding_tagline ?? '',
+                'branding_pillars' => $targetSetup->branding_pillars ?? [],
             ],
             'currentUserRole' => $request->user()->role ?? 'influencer',
         ]);

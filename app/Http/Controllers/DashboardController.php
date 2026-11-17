@@ -106,6 +106,12 @@ class DashboardController extends Controller
             ],
             'totalMatching' => $totalMatching,
             'targetSetup' => $targetSetup ? [
+                'candidate_name' => $targetSetup->candidate_name ?? '',
+                'political_role' => $targetSetup->political_role ?? '',
+                'electoral_district' => $targetSetup->electoral_district ?? '',
+                'branding_tagline' => $targetSetup->branding_tagline ?? '',
+                'branding_pillars' => $targetSetup->branding_pillars ?? [],
+                'branding_goal' => $targetSetup->branding_goal ?? '',
                 'primary_keywords' => $targetSetup->primary_keywords ?? [],
                 'persona' => $targetSetup->persona ?? '',
             ] : null,

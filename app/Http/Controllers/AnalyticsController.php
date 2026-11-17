@@ -197,10 +197,76 @@ class AnalyticsController extends Controller
             'sentimentSummary' => $sentimentSummary,
         ];
 
+        // 3. Analisis Peluang Personal Branding Politik Tokoh
+        $highOpportunityIssues = $allProcessed->where('velocity_score', '>=', 40)->take(4)->map(function ($f) use ($targetSetup) {
+            $candidateName = $targetSetup->candidate_name ?? 'Tokoh';
+            $brandingAngle = 'Panggung Kepemimpinan: Tunjukkan kepedulian nyata, turun langsung dengar keluhan warga, dan tawarkan solusi konkret.';
+            $actionTag = 'Peluang Sapa Warga & Medsos';
+            
+            $titleLower = strtolower($f->title);
+            if (str_contains($titleLower, 'jalan') || str_contains($titleLower, 'jembatan') || str_contains($titleLower, 'infrastruktur')) {
+                $brandingAngle = "Sorot komitmen {$candidateName} dalam memperjuangkan percepatan perbaikan akses vital dan pengawasan anggaran dapil.";
+                $actionTag = 'Advokasi Infrastruktur';
+            } elseif (str_contains($titleLower, 'sembako') || str_contains($titleLower, 'harga') || str_contains($titleLower, 'sawit') || str_contains($titleLower, 'pupuk') || str_contains($titleLower, 'pasar')) {
+                $brandingAngle = "Tampilkan {$candidateName} sebagai pembela ekonomi rakyat, usulkan operasi pasar atau stabilisasi harga komoditas.";
+                $actionTag = 'Bela Wong Cilik';
+            } elseif (str_contains($titleLower, 'rsud') || str_contains($titleLower, 'puskesmas') || str_contains($titleLower, 'kesehatan') || str_contains($titleLower, 'obat')) {
+                $brandingAngle = "Gunakan momentum ini untuk menyuarakan hak layanan kesehatan bermutu, ramah, dan bebas antrean panjang bagi seluruh warga.";
+                $actionTag = 'Layanan Dasar';
+            } elseif (str_contains($titleLower, 'banjir') || str_contains($titleLower, 'karhutla') || str_contains($titleLower, 'bencana')) {
+                $brandingAngle = "Posisikan {$candidateName} sebagai figur tanggap darurat yang hadir memberi bantuan nyata dan menyemangati keluarga korban.";
+                $actionTag = 'Aksi Kemanusiaan';
+            }
+
+            return [
+                'id' => $f->id,
+                'title' => $f->title,
+                'source' => $f->source,
+                'velocity_score' => $f->velocity_score,
+                'sentiment' => $f->sentiment,
+                'branding_angle' => $brandingAngle,
+                'action_tag' => $actionTag,
+            ];
+        });
+
+        // Skor Momentum Branding Tokoh (0-100)
+        $brandingMomentumScore = $totalProcessed > 0 
+            ? min(100, (int) round(($highOpportunityIssues->count() * 18) + ($allProcessed->where('sentiment', 'negative')->count() * 8) + 30))
+            : 50;
+
+        $brandingInsights = [
+            'candidate_name' => $targetSetup->candidate_name ?? 'Tokoh Kandidat',
+            'political_role' => $targetSetup->political_role ?? 'Kandidat Politik',
+            'electoral_district' => $targetSetup->electoral_district ?? 'Wilayah Pemilihan',
+            'branding_tagline' => $targetSetup->branding_tagline ?? 'Bekerja Nyata untuk Kesejahteraan Warga',
+            'branding_pillars' => $targetSetup->branding_pillars ?? [],
+            'branding_goal' => $targetSetup->branding_goal ?? '',
+            'momentum_score' => $brandingMomentumScore,
+            'opportunity_issues' => $highOpportunityIssues,
+            'strategic_actions' => [
+                [
+                    'channel' => 'Media Sosial (IG Reels, TikTok, FB Fanpage)',
+                    'title' => 'Unggah Konten Opini Cepat Tanggap',
+                    'desc' => "Rilis potongan video pendek atau carousel pernyataan {$targetSetup->candidate_name} yang memvalidasi keresahan warga dan menawarkan solusi empati.",
+                ],
+                [
+                    'channel' => 'Aksi Lapangan & Sapa Konstituen',
+                    'title' => 'Kunjungan Langsung / Blusukan Simpatik',
+                    'desc' => "Jadwalkan agenda menyapa warga terdampak isu hangat di warung kopi atau titik simpul masyarakat untuk mendengarkan langsung aspirasi mereka.",
+                ],
+                [
+                    'channel' => 'Rilis Pers & Hubungan Media',
+                    'title' => 'Pernyataan Sikap Tokoh ke Jurnalis',
+                    'desc' => "Kirimkan draf naskah rilis sikap resmi ke jurnalis lokal agar nama {$targetSetup->candidate_name} menjadi narasumber rujukan utama dalam berita lanjutan.",
+                ],
+            ],
+        ];
+
         return Inertia::render('Analytics/Index', [
             'sentimentTrend' => $sentimentTrend,
             'auditLogs' => $auditLogs,
             'sentimentSummary' => $sentimentSummary,
+            'brandingInsights' => $brandingInsights,
             'appVersion' => config('app.version', '1.0 (Release Candidate)'),
         ]);
     }

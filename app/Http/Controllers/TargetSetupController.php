@@ -51,23 +51,36 @@ class TargetSetupController extends Controller
         }
 
         $validated = $request->validate([
+            'candidate_name' => ['nullable', 'string', 'max:255'],
+            'political_role' => ['nullable', 'string', 'max:255'],
+            'electoral_district' => ['nullable', 'string', 'max:255'],
+            'branding_tagline' => ['nullable', 'string', 'max:500'],
+            'branding_pillars' => ['nullable'],
+            'branding_goal' => ['nullable', 'string', 'max:2000'],
             'primary_keywords' => ['nullable'],
             'negative_keywords' => ['nullable'],
             'persona' => ['required', 'string', 'max:2000'],
         ]);
 
-        // Normalize primary keywords to array
+        // Normalize primary keywords & branding pillars to array
         $primary = $this->normalizeKeywords($validated['primary_keywords'] ?? []);
         $negative = $this->normalizeKeywords($validated['negative_keywords'] ?? []);
+        $pillars = $this->normalizeKeywords($validated['branding_pillars'] ?? []);
 
         $targetSetup = TargetSetup::getOrCreate();
         $targetSetup->update([
+            'candidate_name' => $validated['candidate_name'] ?? $targetSetup->candidate_name,
+            'political_role' => $validated['political_role'] ?? $targetSetup->political_role,
+            'electoral_district' => $validated['electoral_district'] ?? $targetSetup->electoral_district,
+            'branding_tagline' => $validated['branding_tagline'] ?? $targetSetup->branding_tagline,
+            'branding_pillars' => !empty($pillars) ? $pillars : $targetSetup->branding_pillars,
+            'branding_goal' => $validated['branding_goal'] ?? $targetSetup->branding_goal,
             'primary_keywords' => $primary,
             'negative_keywords' => $negative,
             'persona' => $validated['persona'],
         ]);
 
-        return redirect()->back()->with('success', 'Pengaturan kata kunci dan profil tokoh berhasil disimpan.');
+        return redirect()->back()->with('success', 'Profil kandidat, pilar personal branding, dan pengaturan kata kunci berhasil disimpan.');
     }
 
     /**

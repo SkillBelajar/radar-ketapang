@@ -131,13 +131,16 @@ Untuk 9 berita terpilih, lakukan analisis intelijen:
    C. PENDEKATAN FEYNMAN (BAHASA WARUNG KOPI):
       - Bebas dari jargon birokrasi kaku ("duit rakyat langsung kami kucurkan untuk beli batu dan sewa alat berat").
       - Sederhana, to the point, dan langsung dipahami siapa pun.
-   D. MEMUASKAN HATI MASYARAKAT:
-      - Warga terpuaskan oleh kepastian: siapa tim teknis yang turun, alat berat apa yang bekerja di lokasi hari ini, nomor dokumen SPK yang mengikat, dan nomor kontak posko aduan 24 jam.
+   D. MEMUASKAN HATI MASYARAKAT & ELEKTABILITAS TOKOH:
+      - Warga terpuaskan oleh kepastian: siapa tim teknis yang turun, aksi advokasi nyata dari tokoh/kandidat, nomor rujukan SK/SPK, dan nomor kontak posko aduan 24 jam.
+      - Posisi tokoh politik terangkat sebagai pemimpin solutif, tulus mendengar, dan selalu membela kepentingan warga kecil.
 
-   STRUKTUR 3 NASKAH:
-   - press_release (Draf Siaran Pers Resmi): 3 paragraf utuh (Validasi empati keluarga besar, aksi lapangan hari ini berdasar dokumen legal, dan kutipan rendah hati siap dikritik serta posko 24 jam).
-   - spokesperson (Poin Bicara Juru Bicara Doorstop / Audio): Tutur lisan santun merakyat ala Feynman siap doorstop wartawan: merangkul warga, membeberkan aksi hari ini, dan jaminan posko 24 jam.
-   - editorial_reply (Lembar Hak Jawab Redaksi Media): Payung hukum UU Pers No. 40/1999 dan Kode Etik Dewan Pers, menyajikan fakta pelurus santun dan beradab.
+   STRUKTUR 5 NASKAH MULTI-KANAL (PERSONAL BRANDING & MEDIA):
+   - candidate_statement (Pernyataan Langsung Sikap Tokoh / Calon): Kutipan pernyataan langsung tokoh bertutur santun warung kopi Feynman, siap dikutip wartawan dan dijadikan quotes baliho/flyer digital posko.
+   - social_caption (Konten Media Sosial Viral): Naskah caption ringkas, hidup, dan memikat untuk Instagram Reels, TikTok, Facebook, dan X dilengkapi hashtag branding tokoh dan ajakan interaksi warga.
+   - press_release (Draf Siaran Pers Resmi): 3 paragraf utuh rilis media center standar 5W+1H (Validasi empati keluarga besar, aksi konkret lapangan berdasar dokumen legal, dan kutipan kepemimpinan yang merangkul).
+   - spokesperson (Poin Bicara Juru Bicara Doorstop / Audio): Tutur lisan santun merakyat ala Feynman siap doorstop wartawan dan dialog warga: merangkul rakyat, membeberkan aksi hari ini, dan jaminan posko 24 jam.
+   - editorial_reply (Lembar Hak Jawab Redaksi Media): Payung hukum UU Pers No. 40/1999 dan Kode Etik Dewan Pers, menyajikan fakta pelurus santun dan beradab menangkal disinformasi.
 
 Langkah 4: Kirimkan (Push) Paket 9 Berita ke Sistem
 Kirim paket 9 berita hasil analisis dalam satu payload:
@@ -164,6 +167,8 @@ Body JSON:
         "dokumen_rujukan": "SPK DPU-PR No. 600/BM/2026"
       },
       "scripts": {
+        "candidate_statement": "KUTIPAN SIKAP TOKOH...",
+        "social_caption": "CAPTION VIRAL MEDSOS...",
         "press_release": "SIARAN PERS RESMI...",
         "spokesperson": "POIN BICARA JUBIR...",
         "editorial_reply": "SURAT HAK JAWAB PERS..."
@@ -1180,11 +1185,72 @@ if __name__ == "__main__":
                                         </div>
                                     </div>
 
-                                    {/* Format 3 Naskah Pers Rinci */}
+                                    {/* Format 5 Naskah Personal Branding & Pers Rinci */}
                                     <div className="space-y-4">
-                                        <h4 className="text-xs font-mono uppercase tracking-wider text-slate-400 font-bold">
-                                            Rincian Format & Struktur 3 Naskah Pers:
+                                        <h4 className="text-xs font-mono uppercase tracking-wider text-amber-400 font-bold flex items-center gap-2">
+                                            <Sparkles className="w-4 h-4 text-amber-400" />
+                                            <span>Rincian Format & Struktur 5 Naskah Strategis (Personal Branding & Pers):</span>
                                         </h4>
+
+                                        {/* A. Pernyataan Sikap Tokoh / Calon */}
+                                        <div className="p-5 rounded-xl bg-slate-950 border border-amber-500/30 space-y-3">
+                                            <div className="flex items-center justify-between">
+                                                <div className="flex items-center gap-2">
+                                                    <span className="p-1.5 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/40">
+                                                        <User className="w-4 h-4" />
+                                                    </span>
+                                                    <h5 className="text-sm font-bold text-white">1. Pernyataan Langsung Sikap Tokoh (candidate_statement)</h5>
+                                                </div>
+                                                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-900 text-amber-300 border border-slate-800">
+                                                    Kutipan Wartawan & Baliho Digital
+                                                </span>
+                                            </div>
+
+                                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                                                <div className="p-3 rounded-lg bg-slate-900 border border-slate-800 space-y-1">
+                                                    <div className="font-bold text-amber-300 text-[11px]">Tutur Personal Tokoh</div>
+                                                    <p className="text-slate-400 text-[11px] leading-relaxed">
+                                                        Menggunakan sudut pandang orang pertama (&ldquo;Saya dan tim...&rdquo; / &ldquo;Hati saya terenyuh melihat...&rdquo;) yang memperkuat empati tulus.
+                                                    </p>
+                                                </div>
+                                                <div className="p-3 rounded-lg bg-slate-900 border border-slate-800 space-y-1">
+                                                    <div className="font-bold text-emerald-300 text-[11px]">Sinergi Pilar Perjuangan</div>
+                                                    <p className="text-slate-400 text-[11px] leading-relaxed">
+                                                        Menghubungkan isu lapangan dengan komitmen dan rekam jejak perjuangan yang tertulis di profil branding tokoh.
+                                                    </p>
+                                                </div>
+                                                <div className="p-3 rounded-lg bg-slate-900 border border-slate-800 space-y-1">
+                                                    <div className="font-bold text-cyan-300 text-[11px]">Siap Dikutip Media</div>
+                                                    <p className="text-slate-400 text-[11px] leading-relaxed">
+                                                        Diformat padat dan berbobot sehingga jurnalis lokal dapat langsung menyalinnya sebagai kutipan utama berita.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* B. Konten Media Sosial Viral */}
+                                        <div className="p-5 rounded-xl bg-slate-950 border border-fuchsia-500/30 space-y-3">
+                                            <div className="flex items-center justify-between">
+                                                <div className="flex items-center gap-2">
+                                                    <span className="p-1.5 rounded-lg bg-fuchsia-500/20 text-fuchsia-300 border border-fuchsia-500/40">
+                                                        <Share2 className="w-4 h-4" />
+                                                    </span>
+                                                    <h5 className="text-sm font-bold text-white">2. Konten Media Sosial Viral (social_caption)</h5>
+                                                </div>
+                                                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-900 text-fuchsia-300 border border-slate-800">
+                                                    Kanal: IG Reels / TikTok / FB / X
+                                                </span>
+                                            </div>
+
+                                            <div className="p-3.5 rounded-lg bg-slate-900 border border-slate-800 space-y-2 text-xs font-mono text-slate-300">
+                                                <p className="text-fuchsia-300 font-bold font-sans">Formula Copywriting Medsos Tokoh:</p>
+                                                <div className="space-y-1.5 pl-2 border-l-2 border-fuchsia-500/50">
+                                                    <p>• <strong>Hook Pembuka:</strong> Mengangkat kegelisahan warga secara emosional dan visual.</p>
+                                                    <p>• <strong>Nilai Advokasi:</strong> Sikap dan langkah konkret tokoh dalam mengawal solusi masalah warga.</p>
+                                                    <p>• <strong>Call to Action (CTA) & Hashtags:</strong> Mengajak warganet berdiskusi di kolom komentar dan menyematkan hashtag branding personal tokoh.</p>
+                                                </div>
+                                            </div>
+                                        </div>
 
                                         {/* 1. Siaran Pers Resmi */}
                                         <div className="p-5 rounded-xl bg-slate-950 border border-slate-800 space-y-3">

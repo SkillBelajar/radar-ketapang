@@ -173,74 +173,116 @@ def analyze_article(
     content: str,
     target_name: str,
     persona: str,
-    published_date_str: Optional[str] = None
+    published_date_str: Optional[str] = None,
+    candidate_profile: Optional[Dict[str, Any]] = None
 ) -> Dict[str, Any]:
     """
-    Hermes AI Analysis dengan DOKTRIN IDENTITY FRAMING KE MASYARAKAT:
-    - Dinamis mengikuti target_name politik yang sedang dipantau.
-    - Penuh simpati & validasi tulus di kalimat pembuka (tidak mencari alasan birokrasi).
-    - Tutur merakyat ala Feynman (mengalir santun, mudah dipahami di warung kopi).
-    - Memuaskan publik dengan kepastian aksi lapangan hari ini, rujukan dokumen resmi, dan posko 24 jam.
+    Hermes AI Analysis dengan DOKTRIN PERSONAL BRANDING POLITIK & IDENTITY FRAMING KE MASYARAKAT:
+    - Ditujukan bagi siapa saja yang ingin terjun ke politik (Cakada, Caleg, Tokoh Muda, Petahana).
+    - Memanfaatkan setiap isu daerah sebagai momentum mengangkat nama, empati, dan elektabilitas tokoh.
+    - Menghasilkan 5 format narasi:
+      1. social_caption (Instagram/TikTok/FB/X lengkap dgn Hook, Sikap Tokoh, Solusi, CTA, Hashtag)
+      2. candidate_statement (Pernyataan Sikap Tokoh untuk rujukan berita wartawan)
+      3. spokesperson (Poin bicara sapa warga warung kopi/doorstop Feynman)
+      4. press_release (Siaran pers resmi media center tim pemenangan)
+      5. editorial_reply (Lembar hak jawab redaksi & tangkis isu miring)
     """
+    candidate_profile = candidate_profile or {}
+    c_name = candidate_profile.get("name") or target_name
+    c_role = candidate_profile.get("political_role") or "Kandidat Pemimpin Daerah"
+    c_district = candidate_profile.get("electoral_district") or "Daerah Pemilihan"
+    c_tagline = candidate_profile.get("branding_tagline") or "Bekerja Nyata untuk Kesejahteraan Warga"
+    
     combined_text = (title + " " + content).lower()
 
     # Klasifikasi isu & deteksi sentimen
     is_neg = any(w in combined_text for w in ["rusak", "banjir", "lumpur", "mahal", "keluhan", "protes", "antrean", "langka", "terputus", "krisis", "terbengkalai", "korupsi"])
     is_pos = any(w in combined_text for w in ["resmikan", "bangun", "bantuan", "turun", "normal", "teratasi", "apresiasi", "stabil", "penghargaan", "tuntas", "cair"])
 
+    clean_name_tag = "".join(ch for ch in c_name if ch.isalnum())
+    clean_district_tag = "".join(ch for ch in c_district if ch.isalnum())
+
     if is_neg:
         sentiment = "negative"
         velocity = 88
         status = "integrity_alert"
         tuduhan = f"Warga mengeluhkan dampak '{title}' dan mendesak penanganan segera tanpa alasan penundaan."
-        fakta = f"Hari ini tim respons cepat {target_name} bersama teknisi dinas terkait telah berada di lapangan meninjau lokasi, mengerahkan armada peralatan, dan menyalurkan solusi taktis langsung di depan warga."
-        dokumen = f"Surat Tugas Tanggap Cepat Tim Kerja {target_name} No. 04/TANGGAP/2026 dan Rencana Kerja Penanganan Lapangan."
-        isu_spesifik = "keluhan dan perbaikan lapangan ini"
+        fakta = f"Hari ini tim advokasi aspirasi dan relawan {c_name} bersama warga turun langsung ke lokasi, menyerap keluhan di lapangan, dan mengoordinasikan solusi nyata bersama pihak terkait."
+        dokumen = f"Lembar Catatan Advokasi Aspirasi Warga Posko {c_name} No. 04/ADV/{datetime.now().year}."
+        isu_spesifik = "keluhan mendesak warga ini"
+        branding_angle = f"Momentum Kepemimpinan: Tampilkan {c_name} sebagai figur yang paling tanggap, berani hadir di tengah kesulitan rakyat, dan vokal memperjuangkan solusi tuntas."
     elif is_pos:
         sentiment = "positive"
         velocity = 65
         status = "success"
         tuduhan = "Tidak ada tuduhan; pemberitaan bernada positif dan apresiatif atas kemajuan penanganan."
-        fakta = f"Program percepatan penanganan oleh {target_name} telah dirasakan manfaatnya langsung oleh warga dan operasional berjalan lancar."
-        dokumen = f"Berita Acara Serah Terima & Evaluasi Pelayanan Publik {target_name} No. 12/EVAL/2026."
-        isu_spesifik = "kelancaran pelayanan dan kabar baik ini"
+        fakta = f"Inisiatif dan dorongan aspirasi dari elemen masyarakat bersama figur seperti {c_name} membuahkan hasil nyata bagi kesejahteraan warga di {c_district}."
+        dokumen = f"Dokumen Rekapitulasi Aspirasi & Progres Lapangan {c_name} No. 12/PROG/{datetime.now().year}."
+        isu_spesifik = "kabar baik dan kemajuan daerah ini"
+        branding_angle = f"Momentum Amplifikasi: Jadikan kabar baik ini sebagai bukti bahwa visi pembangunan dan kerja nyata yang didorong {c_name} terbukti membawa dampak positif."
     else:
         sentiment = "neutral"
         velocity = 55
         status = "success"
         tuduhan = "Informasi reguler terkait kebijakan dan perkembangan situasi kemasyarakatan."
-        fakta = f"Posko koordinasi {target_name} terus memonitor dinamika harian dan berkoordinasi erat dengan tokoh masyarakat serta aparatur setempat."
-        dokumen = f"Surat Edaran Koordinasi Pelayanan Masyarakat {target_name} No. 08/SE/2026."
-        isu_spesifik = "perkembangan informasi kebijakan ini"
+        fakta = f"Posko pergerakan dan komunikasi {c_name} terus memonitor dinamika harian dan berdialog intensif dengan tokoh masyarakat, pemuda, dan kelompok rentan."
+        dokumen = f"Notula Temu Aspirasi & Dialog Warga Posko {c_name} No. 08/DLG/{datetime.now().year}."
+        isu_spesifik = "perkembangan informasi ini"
+        branding_angle = f"Momentum Edukasi: Posisikan {c_name} sebagai tokoh visioner yang mengedukasi warga dan menyiapkan peta jalan perbaikan jangka panjang."
 
-    # Penulisan Naskah Komunikasi Simpatik (Identity Framing & Feynman)
-    press_release = (
-        f"SIARAN PERS RESMI // POSKO INFORMASI & RESPONS CEPAT {target_name.upper()}\n\n"
-        f"Judul: Bersama Menuntaskan Harapan Warga Terkait '{title}'\n\n"
-        f"Menanggapi kabar dan aspirasi yang berkembang seputar '{title}', kami menyampaikan salam hormat dan empati mendalam kepada seluruh masyarakat dan saudara-saudaraku yang terdampak. Kami hadir sebagai pelayan masyarakat, bagian dari keluarga besar warga; apa yang menjadi beban, kesulitan, dan harapan bapak-ibu sekalian adalah kegelisahan yang kami rasakan secara nyata setiap hari.\n\n"
-        f"1. Kejujuran Sikap & Empati Penuh: Kami berterima kasih yang sebesar-besarnya kepada rekan-rekan jurnalis dan warga yang telah menyuarakan hal ini. Kami tidak menutup mata, tidak membela diri, dan tidak mencari alasan birokrasi. Bagi kami, setiap keluhan warga mengenai {isu_spesifik} adalah pengingat amanah yang wajib segera kami tuntaskan di lapangan.\n\n"
-        f"2. Tindakan Nyata di Lapangan Hari Ini: {fakta} Seluruh langkah percepatan ini memiliki dasar kerja yang transparan berdasarkan {dokumen}. Kami tidak menunggu proses administrasi yang lambat; tim teknis bersama warga langsung bekerja merapikan dan memastikan kebutuhan masyarakat terpenuhi.\n\n"
-        f"3. Ajakan Gotong Royong & Jaminan Keterbukaan: 'Pemerintah dan pimpinan daerah hadir untuk melayani rakyat, bukan untuk bersikap menara gading. Kami siap dikritik, kami buka posko aduan warga 24 jam, dan kami pastikan setiap perkembangan dilaporkan terbuka sampai warga merasa tenang dan puas.'\n\n"
-        f"Layanan Informasi & Posko Pengaduan Warga: Posko Respons Cepat {target_name} (Buka 24 Jam Penuh)."
+    # 1. Narasi Medsos Tokoh (Instagram Feed/Reels, TikTok, Facebook, Thread X)
+    social_caption = (
+        f"📱 [CATATAN & SIKAP {c_name.upper()} // {c_district.upper()}]\n\n"
+        f"\"Mendengar langsung kabar soal '{title}', hati saya ikut bergetar. Bagi saya, apa yang dirasakan warga hari ini bukanlah sekadar berita di layar ponsel, melainkan panggilan nurani yang harus kita perjuangkan bersama.\"\n\n"
+        f"Bapak, Ibu, dan saudaraku sekalian di {c_district},\n"
+        f"Sebagai bagian dari keluarga besar kita di sini, kami memegang teguh komitmen: {c_tagline}. Masalah {isu_spesifik} tidak boleh dibiarkan berlarut-larut apalagi ditutupi dengan alasan administratif.\n\n"
+        f"📌 Sikap dan komitmen kami hari ini:\n"
+        f"1. Kami hadir memvalidasi keresahan warga—tidak ada bantahan, karena suara rakyat adalah kompas utama kami.\n"
+        f"2. Tim relawan dan advokasi kami sudah bergerak turun ke titik lokasi untuk mendata kebutuhan mendesak warga.\n"
+        f"3. Kami akan kawal terus koordinasi teknisnya sampai masyarakat benar-benar merasakan ketenangan dan perubahan nyata.\n\n"
+        f"Bagi bapak-ibu yang mengalami langsung kendala ini, silakan sampaikan ceritanya di kolom komentar atau hubungi tim Posko Aspirasi 24 jam kami. Mari kita jaga dan bangun daerah kita dengan kerja ikhlas dan nyata!\n\n"
+        f"#{clean_name_tag} #{clean_district_tag} #SuaraRakyat #PeduliWarga #KerjaNyata #PemimpinMerakyat #Aspirasi{clean_district_tag}"
     )
 
+    # 2. Pernyataan Sikap Tokoh (Op-Ed / Doorstop Jurnalis Media Online)
+    candidate_statement = (
+        f"🎙️ PERNYATAAN SIKAP RESMI {c_name.upper()} ({c_role})\n"
+        f"Terkait Isu: \"{title}\"\n\n"
+        f"\"{isu_spesifik.capitalize()} menyangkut langsung hajat hidup warga di {c_district}. Saya mengimbau seluruh pihak untuk mengedepankan empati dan kecepatan bertindak. Rakyat tidak membutuhkan retorika kaku di atas kertas, rakyat butuh kepastian solusi hadir di depan mata mereka.\n\n"
+        f"Kami di jajaran tim perjuangan bersama masyarakat memastikan diri siap menjadi jembatan advokasi yang solutif. Pintu posko aspirasi kami terbuka 24 jam penuh untuk menyerap dan mengawal setiap hak masyarakat agar terpenuhi secara adil dan bermartabat.\"\n\n"
+        f"— {c_name} ({c_role} // {c_district})"
+    )
+
+    # 3. Poin Bicara Jubir / Sapa Warga Warung Kopi ala Feynman
     spokesperson = (
-        f"POIN BICARA JURU BICARA (DOORSTOP WARTAWAN // BAHASA TUTUR MERAKYAT ALA FEYNMAN):\n"
-        f"1. [Merangkul & Validasi Empati]: 'Assalamu'alaikum dan salam sejahtera untuk kawan-kawan media serta seluruh bapak-ibu sekalian. Pertama-tama, arahan dari {target_name} sangat tegas: terima kasih banyak sudah diingatkan soal {title}. Kami merasakan betul beratnya beban warga di lapangan. Tidak ada bantahan dari kami, karena keluhan warga adalah tanggung jawab kami bersama.'\n"
-        f"2. [Aksi Konkret Hari Ini]: 'Arahan {target_name} jelas dan tidak bertele-tele: jangan tunggu besok. Hari ini tim respons teknis lapangan sudah turun langsung membawa peralatan dan kebutuhan nyata untuk menyelesaikan {isu_spesifik}. Pekerjaan fisiknya langsung dikawal di depan mata warga.'\n"
-        f"3. [Kepastian & Transparansi Memuaskan]: 'Pekerjaannya sah dan terukur, dokumen resminya ada di {dokumen}. Posko aduan kami buka 24 jam penuh. Kalau ada yang belum beres di lapangan, bapak-ibu bisa langsung hubungi posko kami kapan saja. Kami kawal bersama sampai tuntas.'"
+        f"POIN BICARA JURU BICARA & SAPA WARGA (DOORSTOP / WARUNG KOPI // TUTUR MERAKYAT FEYNMAN):\n"
+        f"1. [Merangkul & Validasi Empati]: 'Assalamu'alaikum dan salam hangat bapak-ibu sekalian serta kawan-kawan media. Pesan dari {c_name} sangat tegas: terima kasih banyak sudah mengingatkan kita semua soal {title}. Beliau merasakan betul beratnya beban bapak-ibu di bawah. Bagi beliau, keluhan warga adalah amanah perjuangan kami.'\n"
+        f"2. [Aksi Konkret Bukan Janji Manis]: 'Prinsip {c_name} sederhana: jangan banyak beralasan. Hari ini tim advokasi kami langsung turun mendampingi warga dan mendorong percepatan penanganan {isu_spesifik} di lapangan.'\n"
+        f"3. [Jaminan Pengawalan Terbuka]: 'Posko aspirasi {c_name} dibuka 24 jam. Kalau ada hal yang dirasa belum adil atau lambat ditangani, bapak-ibu bisa langsung kabari kami. {c_name} berkomitmen mengawal ini sampai tuntas demi kepuasan dan kesejahteraan seluruh warga.'"
     )
 
+    # 4. Siaran Pers Resmi Media Center Tim Pemenangan
+    press_release = (
+        f"SIARAN PERS RESMI // MEDIA CENTER TIM {c_name.upper()}\n\n"
+        f"Judul: Bersama Menuntaskan Harapan Warga: Komitmen Nyata {c_name} Sikapi '{title}'\n\n"
+        f"{c_district.upper()} — Menanggapi dinamika pemberitaan seputar '{title}', Media Center {c_name} menegaskan komitmen penuh sang kandidat dalam mengawal aspirasi dan kesejahteraan warga masyarakat.\n\n"
+        f"1. Kejujuran Sikap & Empati Warga: {c_name} memandang setiap keluhan publik sebagai cermin amanah yang harus dijawab dengan langkah taktis, bukan dalih birokrasi. 'Kita adalah satu keluarga besar; kesulitan warga adalah tanggung jawab moral kami untuk terus bersuara dan berbuat nyata,' ujar perwakilan Media Center.\n\n"
+        f"2. Langkah Nyata & Advokasi Lapangan: {fakta} Seluruh langkah advokasi ini didasarkan pada {dokumen} demi memastikan hak-hak masyarakat terpenuhi secara transparan.\n\n"
+        f"3. Komitmen Kepemimpinan Merakyat: {c_name} secara konsisten mengusung tagline '{c_tagline}' dengan membuka ruang dialog seluas-luasnya bagi segenap lapisan masyarakat.\n\n"
+        f"Media Center & Posko Aspirasi Warga {c_name}: Buka 24 Jam Penuh Melayani Masyarakat."
+    )
+
+    # 5. Lembar Hak Jawab Redaksi Pers & Penjaga Integritas
     editorial_reply = (
         f"SURAT HAK JAWAB & PERMOHONAN KEBERIMBANGAN INFORMASI (UU PERS NO. 40/1999)\n\n"
         f"Kepada Yth. Pemimpin Redaksi {source}\n\n"
         f"Dengan hormat,\n"
-        f"Menindaklanjuti pemberitaan berjudul \"{title}\", kami menyampaikan rasa hormat dan apresiasi setinggi-tingginya kepada rekan-rekan insan pers atas dedikasi menjalankan fungsi kontrol sosial yang konstruktif demi kepentingan masyarakat luas terkait agenda {target_name}.\n\n"
-        f"Demi menghadirkan informasi yang utuh, berimbang, dan melegakan hati masyarakat, perkenankan kami menyampaikan fakta lapangan dan langkah penanganan nyata yang tengah kami lakukan:\n"
-        f"1. Tanggapan & Keberpihakan: Kami memandang kritik dan aspirasi publik sebagai masukan berharga untuk terus membenahi {isu_spesifik}.\n"
-        f"2. Fakta Penanganan Lapangan: {fakta}\n"
-        f"3. Dokumen Keabsahan Prosedur: {dokumen}\n\n"
-        f"Besar harapan kami penjelasan ini dapat dimuat sebagai Hak Jawab sesuai amanat UU Pers No. 40/1999 dan Kode Etik Jurnalistik Dewan Pers, demi memberikan ketenangan serta kepuasan informasi bagi masyarakat pembaca yang budiman. Terima kasih atas kerja sama yang hangat dan profesional."
+        f"Menindaklanjuti pemberitaan berjudul \"{title}\", kami atas nama Tim Komunikasi & Hukum {c_name} menyampaikan apresiasi setinggi-tingginya kepada rekan-rekan insan pers yang senantiasa menjalankan fungsi kontrol sosial yang independen dan berimbang.\n\n"
+        f"Guna menjaga keutuhan informasi bagi masyarakat luas di {c_district}, perkenankan kami meluruskan dan melengkapi data penanganan terkait isu tersebut:\n"
+        f"1. Keberpihakan Aspirasi: {c_name} senantiasa memprioritaskan kepentingan warga di atas segalanya terkait {isu_spesifik}.\n"
+        f"2. Fakta Penanganan Nyata: {fakta}\n"
+        f"3. Landasan Dokumen Sah: {dokumen}\n\n"
+        f"Besar harapan kami klarifikasi resmi ini dapat dimuat secara utuh sebagai wujud pemenuhan Hak Jawab demi menjaga iklim informasi yang sehat, sejuk, dan mencerahkan masyarakat pemilih. Terima kasih."
     )
 
     published_at_val = published_date_str if published_date_str else datetime.now(timezone.utc).isoformat()
@@ -257,11 +299,14 @@ def analyze_article(
         "fact_anchor": {
             "tuduhan": tuduhan,
             "fakta_lapangan": fakta,
-            "dokumen_rujukan": dokumen
+            "dokumen_rujukan": dokumen,
+            "branding_opportunity": branding_angle
         },
         "scripts": {
-            "press_release": press_release,
+            "social_caption": social_caption,
+            "candidate_statement": candidate_statement,
             "spokesperson": spokesperson,
+            "press_release": press_release,
             "editorial_reply": editorial_reply
         }
     }
@@ -428,12 +473,13 @@ def run_daily_patrol(dry_run: bool = False):
     logger.info(f"Target Gateway: {API_BASE}")
 
     params = fetch_target_parameters()
+    candidate_profile = params.get("candidate_profile", {})
     primary_keywords = params.get("primary_keywords", ["Bupati Ketapang"])
     negative_keywords = params.get("negative_keywords", [])
     persona = params.get("persona", "")
     existing_urls = params.get("existing_urls", [])
 
-    target_name = primary_keywords[0] if primary_keywords else "Sasaran Politik"
+    target_name = candidate_profile.get("name") or (primary_keywords[0] if primary_keywords else "Tokoh Politik")
 
     # Seleksi tepat 9 berita baru dan paling berdampak tanpa duplikasi
     selected_9_news = select_top_9_impactful_news(primary_keywords, negative_keywords, existing_urls)
@@ -450,7 +496,8 @@ def run_daily_patrol(dry_run: bool = False):
             content=item["content"],
             target_name=target_name,
             persona=persona,
-            published_date_str=item.get("published_at")
+            published_date_str=item.get("published_at"),
+            candidate_profile=candidate_profile
         )
         logger.info(f"   [{idx}/9] Berita  : '{analyzed['title'][:55]}...'")
         logger.info(f"          Sumber   : {analyzed['source']} | Dampak: {item.get('impact_score', 80)} | Tgl: {analyzed['published_at'][:10]}")
