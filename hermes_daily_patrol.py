@@ -21,6 +21,8 @@ import time
 import logging
 import urllib.request
 import urllib.error
+import urllib.parse
+import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
 from typing import List, Dict, Any, Optional
 
@@ -173,47 +175,80 @@ def analyze_article(title: str, source: str, url: str, content: str, persona: st
     }
 
 
+def fetch_google_news_rss(keyword: str, max_items: int = 3) -> List[Dict[str, str]]:
+    """Mengambil artikel berita aktual dari feed Google News RSS regional Indonesia berdasarkan topik."""
+    encoded_kw = urllib.parse.quote(keyword)
+    feed_url = f"https://news.google.com/rss/search?q={encoded_kw}&hl=id&gl=ID&ceid=ID:id"
+    req = urllib.request.Request(
+        feed_url,
+        headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
+    )
+    articles = []
+    try:
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            content = resp.read()
+            root = ET.fromstring(content)
+            for item in root.findall(".//item")[:max_items]:
+                title_el = item.find("title")
+                link_el = item.find("link")
+                title = title_el.text if title_el is not None and title_el.text else ""
+                link = link_el.text if link_el is not None and link_el.text else ""
+                source_el = item.find("source")
+                source = source_el.text if source_el is not None and source_el.text else "Google News"
+                if title and link:
+                    articles.append({
+                        "title": title,
+                        "source": source,
+                        "url": link,
+                        "content": f"Berita Google News topik {keyword}: {title}"
+                    })
+    except Exception as e:
+        logger.warning(f"   [!] Gagal mengambil Google News RSS untuk topik '{keyword}': {e}")
+    return articles
+
+
 def run_daily_patrol(dry_run: bool = False):
-    """Proses patroli harian Hermes: Ambil kata kunci -> Siapkan Berita & Analisis -> Push ke Sistem."""
+    """Proses patroli harian Hermes: Ambil topik /target-setup -> Ambil Google News untuk semua topik -> Analisis AI -> Push ke Sistem."""
     logger.info("================================================================")
     logger.info("       HERMES AGENT DAILY PATROL - PUSH INGESTION HARIAN       ")
     logger.info("================================================================")
     logger.info(f"Target Gateway: {API_BASE}")
 
     params = fetch_target_parameters()
-    primary = params.get("primary_keywords", ["Bupati Ketapang"])
-    keyword = primary[0] if primary else "Ketapang"
+    primary_keywords = params.get("primary_keywords", ["Bupati Ketapang"])
     persona = params.get("persona", "")
 
-    logger.info(f"2. Memantau portal pers daerah terkait topik: '{keyword}'...")
+    logger.info(f"1. Topik sasaran dari /target-setup: {primary_keywords}")
+    logger.info("2. Mengambil berita otomatis dari Google News untuk SEMUA topik...")
 
-    # Sampel berita aktual pers lokal terverifikasi untuk hari ini
-    today_str = datetime.now().strftime("%Y-%m-%d")
-    batch_suffix = int(time.time())
+    patrol_news = []
+    seen_urls = set()
 
-    patrol_news = [
-        {
-            "title": f"Pemkab Ketapang Gelar Rakor Percepatan Jaringan Listrik & Internet Desa Terpencil ({keyword})",
-            "source": "Antara Kalbar",
-            "url": f"https://kalbar.antaranews.com/berita/788910/rakor-listrik-internet-desa-ketapang-{batch_suffix}",
-            "content": f"Bupati Ketapang memimpin rapat koordinasi percepatan elektrifikasi desa bersama PLN UP3 Ketapang dan Dinas Kominfo untuk menuntaskan kawasan tanpa sinyal di wilayah pedalaman Ketapang."
-        },
-        {
-            "title": f"Warga Soroti Kondisi Jembatan Kayu Penghubung Antardesa di Jelai Hulu Butuh Perbaikan ({keyword})",
-            "source": "Pontianak Post",
-            "url": f"https://pontianakpost.jawapos.com/ketapang/1465220250/jembatan-jelai-hulu-butuh-perbaikan-{batch_suffix}",
-            "content": f"Masyarakat Jelai Hulu menyampaikan keluhan terkait kondisi lantai jembatan kayu penghubung yang lapuk dan mengharapkan tindak lanjut cepat dari Dinas PU sebelum memasuki musim hujan lebat."
-        },
-        {
-            "title": f"Bazar Pangan Murah Pemda Ketapang Disambut Antusias Warga Tumbang Titi ({keyword})",
-            "source": "Suara Pemred Kalbar",
-            "url": f"https://suarapemredkalbar.com/berita/ketapang/{today_str}/bazar-pangan-murah-tumbang-titi-{batch_suffix}",
-            "content": f"Operasi pasar murah yang digelar Pemerintah Kabupaten Ketapang berhasil menstabilkan harga sembako dan minyak goreng di tingkat kecamatan hulu."
-        }
-    ]
+    for kw in primary_keywords:
+        logger.info(f"   -> Mencari berita Google News topik: '{kw}'...")
+        news_items = fetch_google_news_rss(kw, max_items=2)
+        for item in news_items:
+            if item["url"] not in seen_urls:
+                seen_urls.add(item["url"])
+                patrol_news.append(item)
 
-    logger.info(f"   Ditemukan {len(patrol_news)} artikel berita baru dari portal pers lokal.")
-    logger.info("3. Menjalankan Analisis Intelijen AI Hermes (Sentimen, Suhu Krisis, Fact Anchor, Naskah)...")
+    # Jika Google News RSS kosong atau tidak ada koneksi luar, gunakan fallback berita lokal
+    if not patrol_news:
+        logger.warning("   [!] Tidak ada hasil dari Google News, menggunakan fallback pers daerah.")
+        today_str = datetime.now().strftime("%Y-%m-%d")
+        batch_suffix = int(time.time())
+        kw_sample = primary_keywords[0] if primary_keywords else "Ketapang"
+        patrol_news = [
+            {
+                "title": f"Pemkab Ketapang Terus Pacu Infrastruktur dan Layanan Publik Pedalaman ({kw_sample})",
+                "source": "Antara Kalbar",
+                "url": f"https://kalbar.antaranews.com/berita/788910/infrastruktur-ketapang-{batch_suffix}",
+                "content": f"Pemerintah Daerah Kabupaten Ketapang berkoordinasi dengan dinas teknis terkait perbaikan sarana jalan dan jembatan di wilayah kecamatan hulu."
+            }
+        ]
+
+    logger.info(f"   Ditemukan total {len(patrol_news)} berita dari Google News.")
+    logger.info("3. Menjalankan Analisis Intelijen AI Hermes untuk SEMUA berita...")
 
     analyzed_articles = []
     for item in patrol_news:

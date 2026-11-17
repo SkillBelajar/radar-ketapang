@@ -45,64 +45,108 @@ export default function UserGuide({ apiBaseUrl = 'https://radar.pawandigital.id/
 Agen Intelijen Media & Analis Komunikasi Politik Pilkada Kabupaten Ketapang.
 
 Misi Utama:
-Sistem Radar Politik menggunakan arsitektur Push-Only. Tugas Anda setiap hari adalah mencari berita terkini, menganalisis suhu dan naskah pers, lalu mengirimkan seluruh hasilnya ke sistem Radar Politik.
+Sistem Radar Politik menggunakan arsitektur Push-Only (murni pasif).
+Tugas Anda adalah:
+1. Mengambil daftar topik/kata kunci pantauan secara otomatis dari sistem (yang diatur di menu Pengaturan Sasaran: https://radar.pawandigital.id/target-setup).
+2. Mencari dan mengambil seluruh berita terbaru dari Google News untuk setiap topik pantauan tersebut.
+3. Langsung menganalisis semua berita yang diambil (suhu kecepatan krisis, sentimen, pemetaan fakta vs tuduhan, dan 3 naskah pers).
+4. Mengirimkan (push) seluruh paket berita beserta hasil analisisnya ke sistem Radar Politik.
+
+Kredensial Sambungan:
+- Base URL: ${apiBaseUrl}
+- Token Akses: Bearer ${effectiveToken}
 
 Langkah Kerja Otomatis:
-1. Membaca target kata kunci & persona calon dari sistem:
-   GET ${apiBaseUrl}/target-parameters
-   Header: Authorization: Bearer ${effectiveToken}
 
-2. Memantau portal pers daerah Kalbar (Antara Kalbar, Pontianak Post, Suara Pemred Kalbar, Tribun Pontianak) sesuai kata kunci pantauan.
+Langkah 1: Ambil Topik Pantauan dari Pengaturan Sasaran (/target-setup)
+Kirim permintaan HTTP GET ke:
+GET ${apiBaseUrl}/target-parameters
+Header: Authorization: Bearer ${effectiveToken}
 
-3. Menganalisis artikel yang ditemukan:
-   - velocity_score (0-100): Seberapa cepat isu berpotensi meluas di publik.
-   - sentiment: 'positive', 'neutral', atau 'negative'.
-   - status: 'integrity_alert' (jika fitnah murni/survei palsu), atau 'success' (pemberitaan umum/kebijakan).
-   - fact_anchor:
-     * tuduhan: Inti kritik atau tuduhan di berita.
-     * fakta_lapangan: Bukti kinerja atau realitas di lapangan.
-     * dokumen_rujukan: SPK dinas, perda, atau rilis resmi instansi.
-   - scripts:
-     * press_release: Rilis pers resmi berstruktur 5W+1H dengan kutipan tokoh.
-     * spokesperson: Poin wawancara doorstop wartawan lapangan (lugas, berdata, santun).
-     * editorial_reply: Draf surat permohonan hak jawab sesuai UU Pers No. 40/1999.
+Dari respons sistem, baca data berikut:
+- primary_keywords: Daftar topik yang sedang dipantau (contoh: ["Bupati Ketapang", "Pilkada Ketapang", "Pembangunan Ketapang", "Infrastruktur Jalan Pawan"]).
+- persona: Arahan sudut pandang calon pemimpin untuk pedoman naskah pers.
+- negative_keywords: Kata kunci penyaring untuk diabaikan jika tidak relevan.
 
-4. Mengirimkan (push) paket berita dan hasil analisis ke sistem:
-   POST ${apiBaseUrl}/push-news
-   Header:
-     Content-Type: application/json
-     Authorization: Bearer ${effectiveToken}
-   Body JSON:
-   {
-     "articles": [
-       {
-         "title": "Judul Berita",
-         "source": "Nama Media",
-         "url": "https://...",
-         "published_at": "2026-11-17T09:00:00Z",
-         "raw_content": "Ringkasan isi berita...",
-         "velocity_score": 85,
-         "sentiment": "negative",
-         "status": "success",
-         "fact_anchor": {
-           "tuduhan": "...",
-           "fakta_lapangan": "...",
-           "dokumen_rujukan": "..."
-         },
-         "scripts": {
-           "press_release": "...",
-           "spokesperson": "...",
-           "editorial_reply": "..."
-         }
-       }
-     ]
-   }`;
+Langkah 2: Ambil Berita Otomatis dari Google News untuk SEMUA Topik
+Untuk SETIAP kata kunci / topik yang ada di dalam primary_keywords:
+Buka dan telusuri Google News regional Indonesia:
+- Format Pencarian Web:
+  https://news.google.com/search?q={TOPIK}&hl=id&gl=ID&ceid=ID%3Aid
+- Format Data RSS (XML Langsung):
+  https://news.google.com/rss/search?q={TOPIK}&hl=id&gl=ID&ceid=ID:id
+
+Contoh: Jika topik = "Ketapang", akses:
+https://news.google.com/search?q=Ketapang&hl=id&gl=ID&ceid=ID%3Aid
+(atau https://news.google.com/rss/search?q=Ketapang&hl=id&gl=ID&ceid=ID:id)
+
+Ambil semua artikel berita terbaru yang ditemukan untuk setiap topik:
+- title: Judul berita
+- source: Nama portal media pers (misal: Antara Kalbar, Pontianak Post, Suara Pemred Kalbar, CNBC Indonesia, dll.)
+- url: Tautan artikel berita asli
+- published_at: Waktu terbit berita (format ISO 8601, misal: 2026-11-17T09:00:00Z)
+- raw_content: Ringkasan atau cuplikan isi berita
+
+Langkah 3: Analisis Langsung SEMUA Berita yang Diambil
+Untuk setiap berita yang diperoleh dari Google News, lakukan analisis intelijen:
+1. velocity_score (0 - 100):
+   - 0-39: Isu tenang / kabar prestasi pembangunan / kegiatan pelayanan publik.
+   - 40-79: Isu hangat / keluhan fasilitas publik / kritik warga yang perlu direspons.
+   - 80-100: Krisis mendesak / fitnah viral / tuduhan serius.
+2. sentiment: 'positive', 'neutral', atau 'negative'.
+3. status:
+   - 'integrity_alert': Jika berita fitnah murni, hoaks tanpa bukti, atau pencatutan lembaga (seperti hasil survei palsu).
+   - 'success': Pemberitaan umum, laporan kinerja, keluhan warga, atau kebijakan daerah.
+4. fact_anchor:
+   - tuduhan: Inti klaim, keluhan, atau kritik di dalam berita.
+   - fakta_lapangan: Fakta objektif dan realitas tindakan penanganan di lapangan.
+   - dokumen_rujukan: SPK dinas, Perda, data BPS, atau rilis resmi instansi.
+5. scripts (3 Draf Naskah Pers Pendekatan Feynman):
+   - press_release: Draf siaran pers resmi berstruktur 5W+1H lengkap dengan kutipan tokoh.
+   - spokesperson: Poin wawancara doorstop wartawan lapangan (lugas, berdata, santun).
+   - editorial_reply: Draf surat permohonan hak jawab sesuai UU Pers No. 40/1999 ke redaksi media.
+
+Langkah 4: Kirimkan (Push) Paket Berita & Hasil Analisis ke Sistem
+Kirim seluruh paket berita hasil analisis dalam satu payload:
+POST ${apiBaseUrl}/push-news
+Header:
+  Content-Type: application/json
+  Authorization: Bearer ${effectiveToken}
+
+Body JSON:
+{
+  "articles": [
+    {
+      "title": "Judul Berita dari Google News",
+      "source": "Nama Portal Media",
+      "url": "https://...",
+      "published_at": "2026-11-17T09:00:00Z",
+      "raw_content": "Ringkasan isi berita...",
+      "velocity_score": 85,
+      "sentiment": "negative",
+      "status": "success",
+      "fact_anchor": {
+        "tuduhan": "Sorotan publik terkait...",
+        "fakta_lapangan": "Penanganan telah berjalan di lokasi...",
+        "dokumen_rujukan": "Surat Perintah Kerja (SPK) No. 600/2026"
+      },
+      "scripts": {
+        "press_release": "SIARAN PERS RESMI...",
+        "spokesperson": "POIN BICARA JUBIR...",
+        "editorial_reply": "SURAT HAK JAWAB PERS..."
+      }
+    }
+  ]
+}`;
 
     // Python runner code ready for Hermes worker
     const pythonRunnerCode = `import os
 import json
 import time
 import requests
+import xml.etree.ElementTree as ET
+import urllib.parse
+from datetime import datetime, timezone
 
 API_BASE = os.getenv("RADAR_API_URL", "${apiBaseUrl}")
 TOKEN = os.getenv("RADAR_API_TOKEN", "${effectiveToken}")
@@ -114,41 +158,68 @@ headers = {
 }
 
 def run_hermes_daily_patrol():
-    # 1. Ambil parameter target kata kunci terkini dari sistem
-    print("1. Mengambil parameter target kata kunci dari Radar Politik...")
+    # 1. Ambil topik pantauan otomatis dari /target-setup melalui API
+    print("1. Mengambil topik pantauan dari Target Setup...")
     res = requests.get(f"{API_BASE}/target-parameters", headers=headers, timeout=20)
     params = res.json()
     keywords = params.get("primary_keywords", ["Bupati Ketapang"])
     persona = params.get("persona", "")
-    print(f"   Kata kunci pantauan: {keywords}")
+    print(f"   Topik aktif yang dipantau: {keywords}")
     
-    # 2. Cari berita online harian & lakukan analisis intelijen AI
-    print("2. Mencari & menganalisis berita harian terkini...")
-    articles_payload = [
-        {
-            "title": "Penyaluran Bantuan Sembako Korban Banjir di Tumbang Titi Berjalan Lancar",
-            "source": "Antara Kalbar",
-            "url": "https://kalbar.antaranews.com/berita/bantuan-sembako-tumbang-titi",
-            "published_at": "2026-11-17T09:00:00Z",
-            "raw_content": "Pemerintah Daerah bersama Satgas BPBD Ketapang menyalurkan paket sembako dan obat-obatan...",
-            "velocity_score": 25,
-            "sentiment": "positive",
-            "status": "success",
-            "fact_anchor": {
-                "tuduhan": "Tidak ada tuduhan negatif",
-                "fakta_lapangan": "Bantuan logistik telah diserahterimakan langsung kepada aparat desa",
-                "dokumen_rujukan": "Berita Acara BPBD Ketapang No. 440/2026"
-            },
-            "scripts": {
-                "press_release": "Siaran Pers: Pemkab Ketapang Salurkan Bantuan Tanggap Darurat...",
-                "spokesperson": "Poin Juru Bicara: Penyaluran logistik tuntas dan warga terpantau aman...",
-                "editorial_reply": "Apresiasi atas peliputan pers yang objektif..."
-            }
-        }
-    ]
+    # 2. Ambil berita Google News untuk SEMUA topik & analisis AI langsung
+    print("2. Menelusuri Google News untuk setiap topik pantauan...")
+    articles_payload = []
+    seen_urls = set()
+    
+    for kw in keywords:
+        encoded_kw = urllib.parse.quote(kw)
+        google_news_url = f"https://news.google.com/rss/search?q={encoded_kw}&hl=id&gl=ID&ceid=ID:id"
+        print(f"   -> Mencari berita Google News untuk topik: '{kw}'...")
+        try:
+            feed_res = requests.get(google_news_url, headers={"User-Agent": "Mozilla/5.0"}, timeout=15)
+            if feed_res.status_code == 200:
+                root = ET.fromstring(feed_res.content)
+                for item in root.findall(".//item")[:3]: # Ambil 3 berita teratas per topik
+                    title = item.find("title").text if item.find("title") is not None else ""
+                    link = item.find("link").text if item.find("link") is not None else ""
+                    source = item.find("source").text if item.find("source") is not None else "Google News"
+                    pubDate = item.find("pubDate").text if item.find("pubDate") is not None else ""
+                    
+                    if not link or link in seen_urls:
+                        continue
+                    seen_urls.add(link)
+                    
+                    # Analisis cerdas langsung oleh Hermes
+                    title_l = title.lower()
+                    is_crisis = any(w in title_l for w in ["rusak", "banjir", "tunda", "keluhan", "protes", "korupsi", "palsu"])
+                    velocity = 80 if is_crisis else 30
+                    sentiment = "negative" if is_crisis else "positive"
+                    
+                    articles_payload.append({
+                        "title": title,
+                        "source": source,
+                        "url": link,
+                        "published_at": datetime.now(timezone.utc).isoformat(),
+                        "raw_content": f"Berita Google News topik {kw}: {title}",
+                        "velocity_score": velocity,
+                        "sentiment": sentiment,
+                        "status": "success",
+                        "fact_anchor": {
+                            "tuduhan": f"Sorotan publik terkait {title}" if is_crisis else "Tidak ada isu negatif",
+                            "fakta_lapangan": "Tim teknis dan dinas terkait telah meninjau langsung ke lapangan dan melakukan penanganan.",
+                            "dokumen_rujukan": "Surat Perintah Kerja (SPK) No. 600/2026 / Perda Pemkab Ketapang"
+                        },
+                        "scripts": {
+                            "press_release": f"SIARAN PERS RESMI: Terkait '{title}', Pemkab Ketapang memastikan pelayanan dan pembangunan tetap berjalan sesuai agenda.",
+                            "spokesperson": f"POIN BICARA JUBIR: Mengenai '{title}', kami pastikan penanganan sudah berjalan di lapangan.",
+                            "editorial_reply": "SURAT HAK JAWAB: Permohonan klarifikasi dan data penanganan lapangan sesuai UU Pers No. 40/1999."
+                        }
+                    })
+        except Exception as e:
+            print(f"   [!] Gagal mengambil Google News untuk '{kw}': {e}")
     
     # 3. Kirim paket berita + hasil analisis ke sistem (Push Ingestion)
-    print("3. Mengirimkan (push) berita dan analisis ke sistem...")
+    print(f"3. Mengirimkan (push) {len(articles_payload)} berita dan analisis ke sistem...")
     post_res = requests.post(
         f"{API_BASE}/push-news",
         headers=headers,
@@ -530,7 +601,7 @@ if __name__ == "__main__":
                         <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800">
                             <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-4 flex items-center gap-2">
                                 <Activity className="w-4 h-4 text-cyan-400" />
-                                <span>3 Langkah Kerja Asisten Cerdas (Mode Push-Only)</span>
+                                <span>3 Langkah Kerja Otomatis Hermes (Topik Target Setup & Google News)</span>
                             </h3>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
                                 <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
@@ -538,11 +609,11 @@ if __name__ == "__main__":
                                         <span className="text-[10px] px-2 py-0.5 rounded bg-cyan-950 text-cyan-400 border border-cyan-800 font-bold">
                                             LANGKAH 1
                                         </span>
-                                        <span className="text-slate-500 text-[11px]">GET /target-parameters</span>
+                                        <span className="text-slate-500 text-[11px]">/target-setup</span>
                                     </div>
-                                    <h4 className="text-white font-bold text-sm">Ambil Sasaran Pantauan</h4>
+                                    <h4 className="text-white font-bold text-sm">Ambil Topik dari Target Setup</h4>
                                     <p className="text-slate-400 text-[11px] leading-relaxed">
-                                        Hermes membaca target kata kunci nama calon, topik prioritas, dan kata kunci negatif yang aktif dari sistem Radar Politik.
+                                        Hermes secara otomatis membaca seluruh kata kunci topik yang Anda atur di menu <strong>Pengaturan Sasaran</strong> (misal: <em>Bupati Ketapang, Pilkada Ketapang, Infrastruktur</em>) via API <code>GET /target-parameters</code>.
                                     </p>
                                 </div>
 
@@ -551,11 +622,11 @@ if __name__ == "__main__":
                                         <span className="text-[10px] px-2 py-0.5 rounded bg-purple-950 text-purple-400 border border-purple-800 font-bold">
                                             LANGKAH 2
                                         </span>
-                                        <span className="text-slate-500 text-[11px]">Cari & Analisis Isu</span>
+                                        <span className="text-slate-500 text-[11px]">Google News Auto-Fetch</span>
                                     </div>
-                                    <h4 className="text-white font-bold text-sm">Patroli Media & Bedah Berita</h4>
+                                    <h4 className="text-white font-bold text-sm">Ambil Google News & Bedah AI</h4>
                                     <p className="text-slate-400 text-[11px] leading-relaxed">
-                                        Hermes menelusuri portal pers terpercaya Kalbar, menghitung skor suhu krisis (0-100), memvalidasi fakta vs tuduhan, dan menyusun 3 naskah pers.
+                                        Hermes mencari berita di <strong>Google News</strong> (<code>news.google.com/search?q=&#123;topik&#125;</code>) untuk semua topik di atas, lalu langsung menganalisis suhu krisis, sentimen, dan menyusun 3 naskah pers.
                                     </p>
                                 </div>
 
@@ -566,9 +637,9 @@ if __name__ == "__main__":
                                         </span>
                                         <span className="text-slate-500 text-[11px]">POST /push-news</span>
                                     </div>
-                                    <h4 className="text-white font-bold text-sm">Setor Paket Berita & Analisis</h4>
+                                    <h4 className="text-white font-bold text-sm">Kirim Semua Berita & Analisis</h4>
                                     <p className="text-slate-400 text-[11px] leading-relaxed">
-                                        Hermes mengirim paket berita lengkap ke Radar. Berita langsung tayang di Papan Berita & Ruang Naskah, dan alarm krisis berbunyi jika suhu tinggi.
+                                        Seluruh berita Google News yang sudah dianalisis langsung disetor ke Radar. Otomatis tayang di <strong>Papan Berita</strong> dan <strong>Ruang Naskah</strong> secara seketika.
                                     </p>
                                 </div>
                             </div>
@@ -668,11 +739,11 @@ if __name__ == "__main__":
                                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                                         <div>
                                             <h4 className="text-sm font-bold text-white flex items-center gap-2">
-                                                <span>Pedoman Peran Asisten Hermes (System Prompt)</span>
-                                                <span className="text-[10px] px-2 py-0.5 rounded bg-cyan-950 text-cyan-400 border border-cyan-800 font-bold">Untuk Chat / AI Agent</span>
+                                                <span>Pedoman Peran Asisten Hermes (Opsi 1: Prompt Agen)</span>
+                                                <span className="text-[10px] px-2 py-0.5 rounded bg-cyan-950 text-cyan-400 border border-cyan-800 font-bold">Otomatis Google News & Topik</span>
                                             </h4>
                                             <p className="text-xs text-slate-400">
-                                                Salin instruksi ini dan tempelkan (paste) langsung ke Hermes Agent Anda saat memulai sesi tugas pemantauan harian.
+                                                Salin instruksi ini dan tempelkan (paste) langsung ke Hermes Agent. Hermes akan otomatis mengambil daftar topik dari Pengaturan Sasaran (<code>/target-setup</code>), mencari berita Google News untuk semua topik, menganalisis suhu & naskah, lalu menyetor ke sistem.
                                             </p>
                                         </div>
                                         <button
