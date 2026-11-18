@@ -196,8 +196,16 @@ def analyze_article(
     combined_text = (title + " " + content).lower()
 
     # Klasifikasi isu & deteksi sentimen
-    is_neg = any(w in combined_text for w in ["rusak", "banjir", "lumpur", "mahal", "keluhan", "protes", "antrean", "langka", "terputus", "krisis", "terbengkalai", "korupsi"])
-    is_pos = any(w in combined_text for w in ["resmikan", "bangun", "bantuan", "turun", "normal", "teratasi", "apresiasi", "stabil", "penghargaan", "tuntas", "cair"])
+    is_neg = any(w in combined_text for w in [
+        "rusak", "banjir", "lumpur", "mahal", "keluhan", "protes", "antrean", "antri", "langka",
+        "terputus", "krisis", "terbengkalai", "korupsi", "macet", "horor", "bahaya", "darurat",
+        "ancam", "longsor", "kecewa", "bencana", "susah", "gagal", "miskin", "tuntutan", "demo",
+        "ambruk", "tenggelam", "tersendat", "jeritan", "kejahatan", "kriminal", "terisolir"
+    ])
+    is_pos = any(w in combined_text for w in [
+        "resmikan", "bangun", "bantuan", "turun", "normal", "teratasi", "apresiasi", "stabil",
+        "penghargaan", "tuntas", "cair", "meroket", "sukses", "prestasi", "juara", "pujian"
+    ])
 
     clean_name_tag = "".join(ch for ch in c_name if ch.isalnum())
     clean_district_tag = "".join(ch for ch in c_district if ch.isalnum())
@@ -230,60 +238,187 @@ def analyze_article(
         isu_spesifik = "perkembangan informasi ini"
         branding_angle = f"Momentum Edukasi: Posisikan {c_name} sebagai tokoh visioner yang mengedukasi warga dan menyiapkan peta jalan perbaikan jangka panjang."
 
-    # 1. Narasi Medsos Tokoh (Instagram Feed/Reels, TikTok, Facebook, Thread X)
-    social_caption = (
-        f"📱 [CATATAN & SIKAP {c_name.upper()} // {c_district.upper()}]\n\n"
-        f"\"Mendengar langsung kabar soal '{title}', hati saya ikut bergetar. Bagi saya, apa yang dirasakan warga hari ini bukanlah sekadar berita di layar ponsel, melainkan panggilan nurani yang harus kita perjuangkan bersama.\"\n\n"
-        f"Bapak, Ibu, dan saudaraku sekalian di {c_district},\n"
-        f"Sebagai bagian dari keluarga besar kita di sini, kami memegang teguh komitmen: {c_tagline}. Masalah {isu_spesifik} tidak boleh dibiarkan berlarut-larut apalagi ditutupi dengan alasan administratif.\n\n"
-        f"📌 Sikap dan komitmen kami hari ini:\n"
-        f"1. Kami hadir memvalidasi keresahan warga—tidak ada bantahan, karena suara rakyat adalah kompas utama kami.\n"
-        f"2. Tim relawan dan advokasi kami sudah bergerak turun ke titik lokasi untuk mendata kebutuhan mendesak warga.\n"
-        f"3. Kami akan kawal terus koordinasi teknisnya sampai masyarakat benar-benar merasakan ketenangan dan perubahan nyata.\n\n"
-        f"Bagi bapak-ibu yang mengalami langsung kendala ini, silakan sampaikan ceritanya di kolom komentar atau hubungi tim Posko Aspirasi 24 jam kami. Mari kita jaga dan bangun daerah kita dengan kerja ikhlas dan nyata!\n\n"
-        f"#{clean_name_tag} #{clean_district_tag} #SuaraRakyat #PeduliWarga #KerjaNyata #PemimpinMerakyat #Aspirasi{clean_district_tag}"
-    )
+# =========================================================================
+    # 1. NARASI POSITIF / SOLUTIF (Koalisi / Petahana / Solutif)
+    # Walaupun berita negatif/keluhan warga, dibingkai jadi aksi tanggap & kepemimpinan solutif
+    # =========================================================================
+    if is_neg:
+        pos_candidate_statement = (
+            f"🎙️ PERNYATAAN SIKAP RESMI {c_name.upper()} ({c_role})\n"
+            f"Fokus: Respon Cepat & Solusi Nyata Terkait '{title}'\n\n"
+            f"\"Keluhan dan kegelisahan warga terkait {isu_spesifik} di {c_district} adalah panggilan tanggung jawab yang kami rasakan secara mendalam. Tidak ada ruang untuk berdalih atau saling melempar tanggung jawab.\n\n"
+            f"Per hari ini, kami memastikan tim teknis dan posko reaksi cepat sudah bergerak langsung ke titik lokasi membawa solusi nyata ({dokumen}). Kami hadir bukan sekadar memberi janji, melainkan mengawal penuntasan masalah ini sampai tuntas agar masyarakat kembali tenang dan berdaya.\"\n\n"
+            f"— {c_name} ({c_role} // {c_district})"
+        )
+        pos_social_caption = (
+            f"📱 [AKSI CEPAT & SOLUSI NYATA // {c_name.upper()}]\n\n"
+            f"\"Mendengar langsung kesulitan bapak-ibu soal '{title}', kami tidak tinggal diam. Bagi kami, keresahan rakyat adalah kompas utama untuk segera bergerak menghadirkan solusi!\"\n\n"
+            f"Alhamdulillah, per hari ini langkah penanganan taktis sudah dimulai di lapangan. Tim lapangan dan posko aspirasi kami terus mengawal proses penanganan ini bersama masyarakat ({dokumen}).\n\n"
+            f"📌 Komitmen Nyata Kami:\n"
+            f"1. Aksi tanggap darurat di lokasi tanpa birokrasi berbelit.\n"
+            f"2. Memastikan hak dan kenyamanan warga {c_district} terpenuhi secepatnya.\n"
+            f"3. Posko Aspirasi 24 jam siap mendampingi setiap laporan warga.\n\n"
+            f"Mari kita hadapi tantangan ini bersama dengan semangat gotong royong dan optimisme!\n\n"
+            f"#{clean_name_tag} #KerjaNyata #SolusiBukanJanji #PeduliWarga #{clean_district_tag}Maju #PemimpinSolutif"
+        )
+        pos_spokesperson = (
+            f"POIN BICARA JUBIR // SUDUT PANDANG SOLUTIF (PETAHANA / KOALISI):\n"
+            f"1. [Empati & Solutif]: 'Sikap {c_name} sangat jelas: kami memvalidasi 100% keluhan warga soal {title}. Beliau langsung menginstruksikan tim penanganan darurat turun ke lapangan hari ini juga.'\n"
+            f"2. [Tindakan Bukan Dalih]: 'Kami tidak mau mencari kambing hitam. Solusi lapangan sudah berjalan dengan dasar {dokumen}. Inilah bukti kepemimpinan yang bertindak di saat warga membutuhkan.'\n"
+            f"3. [Pengawalan Tuntas]: 'Posko pengaduan kami siaga penuh 24 jam untuk melayani masyarakat sampai masalah ini benar-benar selesai.'"
+        )
+        pos_press_release = (
+            f"SIARAN PERS RESMI // MEDIA CENTER {c_name.upper()}\n\n"
+            f"Judul: Gerak Cepat Tanggapi '{title}', {c_name} Pastikan Penanganan Tuntas di Lapangan\n\n"
+            f"{c_district.upper()} — Merespon aspirasi warga terkait '{title}', Media Center {c_name} menegaskan komitmen penuh sang kandidat dalam mengawal aspirasi dan kesejahteraan warga masyarakat.\n\n"
+            f"1. Validasi Kepentingan Warga: {c_name} menegaskan bahwa penderitaan warga adalah prioritas utama yang harus diselesaikan tanpa penundaan birokrasi. Tim reaksi cepat telah diterjunkan langsung ke titik permasalahan.\n\n"
+            f"2. Penanganan Terpadu Berpayung Hukum: {fakta} Penanganan ini dipayungi {dokumen} guna memastikan akuntabilitas dan keberlanjutan hasil kerja.\n\n"
+            f"3. Komitmen Berkelanjutan: Mengusung tagline '{c_tagline}', {c_name} berkomitmen terus mendampingi warga hingga situasi sepenuhnya pulih dan normal kembali.\n\n"
+            f"Media Center & Posko Reaksi Cepat: Terbuka 24 Jam Melayani Publik."
+        )
+        pos_editorial_reply = (
+            f"SURAT HAK JAWAB & KLARIFIKASI SOLUTIF (UU PERS NO. 40/1999)\n\n"
+            f"Kepada Yth. Pemimpin Redaksi {source}\n\n"
+            f"Dengan hormat,\n"
+            f"Menindaklanjuti pemberitaan berjudul \"{title}\", kami atas nama Tim Komunikasi & Hukum {c_name} menyampaikan apresiasi setinggi-tingginya kepada rekan-rekan insan pers yang senantiasa menjalankan fungsi kontrol sosial yang independen dan berimbang.\n\n"
+            f"Guna melengkapi keberimbangan berita dengan langkah nyata yang telah dieksekusi di lapangan:\n"
+            f"1. Langkah Penanganan: {fakta}\n"
+            f"2. Landasan Legal & Tindakan: Penanganan telah diresmikan melalui {dokumen}.\n"
+            f"3. Akses Publik: Posko aduan dan monitoring dibuka 24 jam demi transparansi informasi.\n\n"
+            f"Besar harapan kami klarifikasi solutif ini dapat ditayangkan agar masyarakat memperoleh informasi yang utuh, menenangkan, dan berimbang. Terima kasih."
+        )
+    else:
+        # Jika berita positif atau netral
+        pos_candidate_statement = (
+            f"🎙️ PERNYATAAN SIKAP RESMI {c_name.upper()} ({c_role})\n"
+            f"Terkait: Kemajuan Nyata '{title}'\n\n"
+            f"\"Kabar baik seputar {title} adalah buah manis dari kerja keras dan doa bersama seluruh masyarakat di {c_district}. Kita bersyukur dan mengapresiasi dedikasi semua pihak di lapangan.\n\n"
+            f"Namun, keberhasilan ini adalah awal dari tanggung jawab yang lebih besar. Kami berkomitmen untuk terus menjaga momentum positif ini agar manfaatnya benar-benar dirasakan merata hingga ke pelosok kampung dan keluarga paling membutuhkan.\"\n\n"
+            f"— {c_name} ({c_role} // {c_district})"
+        )
+        pos_social_caption = (
+            f"📱 [KABAR BAIK & MOMENTUM KEMAJUAN // {c_name.upper()}]\n\n"
+            f"\"Alhamdulillah! Kabar baik terkait '{title}' membuktikan bahwa kolaborasi dan kerja ikhlas akan selalu membuahkan hasil nyata bagi warga {c_district}!\"\n\n"
+            f"Terima kasih untuk bapak, ibu, dan rekan-rekan semua yang tak lelah berjuang di lapangan. Kami di tim {c_name} ({c_tagline}) siap terus mengawal program-program kerakyatan ini agar dampaknya berkesinambungan.\n\n"
+            f"Mari kita jaga dan rawat kemajuan ini bersama-sama demi masa depan daerah yang lebih sejahtera dan bermartabat!\n\n"
+            f"#{clean_name_tag} #KabarBaik #KemajuanDaerah #KerjaBersama #{clean_district_tag}Maju #AspirasiRakyat"
+        )
+        pos_spokesperson = (
+            f"POIN BICARA JUBIR // SUDUT PANDANG POSITIF (APRESIATIF & BERKELANJUTAN):\n"
+            f"1. [Apresiasi Tulus]: 'Pesan dari {c_name}: ini adalah kemenangan warga {c_district}. Kerja keras dan kesabaran masyarakat mulai menunjukkan hasil nyata.'\n"
+            f"2. [Jaga Momentum]: 'Beliau mengingatkan kita tidak boleh berpuas diri. Apa yang sudah baik ini harus ditingkatkan dan diperluas cakupannya.'\n"
+            f"3. [Komitmen Keberlanjutan]: 'Tim {c_name} siap menjadi mitra terbaik untuk mengawal kemajuan ini agar tidak berhenti di tengah jalan.'"
+        )
+        pos_press_release = (
+            f"SIARAN PERS RESMI // MEDIA CENTER {c_name.upper()}\n\n"
+            f"Judul: Sambut Baik '{title}', {c_name} Ajak Rawat Momentum Kemajuan di {c_district}\n\n"
+            f"{c_district.upper()} — Media Center {c_name} menyambut gembira perkembangan positif terkait '{title}' sebagai capaian membanggakan bagi seluruh elemen masyarakat.\n\n"
+            f"1. Apresiasi Partisipasi Warga: {c_name} menyampaikan rasa hormat kepada seluruh warga dan pekerja lapangan yang telah berdedikasi mewujudkan capaian ini.\n\n"
+            f"2. Pengawalan Keberlanjutan: Capaian ini tercatat dalam {dokumen} sebagai dasar penyempurnaan program kerja lanjutan yang lebih berkeadilan.\n\n"
+            f"3. Visi Jangka Panjang: Selaras dengan tagline '{c_tagline}', {c_name} bertekad mempercepat pemerataan hasil pembangunan di seluruh pelosok.\n\n"
+            f"Media Center {c_name}: Selalu Terbuka Bersinergi dengan Pers dan Publik."
+        )
+        pos_editorial_reply = (
+            f"SURAT APRESIASI & DUKUNGAN INFORMASI POSITIF (UU PERS NO. 40/1999)\n\n"
+            f"Kepada Yth. Pemimpin Redaksi {source}\n\n"
+            f"Dengan hormat,\n"
+            f"Kami dari Tim Komunikasi {c_name} menyampaikan apresiasi tinggi atas pemberitaan objektif dan mencerahkan berjudul \"{title}\".\n\n"
+            f"Pemberitaan ini menyebarkan optimisme di tengah masyarakat {c_district} dan memotivasi seluruh pihak untuk terus berkontribusi positif bagi kemaslahatan bersama. Terima kasih."
+        )
 
-    # 2. Pernyataan Sikap Tokoh (Op-Ed / Doorstop Jurnalis Media Online)
-    candidate_statement = (
-        f"🎙️ PERNYATAAN SIKAP RESMI {c_name.upper()} ({c_role})\n"
-        f"Terkait Isu: \"{title}\"\n\n"
-        f"\"{isu_spesifik.capitalize()} menyangkut langsung hajat hidup warga di {c_district}. Saya mengimbau seluruh pihak untuk mengedepankan empati dan kecepatan bertindak. Rakyat tidak membutuhkan retorika kaku di atas kertas, rakyat butuh kepastian solusi hadir di depan mata mereka.\n\n"
-        f"Kami di jajaran tim perjuangan bersama masyarakat memastikan diri siap menjadi jembatan advokasi yang solutif. Pintu posko aspirasi kami terbuka 24 jam penuh untuk menyerap dan mengawal setiap hak masyarakat agar terpenuhi secara adil dan bermartabat.\"\n\n"
-        f"— {c_name} ({c_role} // {c_district})"
-    )
-
-    # 3. Poin Bicara Jubir / Sapa Warga Warung Kopi ala Feynman
-    spokesperson = (
-        f"POIN BICARA JURU BICARA & SAPA WARGA (DOORSTOP / WARUNG KOPI // TUTUR MERAKYAT FEYNMAN):\n"
-        f"1. [Merangkul & Validasi Empati]: 'Assalamu'alaikum dan salam hangat bapak-ibu sekalian serta kawan-kawan media. Pesan dari {c_name} sangat tegas: terima kasih banyak sudah mengingatkan kita semua soal {title}. Beliau merasakan betul beratnya beban bapak-ibu di bawah. Bagi beliau, keluhan warga adalah amanah perjuangan kami.'\n"
-        f"2. [Aksi Konkret Bukan Janji Manis]: 'Prinsip {c_name} sederhana: jangan banyak beralasan. Hari ini tim advokasi kami langsung turun mendampingi warga dan mendorong percepatan penanganan {isu_spesifik} di lapangan.'\n"
-        f"3. [Jaminan Pengawalan Terbuka]: 'Posko aspirasi {c_name} dibuka 24 jam. Kalau ada hal yang dirasa belum adil atau lambat ditangani, bapak-ibu bisa langsung kabari kami. {c_name} berkomitmen mengawal ini sampai tuntas demi kepuasan dan kesejahteraan seluruh warga.'"
-    )
-
-    # 4. Siaran Pers Resmi Media Center Tim Pemenangan
-    press_release = (
-        f"SIARAN PERS RESMI // MEDIA CENTER TIM {c_name.upper()}\n\n"
-        f"Judul: Bersama Menuntaskan Harapan Warga: Komitmen Nyata {c_name} Sikapi '{title}'\n\n"
-        f"{c_district.upper()} — Menanggapi dinamika pemberitaan seputar '{title}', Media Center {c_name} menegaskan komitmen penuh sang kandidat dalam mengawal aspirasi dan kesejahteraan warga masyarakat.\n\n"
-        f"1. Kejujuran Sikap & Empati Warga: {c_name} memandang setiap keluhan publik sebagai cermin amanah yang harus dijawab dengan langkah taktis, bukan dalih birokrasi. 'Kita adalah satu keluarga besar; kesulitan warga adalah tanggung jawab moral kami untuk terus bersuara dan berbuat nyata,' ujar perwakilan Media Center.\n\n"
-        f"2. Langkah Nyata & Advokasi Lapangan: {fakta} Seluruh langkah advokasi ini didasarkan pada {dokumen} demi memastikan hak-hak masyarakat terpenuhi secara transparan.\n\n"
-        f"3. Komitmen Kepemimpinan Merakyat: {c_name} secara konsisten mengusung tagline '{c_tagline}' dengan membuka ruang dialog seluas-luasnya bagi segenap lapisan masyarakat.\n\n"
-        f"Media Center & Posko Aspirasi Warga {c_name}: Buka 24 Jam Penuh Melayani Masyarakat."
-    )
-
-    # 5. Lembar Hak Jawab Redaksi Pers & Penjaga Integritas
-    editorial_reply = (
-        f"SURAT HAK JAWAB & PERMOHONAN KEBERIMBANGAN INFORMASI (UU PERS NO. 40/1999)\n\n"
-        f"Kepada Yth. Pemimpin Redaksi {source}\n\n"
-        f"Dengan hormat,\n"
-        f"Menindaklanjuti pemberitaan berjudul \"{title}\", kami atas nama Tim Komunikasi & Hukum {c_name} menyampaikan apresiasi setinggi-tingginya kepada rekan-rekan insan pers yang senantiasa menjalankan fungsi kontrol sosial yang independen dan berimbang.\n\n"
-        f"Guna menjaga keutuhan informasi bagi masyarakat luas di {c_district}, perkenankan kami meluruskan dan melengkapi data penanganan terkait isu tersebut:\n"
-        f"1. Keberpihakan Aspirasi: {c_name} senantiasa memprioritaskan kepentingan warga di atas segalanya terkait {isu_spesifik}.\n"
-        f"2. Fakta Penanganan Nyata: {fakta}\n"
-        f"3. Landasan Dokumen Sah: {dokumen}\n\n"
-        f"Besar harapan kami klarifikasi resmi ini dapat dimuat secara utuh sebagai wujud pemenuhan Hak Jawab demi menjaga iklim informasi yang sehat, sejuk, dan mencerahkan masyarakat pemilih. Terima kasih."
-    )
+    # =========================================================================
+    # 2. NARASI KRITIS / KOREKTIF (Oposisi / Penantang / Suara Perubahan)
+    # Isu dibingkai tajam menagih pertanggungjawaban, evaluasi total, dan tawarkan pembaharuan
+    # =========================================================================
+    if is_neg:
+        neg_candidate_statement = (
+            f"🎙️ PERNYATAAN SIKAP KRITIS {c_name.upper()} ({c_role})\n"
+            f"Fokus: Menolak Janji Kosong & Tuntut Pertanggungjawaban atas '{title}'\n\n"
+            f"\"Peristiwa '{title}' ini adalah bukti tak terbantahkan dari kegagalan tata kelola dan lambannya empati birokrasi saat ini. Rakyat di {c_district} sudah terlalu sabar, tetapi terus-menerus disuguhi alasan klise dan janji seremonial yang tidak kunjung tuntas.\n\n"
+            f"Kami menolak keras normalisasi kelalaian ini! Rakyat membayar pajak dan berhak atas pelayanan serta infrastruktur yang layak hari ini juga, bukan tahun depan. Jika mandat kepemimpinan diamanahkan kepada kami, kami pastikan anggaran difokuskan 100% untuk urusan perut, kesehatan, dan jalan rakyat, bukan proyek pencitraan!\"\n\n"
+            f"— {c_name} ({c_role} // {c_district})"
+        )
+        neg_social_caption = (
+            f"📱 [SUARA PERUBAHAN & KRITIK KERAS // {c_name.upper()}]\n\n"
+            f"\"CUKUP SUDAH! Berapa lama lagi warga harus menderita karena '{title}'?! Rakyat butuh jalan mulus dan sembako murah, bukan panggung seremoni dan pidato manis!\"\n\n"
+            f"Melihat fakta di lapangan hari ini, hati kami miris. Ini bukan sekadar musibah, ini adalah kelalaian prioritas yang sudah menahun di {c_district}. Anggaran daerah seharusnya mengalir untuk keselamatan dan hajat hidup warga pedalaman, bukan habis untuk urusan birokrasi berlebihan!\n\n"
+            f"✊ Kami berdiri bersama rakyat menuntut:\n"
+            f"1. Audit tuntas dan buka transparansi anggaran penanganan ke publik!\n"
+            f"2. Turunkan bantuan dan alat berat sekarang juga tanpa syarat berbelit!\n"
+            f"3. Stop lempar tanggung jawab antarinstansi!\n\n"
+            f"Waktunya berbenah! Saatnya arah kepemimpinan dirombak demi keadilan sejati seluruh warga!\n\n"
+            f"#{clean_name_tag} #WaktunyaPerubahan #KritikRakyat #SuaraOposisi #BelaWarga #{clean_district_tag}Bangkit"
+        )
+        neg_spokesperson = (
+            f"POIN BICARA JUBIR // SUDUT PANDANG KRITIS (OPOSISI / PENANTANG):\n"
+            f"1. [Kritik Tajam & Berani]: 'Sikap {c_name} sangat tegas: peristiwa {title} ini adalah rapor merah bagi kepemimpinan yang berkuasa. Rakyat sudah kenyang dengan janji-janji angin surga.'\n"
+            f"2. [Tuntutan Pertanggungjawaban]: 'Jangan jadikan cuaca atau prosedur sebagai tameng! Masalah ini terjadi karena kelalaian pengawasan dan salah alokasi prioritas anggaran.'\n"
+            f"3. [Tawaran Solusi Alternatif]: '{c_name} sudah menyiapkan cetak biru reformasi total: anggaran langsung dialokasikan ke perbaikan cepat tanpa calo dan tanpa birokrasi bertele-tele.'"
+        )
+        neg_press_release = (
+            f"SIARAN PERS RESMI // TIM ADVOKASI & PEMBAHARUAN {c_name.upper()}\n\n"
+            f"Judul: Soroti Tajam '{title}', {c_name} Desak Audit Total dan Hentikan Retorika Birokrasi\n\n"
+            f"{c_district.upper()} — Tim Advokasi {c_name} mengeluarkan pernyataan kritis menanggapi krisis yang terungkap dalam berita '{title}'.\n\n"
+            f"1. Rapor Merah Pelayanan Publik: {c_name} menilai kegagalan antisipasi isu ini adalah bukti nyata hilangnya kepekaan pengambil kebijakan terhadap penderitaan riil masyarakat kecil.\n\n"
+            f"2. Tuntutan Transparansi & Audit: Berdasarkan pemantauan posko advokasi rakyat ({dokumen}), anggaran publik yang dialokasikan tidak sebanding dengan kondisi nyata yang dihadapi warga di lapangan.\n\n"
+            f"3. Agenda Perubahan Nyata: Mengusung komitmen '{c_tagline}', {c_name} menawarkan reorientasi anggaran daerah yang berani dan pro-rakyat demi mencegah berulangnya kelalaian serupa di masa depan.\n\n"
+            f"Sekretariat Perubahan & Aspirasi Warga: Bergerak untuk Keadilan dan Transparansi."
+        )
+        neg_editorial_reply = (
+            f"LEMBAR PENEGASAN FAKTA & KOREKSI KEBIJAKAN (UU PERS NO. 40/1999)\n\n"
+            f"Kepada Yth. Pemimpin Redaksi {source}\n\n"
+            f"Dengan hormat,\n"
+            f"Menanggapi liputan kritis seputar \"{title}\", kami atas nama Tim Advokasi {c_name} menyampaikan dukungan penuh terhadap keberanian media mengangkat penderitaan riil masyarakat di {c_district}.\n\n"
+            f"Sebagai catatan korektif pelengkap investigasi pers:\n"
+            f"1. Investigasi Independen: Temuan posko advokasi kami mencatat bahwa keluhan warga ini telah berlangsung berulang kali tanpa solusi permanen.\n"
+            f"2. Tuntutan Publik: Kami mendesak pembukaan data alokasi anggaran penanganan kepada publik demi menghindari manipulasi informasi.\n\n"
+            f"Kami berharap pers terus mengawal isu ini sebagai pilar keempat demokrasi agar pengambil kebijakan tidak lepas tangan. Terima kasih."
+        )
+    else:
+        # Jika berita positif/klaim capaian: Oposisi menguji keadilan pemerataan & transparansi
+        neg_candidate_statement = (
+            f"🎙️ PERNYATAAN SIKAP KRITIS {c_name.upper()} ({c_role})\n"
+            f"Fokus: Uji Transparansi & Keadilan Pembangunan di Balik '{title}'\n\n"
+            f"\"Kita tentu menghargai setiap langkah pembangunan terkait '{title}'. Namun jangan sampai seremoni dan tepuk tangan seremonial di pusat kota menutupi kenyataan pahit bahwa ribuan keluarga di pelosok {c_district} masih belum tersentuh keadilan pembangunan.\n\n"
+            f"Pertanyaan kami sederhana dan mendasar: berapa biaya yang dihabiskan untuk proyek ini, dan seberapa besar dampaknya langsung ke kantong rakyat kecil? Pembangunan sejati tidak diukur dari megahnya foto publikasi, melainkan dari meratanya kesejahteraan hingga ke dapur wong cilik!\"\n\n"
+            f"— {c_name} ({c_role} // {c_district})"
+        )
+        neg_social_caption = (
+            f"📱 [CATATAN KRITIS // JANGAN SILAU SEREMONI // {c_name.upper()}]\n\n"
+            f"\"Ramai pemberitaan soal '{title}'. Bagus, tapi mari kita jujur: apakah warga di pelosok pedalaman sudah ikut merasakannya?!\"\n\n"
+            f"Jangan sampai uang rakyat bermiliar-miliar rupiah habis untuk proyek kosmetik dan seremoni gunting pita, sementara jalan panen petani di kampung sebelah masih berlumpur parah!\n\n"
+            f"💡 Yang kami perjuangkan bersama masyarakat:\n"
+            f"- Keadilan anggaran: utamakan pelosok, bukan sekadar etalase kota!\n"
+            f"- Transparansi total: buka rincian biaya proyek ke rakyat!\n"
+            f"- Evaluasi manfaat nyata bagi ekonomi warga kecil!\n\n"
+            f"Kita butuh pemimpin yang adil untuk semua, bukan yang hanya pandai bersolek di media!\n\n"
+            f"#{clean_name_tag} #KritikMembangun #KeadilanAnggaran #SuaraWargaPelosok #OposisiMembelaRakyat"
+        )
+        neg_spokesperson = (
+            f"POIN BICARA JUBIR // SUDUT PANDANG KRITIS (KONTROL & AUDIT KEADILAN):\n"
+            f"1. [Sikap Skeptis Konstruktif]: 'Sikap {c_name}: kita jangan cepat terlena oleh klaim keberhasilan {title}. Coba kita cek ke kampung-kampung pelosok, apakah mereka merasakan hal yang sama?'\n"
+            f"2. [Tuntutan Pemerataan]: 'Pembangunan jangan hanya terkonsentrasi di etalase kota. Uang rakyat harus dinikmati seluruh warga {c_district} secara adil.'\n"
+            f"3. [Fokus Kebutuhan Pokok]: 'Prioritas kami jelas: selesaikan dulu kebutuhan dasar warga yang masih terhimpit sebelum memprioritaskan proyek seremonial.'"
+        )
+        neg_press_release = (
+            f"SIARAN PERS RESMI // TIM MONITORING KEBIJAKAN {c_name.upper()}\n\n"
+            f"Judul: Tanggapi '{title}', {c_name} Ingatkan Prinsip Keadilan dan Prioritas Anggaran Pro-Rakyat\n\n"
+            f"{c_district.upper()} — Merespons publikasi keberhasilan terkait '{title}', Tim {c_name} mengingatkan pentingnya asas pemerataan dan efektivitas belanja anggaran daerah.\n\n"
+            f"1. Catatan Pemerataan Daerah: {c_name} menggarisbawahi bahwa kesenjangan pembangunan antara pusat kota dan wilayah pinggiran masih menganga lebar di {c_district}.\n\n"
+            f"2. Desakan Efisiensi Anggaran: Penggunaan APBD harus dievaluasi secara ketat ({dokumen}) agar setiap rupiah menghasilkan stimulus ekonomi langsung bagi masyarakat berpenghasilan rendah.\n\n"
+            f"3. Visi Pembangunan Berkeadilan: {c_name} menegaskan bahwa kepemimpinan masa depan harus memprioritaskan mereka yang paling tertinggal, bukan sekadar memoles capaian seremonial.\n\n"
+            f"Tim Monitoring Kebijakan Publik: Terus Mengawal Hak Konstitusional Warga."
+        )
+        neg_editorial_reply = (
+            f"CATATAN KEBERIMBANGAN PERS & PERSPEKTIF PUBLIK (UU PERS NO. 40/1999)\n\n"
+            f"Kepada Yth. Pemimpin Redaksi {source}\n\n"
+            f"Dengan hormat,\n"
+            f"Terkait pemberitaan bertajuk \"{title}\", kami atas nama Tim Advokasi Kebijakan Publik {c_name} mengapresiasi kerja jurnalistik rekan-rekan pers.\n\n"
+            f"Sebagai perspektif pembanding yang independen:\n"
+            f"1. Masih ada aspek disparitas pembangunan di wilayah pedalaman {c_district} yang membutuhkan sorotan investigatif berimbang dari media.\n"
+            f"2. Harapan masyarakat agar kontrol anggaran dilakukan secara ketat demi asas keadilan sosial.\n\n"
+            f"Semoga catatan keberimbangan ini dapat memperkaya wawasan pembaca demi pembangunan yang sejati dan merata. Terima kasih."
+        )
 
     published_at_val = published_date_str if published_date_str else datetime.now(timezone.utc).isoformat()
 
@@ -303,11 +438,32 @@ def analyze_article(
             "branding_opportunity": branding_angle
         },
         "scripts": {
-            "social_caption": social_caption,
-            "candidate_statement": candidate_statement,
-            "spokesperson": spokesperson,
-            "press_release": press_release,
-            "editorial_reply": editorial_reply
+            # Stance 1: Narasi Positif & Solutif (Koalisi / Petahana / Solutif)
+            "positive": {
+                "label": "Narasi Positif / Solutif (Petahana / Koalisi)",
+                "stance": "positive",
+                "candidate_statement": pos_candidate_statement,
+                "social_caption": pos_social_caption,
+                "press_release": pos_press_release,
+                "spokesperson": pos_spokesperson,
+                "editorial_reply": pos_editorial_reply
+            },
+            # Stance 2: Narasi Kritis & Korektif (Oposisi / Penantang / Kontrol)
+            "negative": {
+                "label": "Narasi Kritis / Korektif (Oposisi / Penantang)",
+                "stance": "negative",
+                "candidate_statement": neg_candidate_statement,
+                "social_caption": neg_social_caption,
+                "press_release": neg_press_release,
+                "spokesperson": neg_spokesperson,
+                "editorial_reply": neg_editorial_reply
+            },
+            # Backward-compatible flat keys
+            "candidate_statement": pos_candidate_statement,
+            "social_caption": pos_social_caption,
+            "press_release": pos_press_release,
+            "spokesperson": pos_spokesperson,
+            "editorial_reply": pos_editorial_reply
         }
     }
 

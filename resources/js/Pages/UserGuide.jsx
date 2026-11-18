@@ -9,17 +9,17 @@ import {
     HeartHandshake, MessageSquare, Quote, Flame, Filter, Clock, Calendar
 } from 'lucide-react';
 
-export default function UserGuide({ apiBaseUrl = 'https://radar.pawandigital.id/api/v1/hermes', hasToken = true, maskedToken = null, plainToken = null }) {
+export default function UserGuide({ apiBaseUrl = 'https://radar.pawandigital.id/api/v1/radar', hasToken = true, maskedToken = null, plainToken = null }) {
     const { auth, appVersion = '1.0 (Release Candidate)' } = usePage().props;
     const userRole = auth.user?.role || 'timses';
     
-    // Tab selector initialized from URL search param if present (?tab=hermes), otherwise user role
+    // Tab selector initialized from URL search param if present (?tab=radar atau ?tab=hermes), otherwise user role
     const [activeRoleView, setActiveRoleView] = useState(() => {
         if (typeof window !== 'undefined') {
             const params = new URLSearchParams(window.location.search);
             const tabParam = params.get('tab');
-            if (['admin', 'timses', 'influencer', 'hermes'].includes(tabParam)) {
-                return tabParam;
+            if (['admin', 'timses', 'influencer', 'radar', 'hermes'].includes(tabParam)) {
+                return tabParam === 'hermes' ? 'radar' : tabParam;
             }
         }
         return userRole;
@@ -38,7 +38,7 @@ export default function UserGuide({ apiBaseUrl = 'https://radar.pawandigital.id/
     };
 
     const handleGenerateNewToken = () => {
-        if (confirm('Terbitkan kunci akses Hermes baru? Token lama akan digantikan dengan token baru.')) {
+        if (confirm('Terbitkan kunci akses Radar baru? Token lama akan digantikan dengan token baru.')) {
             setIsGeneratingToken(true);
             router.post(route('user-guide.generate-token'), {}, {
                 preserveScroll: true,
@@ -167,11 +167,20 @@ Body JSON:
         "dokumen_rujukan": "SPK DPU-PR No. 600/BM/2026"
       },
       "scripts": {
-        "candidate_statement": "KUTIPAN SIKAP TOKOH...",
-        "social_caption": "CAPTION VIRAL MEDSOS...",
-        "press_release": "SIARAN PERS RESMI...",
-        "spokesperson": "POIN BICARA JUBIR...",
-        "editorial_reply": "SURAT HAK JAWAB PERS..."
+        "positive": {
+          "candidate_statement": "KUTIPAN SIKAP SOLUTIF TOKOH (PETAHANA/KOALISI)...",
+          "social_caption": "CAPTION POSITIF & AKSI NYATA MEDSOS...",
+          "press_release": "SIARAN PERS RESMI SOLUTIF (5W+1H)...",
+          "spokesperson": "POIN BICARA JUBIR RAMAH & MENENANGKAN...",
+          "editorial_reply": "SURAT HAK JAWAB PERS PROPORSIONAL..."
+        },
+        "negative": {
+          "candidate_statement": "KUTIPAN KRITIS & KONTROL KEBIJAKAN (OPOSISI/PENANTANG)...",
+          "social_caption": "CAPTION KRITIS MEMBELA JERITAN WARGA...",
+          "press_release": "SIARAN PERS MENDESAK TRANSPARANSI & REFORMASI...",
+          "spokesperson": "POIN BICARA JUBIR TEGAS MENUNTUT TANGGUNG JAWAB...",
+          "editorial_reply": "SURAT HAK JAWAB MENGOREKSI KLAIM BIROKRASI..."
+        }
       }
     }
   ]
@@ -199,7 +208,7 @@ headers = {
     "Content-Type": "application/json"
 }
 
-def run_hermes_daily_patrol():
+def run_radar_daily_patrol():
     # 1. Ambil target politik aktif & riwayat URL sistem
     print("1. Mengambil parameter target sasaran politik & riwayat URL dari sistem...")
     res = requests.get(f"{API_BASE}/target-parameters", headers=headers, timeout=20)
@@ -342,7 +351,7 @@ def run_hermes_daily_patrol():
     print("Grafik tren di /analytics otomatis terisi dan diperbarui!")
 
 if __name__ == "__main__":
-    run_hermes_daily_patrol()`;
+    run_radar_daily_patrol()`;
 
     const sampleWebhookSuccess = `{
   "articles": [
@@ -455,15 +464,15 @@ if __name__ == "__main__":
                         </button>
                         <button
                             type="button"
-                            onClick={() => setActiveRoleView('hermes')}
+                            onClick={() => setActiveRoleView('radar')}
                             className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
-                                activeRoleView === 'hermes'
+                                (activeRoleView === 'radar' || activeRoleView === 'hermes')
                                     ? 'bg-cyan-950 text-cyan-300 border border-cyan-500/60 font-bold shadow-[0_0_15px_rgba(6,182,212,0.3)]'
                                     : 'text-cyan-400/80 hover:text-cyan-300 hover:bg-cyan-950/40'
                             }`}
                         >
                             <Cpu className="w-3.5 h-3.5 text-cyan-400" />
-                            <span>Asisten Pembaca Berita ⚡</span>
+                            <span>Asisten Radar AI ⚡</span>
                         </button>
                         <button
                             type="button"
@@ -535,10 +544,10 @@ if __name__ == "__main__":
                             </div>
                             <button
                                 type="button"
-                                onClick={() => setActiveRoleView('hermes')}
+                                onClick={() => setActiveRoleView('radar')}
                                 className="px-4 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-slate-950 font-bold text-xs flex items-center gap-2 shrink-0 transition-all shadow-[0_0_15px_rgba(6,182,212,0.4)]"
                             >
-                                <span>Pelajari Asisten Pembaca Berita</span>
+                                <span>Pelajari Asisten Radar AI</span>
                                 <ArrowRight className="w-4 h-4" />
                             </button>
                         </div>
@@ -619,9 +628,9 @@ if __name__ == "__main__":
                 )}
 
                 {/* ============================================================================== */}
-                {/* 2. DEDICATED HERMES AI INTEGRATION TAB */}
+                {/* 2. DEDICATED RADAR AI INTEGRATION TAB */}
                 {/* ============================================================================== */}
-                {activeRoleView === 'hermes' && (
+                {(activeRoleView === 'radar' || activeRoleView === 'hermes') && (
                     <div className="space-y-6 animate-fadeIn">
                         {/* Header Box */}
                         <div className="p-6 rounded-2xl bg-gradient-to-r from-cyan-950/40 via-slate-900 to-slate-900 border-2 border-cyan-500/50 shadow-[0_0_30px_rgba(6,182,212,0.15)] relative overflow-hidden">
@@ -724,7 +733,7 @@ if __name__ == "__main__":
                         <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800">
                             <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-4 flex items-center gap-2">
                                 <Activity className="w-4 h-4 text-cyan-400" />
-                                <span>3 Langkah Kerja Otomatis Hermes (Topik Target Setup & Google News)</span>
+                                <span>3 Langkah Kerja Otomatis Radar AI (Topik Target Setup & Google News)</span>
                             </h3>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
                                 <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
@@ -736,7 +745,7 @@ if __name__ == "__main__":
                                     </div>
                                     <h4 className="text-white font-bold text-sm">Ambil Topik dari Target Setup</h4>
                                     <p className="text-slate-400 text-[11px] leading-relaxed">
-                                        Hermes secara otomatis membaca seluruh kata kunci topik yang Anda atur di menu <strong>Pengaturan Sasaran</strong> (misal: <em>Pilkada, Calon Kepala Daerah, Infrastruktur Jalan, Sembako</em>) via API <code>GET /target-parameters</code>.
+                                        Radar secara otomatis membaca seluruh kata kunci topik yang Anda atur di menu <strong>Pengaturan Sasaran</strong> (misal: <em>Pilkada, Calon Kepala Daerah, Infrastruktur Jalan, Sembako</em>) via API <code>GET /target-parameters</code>.
                                     </p>
                                 </div>
 
@@ -749,7 +758,7 @@ if __name__ == "__main__":
                                     </div>
                                     <h4 className="text-white font-bold text-sm">Ambil Google News & Bedah AI</h4>
                                     <p className="text-slate-400 text-[11px] leading-relaxed">
-                                        Hermes mencari berita di <strong>Google News</strong> (<code>news.google.com/search?q=&#123;topik&#125;</code>) untuk semua topik di atas, lalu langsung menganalisis suhu krisis, sentimen, dan menyusun 3 naskah pers.
+                                        Radar mencari berita di <strong>Google News</strong> (<code>news.google.com/search?q=&#123;topik&#125;</code>) untuk semua topik di atas, lalu langsung menganalisis suhu krisis, sentimen, dan menyusun 3 naskah pers.
                                     </p>
                                 </div>
 
@@ -776,11 +785,11 @@ if __name__ == "__main__":
                                     <div className="flex items-center gap-2">
                                         <Sparkles className="w-4 h-4 text-cyan-400" />
                                         <h4 className="text-sm font-black text-white uppercase tracking-wide">
-                                            Yang Mana yang Harus Di-Copy ke Hermes?
+                                            Yang Mana yang Harus Di-Copy ke Agen Radar?
                                         </h4>
                                     </div>
                                     <p className="text-xs text-slate-300 leading-relaxed">
-                                        <strong>Pilih salah satu sesuai kebutuhan Anda:</strong> Jika Anda menggunakan <strong>Hermes Chat / AI Agent CLI</strong>, salin teks di <strong>Tab 1 (Prompt Agen)</strong>. Jika ingin <strong>otomatis jalan setiap hari di terminal/cron</strong>, gunakan file di <strong>Tab 2 (Skrip Python)</strong>.
+                                        <strong>Pilih salah satu sesuai kebutuhan Anda:</strong> Jika Anda menggunakan <strong>Radar Chat / AI Agent CLI</strong>, salin teks di <strong>Tab 1 (Prompt Agen)</strong>. Jika ingin <strong>otomatis jalan setiap hari di terminal/cron</strong>, gunakan file di <strong>Tab 2 (Skrip Python)</strong>.
                                     </p>
                                 </div>
                                 <div className="flex items-center gap-2 shrink-0">
@@ -813,7 +822,7 @@ if __name__ == "__main__":
                                     }`}
                                 >
                                     <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-                                    <span>1. Prompt Agen Hermes (Copy ke Chat)</span>
+                                    <span>1. Prompt Agen Radar (Copy ke Chat)</span>
                                 </button>
 
                                 <button
@@ -826,7 +835,7 @@ if __name__ == "__main__":
                                     }`}
                                 >
                                     <Code className="w-3.5 h-3.5 text-cyan-400" />
-                                    <span>2. Skrip Harian (hermes_daily_patrol.py)</span>
+                                    <span>2. Skrip Harian (radar_daily_patrol.py)</span>
                                 </button>
 
                                 <button
@@ -875,11 +884,11 @@ if __name__ == "__main__":
                                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                                         <div>
                                             <h4 className="text-sm font-bold text-white flex items-center gap-2">
-                                                <span>Pedoman Peran Asisten Hermes (Opsi 1: Prompt Agen)</span>
+                                                <span>Pedoman Peran Asisten Radar AI (Opsi 1: Prompt Agen)</span>
                                                 <span className="text-[10px] px-2 py-0.5 rounded bg-cyan-950 text-cyan-400 border border-cyan-800 font-bold">Otomatis Google News & Topik</span>
                                             </h4>
                                             <p className="text-xs text-slate-400">
-                                                Salin instruksi ini dan tempelkan (paste) langsung ke Hermes Agent. Hermes akan otomatis mengambil daftar topik dari Pengaturan Sasaran (<code>/target-setup</code>), mencari berita Google News untuk semua topik, menganalisis suhu & naskah, lalu menyetor ke sistem.
+                                                Salin instruksi ini dan tempelkan (paste) langsung ke Agen Radar AI. Radar akan otomatis mengambil daftar topik dari Pengaturan Sasaran (<code>/target-setup</code>), mencari berita Google News untuk semua topik, menganalisis suhu & naskah, lalu menyetor ke sistem.
                                             </p>
                                         </div>
                                         <button
@@ -913,10 +922,10 @@ if __name__ == "__main__":
                                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                                         <div>
                                             <h4 className="text-sm font-bold text-white">
-                                                Program Pengiriman Berita Harian (hermes_daily_patrol.py)
+                                                Program Pengiriman Berita Harian (radar_daily_patrol.py)
                                             </h4>
                                             <p className="text-xs text-slate-400">
-                                                File telah tersedia di folder proyek: <code>/home/x/workspace/radar-ketapang/hermes_daily_patrol.py</code>
+                                                File telah tersedia di folder proyek: <code>/home/x/workspace/radar-ketapang/radar_daily_patrol.py</code>
                                             </p>
                                         </div>
                                         <button
@@ -946,11 +955,11 @@ if __name__ == "__main__":
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                                         <div className="p-3 rounded-lg bg-slate-950 border border-slate-800">
                                             <div className="text-slate-400 text-[10px] mb-1 font-bold">EKSEKUSI PATROLI SEKARANG:</div>
-                                            <code className="text-cyan-300">python3 hermes_daily_patrol.py</code>
+                                            <code className="text-cyan-300">python3 radar_daily_patrol.py</code>
                                         </div>
                                         <div className="p-3 rounded-lg bg-slate-950 border border-slate-800">
                                             <div className="text-slate-400 text-[10px] mb-1 font-bold">UJI SIMULASI (DRY-RUN):</div>
-                                            <code className="text-emerald-300">python3 hermes_daily_patrol.py --dry-run</code>
+                                            <code className="text-emerald-300">python3 radar_daily_patrol.py --dry-run</code>
                                         </div>
                                     </div>
 
@@ -968,7 +977,7 @@ if __name__ == "__main__":
                                             </div>
                                             <button
                                                 type="button"
-                                                onClick={() => handleCopy("0 5 * * * /usr/bin/python3 /home/x/workspace/radar-ketapang/hermes_daily_patrol.py >> /var/log/hermes_radar.log 2>&1", 'crontabCmd')}
+                                                onClick={() => handleCopy("0 5 * * * /usr/bin/python3 /home/x/workspace/radar-ketapang/radar_daily_patrol.py >> /var/log/radar_patrol.log 2>&1", 'crontabCmd')}
                                                 className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-cyan-300 text-xs font-medium flex items-center gap-1.5 shrink-0 transition-all cursor-pointer border border-cyan-500/20"
                                             >
                                                 {copiedField === 'crontabCmd' ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
@@ -976,7 +985,7 @@ if __name__ == "__main__":
                                             </button>
                                         </div>
                                         <div className="p-2.5 rounded-lg bg-slate-950/80 border border-slate-800/80 font-mono text-[11px] text-cyan-200 overflow-x-auto">
-                                            0 5 * * * /usr/bin/python3 /home/x/workspace/radar-ketapang/hermes_daily_patrol.py &gt;&gt; /var/log/hermes_radar.log 2&gt;&amp;1
+                                            0 5 * * * /usr/bin/python3 /home/x/workspace/radar-ketapang/radar_daily_patrol.py &gt;&gt; /var/log/radar_patrol.log 2&gt;&amp;1
                                         </div>
                                     </div>
                                 </div>
@@ -1091,7 +1100,7 @@ if __name__ == "__main__":
                                             </div>
                                             <div>
                                                 <h4 className="text-base font-extrabold text-white flex items-center gap-2">
-                                                    <span>Pedoman Naskah Pers Asisten AI Hermes</span>
+                                                    <span>Pedoman Naskah Pers Asisten AI Radar</span>
                                                     <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 font-mono uppercase">
                                                         Identity Framing, Simpatik & Memuaskan
                                                     </span>
@@ -1120,7 +1129,7 @@ if __name__ == "__main__":
                                             </span>
                                         </div>
                                         <p className="text-xs text-slate-300 leading-relaxed">
-                                            Hermes wajib memprioritaskan tepat <strong>9 berita</strong> yang menyangkut hajat hidup masyarakat di daerah sasaran secara langsung:
+                                            Radar wajib memprioritaskan tepat <strong>9 berita</strong> yang menyangkut hajat hidup masyarakat di daerah sasaran secara langsung:
                                         </p>
                                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 text-xs">
                                             <div className="p-3 rounded-lg bg-slate-900 border border-slate-800 space-y-1">
@@ -1182,6 +1191,78 @@ if __name__ == "__main__":
                                             <p className="text-xs text-slate-400 leading-relaxed">
                                                 Warga terpuaskan oleh kepastian: siapa yang turun ke lokasi hari ini, alat apa yang dikerahkan, nomor rujukan SPK, dan posko aduan 24 jam.
                                             </p>
+                                        </div>
+                                    </div>
+
+                                    {/* DUA SUDUT PANDANG KEPENTINGAN POLITIK: POSITIF (PETAHANA) VS NEGATIF (OPOSISI) */}
+                                    <div className="p-6 rounded-2xl bg-slate-950 border border-slate-800 space-y-4">
+                                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800 pb-3">
+                                            <div className="flex items-center gap-2.5">
+                                                <div className="p-2 rounded-lg bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">
+                                                    <Compass className="w-5 h-5" />
+                                                </div>
+                                                <div>
+                                                    <h5 className="text-sm font-bold text-white uppercase tracking-wider">
+                                                        Doktrin Pilihan Dua Sudut Pandang Narasi: Positif vs Kritis (Oposisi)
+                                                    </h5>
+                                                    <p className="text-xs text-slate-400">
+                                                        Kesesuaian respon naskah dengan posisi kekuasaan dan strategi politik tokoh.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <span className="text-[11px] font-mono px-2.5 py-1 rounded bg-slate-900 text-cyan-300 border border-slate-700">
+                                                Dual-Stance Narrative System
+                                            </span>
+                                        </div>
+
+                                        <p className="text-xs text-slate-300 leading-relaxed">
+                                            Tokoh politik memiliki kepentingan dan posisi strategis yang berbeda di hadapan publik: apakah bertindak sebagai <strong className="text-emerald-400">Petahana / Koalisi Pemerintahan</strong> yang wajib menjaga kondusivitas dan menghadirkan solusi cepat, atau sebagai <strong className="text-rose-400">Oposisi / Penantang / Kontrol Kritis</strong> yang bertugas menuntut pertanggungjawaban penguasa dan menawarkan kepemimpinan alternatif. Oleh karena itu, Asisten AI Radar menyusun <strong>2 paket naskah lengkap</strong> untuk setiap artikel berita:
+                                        </p>
+
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-1">
+                                            {/* Sudut Pandang 1: Narasi Positif */}
+                                            <div className="p-4 rounded-xl bg-emerald-950/20 border border-emerald-500/40 space-y-2.5">
+                                                <div className="flex items-center justify-between">
+                                                    <span className="text-xs font-bold text-emerald-300 flex items-center gap-1.5 uppercase">
+                                                        <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
+                                                        1. Narasi Positif / Solutif (Petahana & Koalisi)
+                                                    </span>
+                                                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800">
+                                                        Re-Framing Masalah Jadi Solusi
+                                                    </span>
+                                                </div>
+                                                <p className="text-xs text-slate-300 leading-relaxed">
+                                                    <strong>Kaidah Wajib:</strong> Sekalipun berita yang masuk bernada keluhan tajam atau krisis (jalan rusak, antrean berjam-jam di RSUD, sembako mahal), respon tokoh <em>TIDAK BOLEH</em> larut dalam kepanikan atau menyalahkan masyarakat. Isu dibalik menjadi peluang aksi nyata:
+                                                </p>
+                                                <ul className="text-xs text-slate-300 space-y-1.5 pl-3 list-disc marker:text-emerald-400">
+                                                    <li><strong>Empati Tulus:</strong> Validasi keresahan masyarakat sebagai bahan bakar perbaikan pelayanan publik (&ldquo;Kritik warga adalah vitamin kepemimpinan kami&rdquo;).</li>
+                                                    <li><strong>Tindakan Nyata Lapangan Hari Ini:</strong> Ungkapkan alat berat, satgas dinas, atau droping bantuan yang sudah langsung meluncur ke lokasi.</li>
+                                                    <li><strong>Legalitas & Akuntabilitas:</strong> Sebutkan rujukan SPK/SK resmi agar publik yakin pekerjaan dilakukan secara tertib dan transparan.</li>
+                                                    <li><strong>Posko Siaga:</strong> Buka kanal aduan 24 jam untuk menampung masukan hingga pekerjaan selesai 100%.</li>
+                                                </ul>
+                                            </div>
+
+                                            {/* Sudut Pandang 2: Narasi Kritis */}
+                                            <div className="p-4 rounded-xl bg-rose-950/20 border border-rose-500/40 space-y-2.5">
+                                                <div className="flex items-center justify-between">
+                                                    <span className="text-xs font-bold text-rose-300 flex items-center gap-1.5 uppercase">
+                                                        <span className="w-2 h-2 rounded-full bg-rose-400"></span>
+                                                        2. Narasi Kritis / Oposisi (Penantang & Kontrol)
+                                                    </span>
+                                                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-rose-950 text-rose-300 border border-rose-800">
+                                                        Kontrol Kebijakan & Bela Rakyat
+                                                    </span>
+                                                </div>
+                                                <p className="text-xs text-slate-300 leading-relaxed">
+                                                    <strong>Kaidah Wajib:</strong> Memanfaatkan fakta keluhan warga untuk membongkar kelemahan birokrasi, kelambanan penanganan petahana, serta menagih transparansi penggunaan anggaran publik:
+                                                </p>
+                                                <ul className="text-xs text-slate-300 space-y-1.5 pl-3 list-disc marker:text-rose-400">
+                                                    <li><strong>Membela Jeritan Rakyat:</strong> Mengangkat derita warga yang terabaikan sebagai bukti ketidakberesan manajemen birokrasi penguasa.</li>
+                                                    <li><strong>Kritik Akuntabilitas Anggaran:</strong> Mempertanyakan mengapa anggaran besar tidak menyentuh fasilitas dasar masyarakat.</li>
+                                                    <li><strong>Desak Tanggung Jawab:</strong> Menuntut pimpinan daerah turun langsung dan tidak sekadar melempar janji manis seremonial.</li>
+                                                    <li><strong>Alternatif Kepemimpinan Baru:</strong> Menegaskan komitmen tokoh untuk hadir membenahi sistem secara menyeluruh jika diberi amanah.</li>
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -1354,7 +1435,7 @@ if __name__ == "__main__":
 
                                             <div className="p-4 rounded-xl bg-emerald-950/20 border border-emerald-500/30 space-y-2">
                                                 <div className="text-emerald-400 font-bold flex items-center gap-1.5">
-                                                    <span> Bahasa Posko Simpatik Hermes (Menenangkan & Memuaskan):</span>
+                                                    <span>✅ Bahasa Posko Simpatik Radar (Menenangkan & Memuaskan):</span>
                                                 </div>
                                                 <p className="text-slate-200 leading-relaxed">
                                                     "Kami sangat memahami beratnya perjuangan bapak-ibu yang setiap hari melintasi jalur ini, apalagi saat mengantar anak sekolah. Hari ini tim reaksi cepat dinas sudah berada di lokasi menurunkan alat berat dan batu uruk untuk penanganan darurat (SPK No. 600/BM/2026). Kami kawal bersama sampai jalur ini kembali aman dan nyaman."

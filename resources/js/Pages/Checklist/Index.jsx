@@ -579,7 +579,7 @@ export default function ChecklistIndex({ steps = [], progress = { total: 10, com
                                         </ol>
                                     </div>
 
-                                    {/* Panel Interaktif Khusus Langkah 4: Uji Hermes Gateway */}
+                                    {/* Panel Interaktif Khusus Langkah 4: Uji Radar API Gateway */}
                                     {step.key === 'step_4_hermes_api' && (
                                         <div className="p-4 rounded-xl bg-cyan-950/20 border border-cyan-800/50 space-y-3.5">
                                             {/* Opsi 1: Satu Klik Simulasi Langsung */}
@@ -590,7 +590,7 @@ export default function ChecklistIndex({ steps = [], progress = { total: 10, com
                                                         <span>CARA TERCEPAT: UJI SIMULASI OTOMATIS (1 KLIK)</span>
                                                     </div>
                                                     <p className="text-[11px] text-slate-300 mt-1">
-                                                        Tidak perlu buka terminal. Klik tombol di samping untuk otomatis mengambil berita dan mengirim hasil analisis AI Hermes ke sistem.
+                                                        Tidak perlu buka terminal. Klik tombol di samping untuk otomatis mengambil berita dan mengirim hasil analisis AI Radar ke sistem.
                                                     </p>
                                                 </div>
                                                 <button

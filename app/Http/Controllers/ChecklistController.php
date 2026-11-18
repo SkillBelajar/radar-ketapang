@@ -61,7 +61,7 @@ class ChecklistController extends Controller
                     'Di halaman Pengaturan Sasaran, gulir ke bawah ke bagian "Daftar Media Berita Online".',
                     'Perhatikan tabel berisi media pers lokal dan nasional terpercaya.',
                     'Klik tombol "Tarik Berita Terbaru Sekarang" untuk menguji proses pengambilan berita baru.',
-                    'Pastikan daftar berita bertambah dan siap diolah oleh Agen Hermes.',
+                    'Pastikan daftar berita bertambah dan siap diolah oleh Agen Radar.',
                 ],
                 'target_url' => '/target-setup',
                 'role_required' => 'Pengelola & Tim Lapangan',
@@ -70,7 +70,7 @@ class ChecklistController extends Controller
                 'key' => 'step_4_hermes_api',
                 'slice' => 'Langkah 4',
                 'category' => 'Komunikasi Asisten',
-                'title' => '4. Pengujian Jalur Komunikasi Asisten Cerdas (Hermes)',
+                'title' => '4. Pengujian Jalur Komunikasi Asisten Cerdas (Radar AI)',
                 'summary' => 'Menguji kunci rahasia dan pipa pengiriman data antara aplikasi dengan asisten pembaca berita.',
                 'steps' => [
                     'Salin perintah uji pembacaan berita dari kotak cURL di bawah atau klik tombol "Uji Otomatis".',
@@ -78,7 +78,7 @@ class ChecklistController extends Controller
                     'Kirimkan kembali contoh analisis berita ke sistem via POST /webhook menggunakan format yang disediakan.',
                     'Periksa status berita di Papan Berita (/dashboard): status otomatis berubah menjadi "Selesai Dianalisis" dengan skor suhu dan draf tanggapan pers.',
                 ],
-                'target_url' => '/user-guide?tab=hermes',
+                'target_url' => '/user-guide?tab=radar',
                 'role_required' => 'Pengelola / Asisten',
             ],
             [
@@ -390,7 +390,7 @@ class ChecklistController extends Controller
             ],
             [
                 'is_checked' => true,
-                'tester_notes' => 'Pengujian otomatis berhasil dieksekusi via Simulasi Gateway Hermes (Status HTTP 200 OK).',
+                'tester_notes' => 'Pengujian otomatis berhasil dieksekusi via Simulasi Gateway Radar API (Status HTTP 200 OK).',
                 'completed_at' => now(),
             ]
         );

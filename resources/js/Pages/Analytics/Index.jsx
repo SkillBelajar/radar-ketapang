@@ -138,7 +138,7 @@ export default function AnalyticsIndex({ sentimentTrend = [], auditLogs = {}, se
                                 <span>Tren Nada Berita & Riwayat Pemeriksaan</span>
                             </h1>
                             <p className="text-xs sm:text-sm text-slate-300 max-w-2xl font-sans leading-relaxed">
-                                Pantau arah pemberitaan media terkait sasaran politik (<span className="text-purple-300 font-bold">{summary.targetTopic}</span>) selama sepekan terakhir. Grafik ini diperbarui otomatis setiap fajar pukul 05:00 WIB via Hermes Patroli untuk mengukur pergeseran opini publik secara akurat tanpa duplikasi berita.
+                                Pantau arah pemberitaan media terkait sasaran politik (<span className="text-purple-300 font-bold">{summary.targetTopic}</span>) selama sepekan terakhir. Grafik ini diperbarui otomatis setiap fajar pukul 05:00 WIB via Radar Patroli untuk mengukur pergeseran opini publik secara akurat tanpa duplikasi berita.
                             </p>
                         </div>
 
@@ -221,7 +221,7 @@ export default function AnalyticsIndex({ sentimentTrend = [], auditLogs = {}, se
                             <div style={{ width: `${summary.negativePct}%` }} className="bg-rose-500 transition-all duration-500" title={`Negatif: ${summary.negativePct}%`}></div>
                         </div>
                         <p className="text-[11px] text-slate-400 font-sans italic pt-1">
-                            * Data grafik tren di bawah terbentuk dari akumulasi 9 berita terbaru yang disetor setiap pagi jam 05:00 WIB oleh Agen Hermes dengan mekanisme anti-duplikasi artikel.
+                            * Data grafik tren di bawah terbentuk dari akumulasi 9 berita terbaru yang disetor setiap pagi jam 05:00 WIB oleh Agen Radar dengan mekanisme anti-duplikasi artikel.
                         </p>
                     </div>
                 </div>

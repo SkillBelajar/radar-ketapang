@@ -21,13 +21,18 @@ Route::get('/user', function (Request $request) {
     ]);
 })->middleware('auth:sanctum');
 
-// Dual-Mode & Push Ingestion Hermes Gateway Endpoints
+// Dual-Mode & Push Ingestion Radar AI Gateway Endpoints
+Route::prefix('v1/radar')->middleware('auth:sanctum')->group(function () {
+    Route::get('/fetch-news', [HermesGatewayController::class, 'fetchNews'])->name('api.radar.fetch-news');
+    Route::post('/webhook', [HermesGatewayController::class, 'webhook'])->name('api.radar.webhook');
+    Route::get('/target-parameters', [HermesGatewayController::class, 'targetParameters'])->name('api.radar.target-parameters');
+    Route::post('/push-news', [HermesGatewayController::class, 'pushNews'])->name('api.radar.push-news');
+});
+
+// Alias kompatibilitas v1/hermes
 Route::prefix('v1/hermes')->middleware('auth:sanctum')->group(function () {
-    // Mode Pull / Fetch & Webhook
     Route::get('/fetch-news', [HermesGatewayController::class, 'fetchNews'])->name('api.hermes.fetch-news');
     Route::post('/webhook', [HermesGatewayController::class, 'webhook'])->name('api.hermes.webhook');
-
-    // Mode Push Ingestion Harian oleh Hermes (Hermes mencari, menganalisis, & mengirim berita)
     Route::get('/target-parameters', [HermesGatewayController::class, 'targetParameters'])->name('api.hermes.target-parameters');
     Route::post('/push-news', [HermesGatewayController::class, 'pushNews'])->name('api.hermes.push-news');
 });

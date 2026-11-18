@@ -50,7 +50,7 @@ Route::middleware(['auth'])->group(function () {
         }
 
         return Inertia::render('UserGuide', [
-            'apiBaseUrl' => url('/api/v1/hermes'),
+            'apiBaseUrl' => url('/api/v1/radar'),
             'hasToken' => !empty($token),
             'maskedToken' => !empty($token)
                 ? (strlen($token) > 10 ? substr($token, 0, 5) . '••••••••••••••••' . substr($token, -5) : '••••••••')
@@ -62,13 +62,13 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/user-guide/generate-token', function (\Illuminate\Http\Request $request) {
         $user = $request->user();
         if ($user && $user->role !== 'admin') {
-            abort(403, 'Hanya Administrator yang berhak menerbitkan token API Hermes.');
+            abort(403, 'Hanya Administrator yang berhak menerbitkan token Radar API.');
         }
 
         $targetUser = $user ?? \App\Models\User::where('role', 'admin')->first() ?? \App\Models\User::first();
         if ($targetUser) {
-            $targetUser->tokens()->where('name', 'hermes-radar')->delete();
-            $newAccessToken = $targetUser->createToken('hermes-radar', ['*']);
+            $targetUser->tokens()->whereIn('name', ['hermes-radar', 'radar-ai'])->delete();
+            $newAccessToken = $targetUser->createToken('radar-ai', ['*']);
             $plain = $newAccessToken->plainTextToken;
 
             $envPath = base_path('.env');
@@ -83,7 +83,7 @@ Route::middleware(['auth'])->group(function () {
             }
         }
 
-        return redirect()->back()->with('success', 'Kunci akses Hermes baru berhasil diterbitkan dan siap digunakan.');
+        return redirect()->back()->with('success', 'Kunci akses Radar AI baru berhasil diterbitkan dan siap digunakan.');
     })->name('user-guide.generate-token');
 
     // Slice 3: Target Setup & Feed Hub (Restricted to 'admin' & 'timses')

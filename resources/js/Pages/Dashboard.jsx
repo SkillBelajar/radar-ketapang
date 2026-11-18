@@ -140,6 +140,11 @@ function ScriptChannelBox({ channel, title, content, modeLabel, modeColor }) {
 export default function Dashboard({ feeds = [], stats = {}, filters = {}, targetSetup = {}, totalMatching = 0 }) {
     const [selectedFeedForModal, setSelectedFeedForModal] = useState(null);
     const [activeTabPerCard, setActiveTabPerCard] = useState({});
+    const [cardStancePerCard, setCardStancePerCard] = useState({});
+    const [modalStance, setModalStance] = useState('positive');
+
+    const getCardStance = (feedId) => cardStancePerCard[feedId] || 'positive';
+    const setCardStance = (feedId, stance) => setCardStancePerCard(prev => ({ ...prev, [feedId]: stance }));
 
     const PRESS_FORMATS = [
         { id: 'candidate_statement', label: 'Sikap Tokoh', title: 'Pernyataan Sikap Tokoh / Calon Pemimpin' },
@@ -149,24 +154,34 @@ export default function Dashboard({ feeds = [], stats = {}, filters = {}, target
         { id: 'editorial_reply', label: 'Hak Jawab', title: 'Lembar Hak Jawab Redaksi (UU Pers)' },
     ];
 
-    const getScriptForFormat = (scripts, formatId) => {
+    const getScriptForFormat = (scripts, formatId, stance = 'positive') => {
         if (!scripts) return '';
+        let targetObj = scripts;
+        if (scripts[stance] && typeof scripts[stance] === 'object') {
+            targetObj = scripts[stance];
+        } else {
+            const altStance = stance === 'positive' ? 'negative' : 'positive';
+            if (scripts[altStance] && typeof scripts[altStance] === 'object') {
+                targetObj = scripts[altStance];
+            }
+        }
+
         if (formatId === 'candidate_statement') {
-            return scripts.candidate_statement || scripts.candidate_quote || scripts.spokesperson || '';
+            return targetObj.candidate_statement || targetObj.candidate_quote || targetObj.spokesperson || scripts.candidate_statement || scripts.candidate_quote || '';
         }
         if (formatId === 'social_caption') {
-            return scripts.social_caption || scripts.instagram || scripts.x || scripts.tiktok || '';
+            return targetObj.social_caption || targetObj.instagram || targetObj.x || targetObj.tiktok || scripts.social_caption || '';
         }
         if (formatId === 'press_release') {
-            return scripts.press_release || scripts.instagram || scripts.x || scripts.tiktok || '';
+            return targetObj.press_release || targetObj.instagram || targetObj.x || targetObj.tiktok || scripts.press_release || '';
         }
         if (formatId === 'spokesperson') {
-            return scripts.spokesperson || scripts.x || scripts.tiktok || '';
+            return targetObj.spokesperson || targetObj.x || targetObj.tiktok || scripts.spokesperson || '';
         }
         if (formatId === 'editorial_reply') {
-            return scripts.editorial_reply || scripts.tiktok || scripts.instagram || '';
+            return targetObj.editorial_reply || scripts.tiktok || scripts.instagram || scripts.editorial_reply || '';
         }
-        return scripts[formatId] || '';
+        return targetObj[formatId] || scripts[formatId] || '';
     };
 
     const handleFilterChange = (key, value) => {
@@ -227,7 +242,7 @@ export default function Dashboard({ feeds = [], stats = {}, filters = {}, target
                                 Papan Pantauan Isu & Berita Terkini
                             </h1>
                             <p className="text-slate-300 text-xs md:text-sm max-w-2xl leading-relaxed">
-                                Semua berita seputar sasaran politik terkumpul di sini secara otomatis via Hermes. Cek berita mana yang hangat, bandingkan tuduhan dengan fakta sebenarnya, dan gunakan draf jawaban resmi siap pakai.
+                                Semua berita seputar sasaran politik terkumpul di sini secara otomatis via Radar AI. Cek berita mana yang hangat, bandingkan tuduhan dengan fakta sebenarnya, dan gunakan draf jawaban resmi siap pakai.
                             </p>
                             {targetSetup?.candidate_name && (
                                 <div className="pt-1 flex flex-wrap items-center gap-2 text-xs">
@@ -246,7 +261,7 @@ export default function Dashboard({ feeds = [], stats = {}, filters = {}, target
                         <div className="flex flex-wrap items-center gap-2.5 self-start md:self-center text-xs">
                             <div className="px-3.5 py-2 rounded-xl bg-slate-900/90 border border-emerald-500/40 flex items-center gap-2 shadow-sm font-mono">
                                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
-                                <span className="text-slate-300 font-sans text-xs">Pasokan: <strong className="text-emerald-300 font-bold">Hermes Push-Only</strong></span>
+                                <span className="text-slate-300 font-sans text-xs">Pasokan: <strong className="text-emerald-300 font-bold">Radar AI Push-Only</strong></span>
                             </div>
 
                             <Link
@@ -493,7 +508,7 @@ export default function Dashboard({ feeds = [], stats = {}, filters = {}, target
                             <p className="text-[11px] text-slate-400">
                                 {(filters.view || 'spotlight') === 'spotlight'
                                     ? 'Fokus Utama Posko: Menampilkan 10 berita peringkat teratas dengan skor kecepatan krisis & atensi publik tertinggi yang memerlukan atensi segera.'
-                                    : 'Menampilkan seluruh artikel berita portal yang telah disetor dan dianalisis oleh Hermes Agent.'}
+                                    : 'Menampilkan seluruh artikel berita portal yang telah disetor dan dianalisis oleh Radar AI Agent.'}
                             </p>
                         </div>
                     </div>
@@ -505,15 +520,15 @@ export default function Dashboard({ feeds = [], stats = {}, filters = {}, target
                         <Newspaper className="w-10 h-10 text-slate-600 mx-auto animate-pulse" />
                         <h3 className="text-base font-bold text-white">Belum Ada Berita Portal Teranalisis</h3>
                         <p className="text-xs text-slate-400 max-w-md mx-auto leading-relaxed">
-                            Menunggu kiriman data dari Hermes Agent. Jalankan skrip patroli atau masukkan prompt ke asisten AI Hermes untuk mulai mengisi papan pantauan posko.
+                            Menunggu kiriman data dari Radar AI Agent. Jalankan skrip patroli atau masukkan prompt ke asisten Radar AI untuk mulai mengisi papan pantauan posko.
                         </p>
                         <div className="pt-2">
                             <Link
-                                href="/user-guide?tab=hermes"
+                                href="/user-guide?tab=radar"
                                 className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold transition-all shadow-lg cursor-pointer"
                             >
                                 <BookOpen className="w-3.5 h-3.5" />
-                                <span>Buka Panduan & Token Hermes</span>
+                                <span>Buka Panduan & Token Radar</span>
                             </Link>
                         </div>
                     </div>
@@ -683,21 +698,58 @@ export default function Dashboard({ feeds = [], stats = {}, filters = {}, target
 
                                                 {/* Narrative Builder (Press & Media Response Formats) */}
                                                 <div className="space-y-2.5">
-                                                    <div className="flex items-center justify-between">
+                                                    <div className="flex flex-wrap items-center justify-between gap-2">
                                                         <div className="flex items-center gap-2">
                                                             <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-                                                            <span className="text-xs font-bold text-white uppercase">
+                                                            <span className="text-xs font-bold text-white uppercase tracking-wider">
                                                                 Draf Jawaban Resmi untuk Media & Publik
                                                             </span>
                                                         </div>
 
-                                                        {/* Mode Badge Label */}
-                                                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold border uppercase ${
-                                                            feed.sentiment === 'negative'
-                                                                ? 'bg-rose-950/90 text-rose-300 border-rose-500/50'
-                                                                : 'bg-emerald-950/90 text-emerald-300 border-emerald-500/50'
-                                                        }`}>
-                                                            {feed.sentiment === 'negative' ? '🛡️ Draf Klarifikasi' : '🚀 Draf Berita Positif'}
+                                                        {/* Pilihan Stance Strategis: Narasi Positif (Petahana) vs Narasi Kritis (Oposisi) */}
+                                                        <div className="flex items-center gap-1 p-1 rounded-xl bg-slate-950 border border-slate-800">
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => setCardStance(feed.id, 'positive')}
+                                                                className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-bold transition-all cursor-pointer ${
+                                                                    getCardStance(feed.id) === 'positive'
+                                                                        ? 'bg-emerald-600 text-white shadow-sm'
+                                                                        : 'text-slate-400 hover:text-emerald-300'
+                                                                }`}
+                                                                title="Pilih Narasi Positif / Solutif (Cocok untuk Petahana, Koalisi, atau Pembelaan Citra)"
+                                                            >
+                                                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-300"></span>
+                                                                <span>🟢 Narasi Positif (Petahana)</span>
+                                                            </button>
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => setCardStance(feed.id, 'negative')}
+                                                                className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-bold transition-all cursor-pointer ${
+                                                                    getCardStance(feed.id) === 'negative'
+                                                                        ? 'bg-rose-600 text-white shadow-sm'
+                                                                        : 'text-slate-400 hover:text-rose-300'
+                                                                }`}
+                                                                title="Pilih Narasi Kritis / Korektif (Cocok untuk Oposisi, Penantang, atau Kontrol Sosial)"
+                                                            >
+                                                                <span className="w-1.5 h-1.5 rounded-full bg-rose-300"></span>
+                                                                <span>🔴 Narasi Kritis (Oposisi)</span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+
+                                                    {/* Keterangan Kontekstual Kepentingan Politik Tokoh */}
+                                                    <div className={`p-2 rounded-lg text-[11px] leading-relaxed border flex items-center justify-between ${
+                                                        getCardStance(feed.id) === 'positive'
+                                                            ? 'bg-emerald-950/40 border-emerald-800/50 text-emerald-300'
+                                                            : 'bg-rose-950/40 border-rose-800/50 text-rose-300'
+                                                    }`}>
+                                                        <span>
+                                                            {getCardStance(feed.id) === 'positive'
+                                                                ? '💡 Mode Petahana / Solutif: Sekalipun berita negatif, isu dibalik jadi aksi nyata hari ini, empati warga, dan solusi kepemimpinan.'
+                                                                : '⚡ Mode Oposisi / Penantang: Sekalipun berita positif/negatif, isu dibingkai kritis untuk evaluasi kebijakan dan desak perubahan.'}
+                                                        </span>
+                                                        <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-slate-900 border border-slate-700 font-bold ml-2 shrink-0">
+                                                            {getCardStance(feed.id) === 'positive' ? 'RE-FRAMING SOLUTIF' : 'KONTROL OPOSISI'}
                                                         </span>
                                                     </div>
 
@@ -722,15 +774,16 @@ export default function Dashboard({ feeds = [], stats = {}, filters = {}, target
                                                     {/* Active Script Content */}
                                                     {(() => {
                                                         const activeFmt = PRESS_FORMATS.find(f => f.id === activeTab) || PRESS_FORMATS[0];
-                                                        const scriptText = getScriptForFormat(scripts, activeFmt.id);
+                                                        const currentCardStance = getCardStance(feed.id);
+                                                        const scriptText = getScriptForFormat(scripts, activeFmt.id, currentCardStance);
 
                                                         return (
                                                             <ScriptChannelBox
                                                                 channel={activeFmt.label.toUpperCase()}
                                                                 title={activeFmt.title}
                                                                 content={scriptText || 'Draf jawaban resmi sedang disiapkan.'}
-                                                                modeLabel={sentimentInfo.mode}
-                                                                modeColor={sentimentInfo.modeColor}
+                                                                modeLabel={currentCardStance === 'positive' ? 'Narasi Solutif (Petahana)' : 'Narasi Kritis (Oposisi)'}
+                                                                modeColor={currentCardStance === 'positive' ? 'emerald' : 'rose'}
                                                             />
                                                         );
                                                     })()}
@@ -855,17 +908,61 @@ export default function Dashboard({ feeds = [], stats = {}, filters = {}, target
 
                                     {/* All Scripts Multi-Channel */}
                                     <div className="space-y-3">
-                                        <h3 className="text-xs font-bold text-cyan-300 uppercase flex items-center gap-1.5">
-                                            <Sparkles className="w-4 h-4 text-cyan-400" />
-                                            Draf Jawaban Resmi untuk Media Pers & Publik
-                                        </h3>
+                                        <div className="flex flex-wrap items-center justify-between gap-2">
+                                            <h3 className="text-xs font-bold text-cyan-300 uppercase flex items-center gap-1.5">
+                                                <Sparkles className="w-4 h-4 text-cyan-400" />
+                                                Draf Jawaban Resmi untuk Media Pers & Publik
+                                            </h3>
+
+                                            {/* Modal Stance Switcher */}
+                                            <div className="flex items-center gap-1 p-1 rounded-xl bg-slate-950 border border-slate-800">
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setModalStance('positive')}
+                                                    className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                                                        modalStance === 'positive'
+                                                            ? 'bg-emerald-600 text-white shadow-sm'
+                                                            : 'text-slate-400 hover:text-emerald-300'
+                                                    }`}
+                                                >
+                                                    <span className="w-2 h-2 rounded-full bg-emerald-300"></span>
+                                                    <span>🟢 Narasi Positif / Solutif (Petahana)</span>
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setModalStance('negative')}
+                                                    className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                                                        modalStance === 'negative'
+                                                            ? 'bg-rose-600 text-white shadow-sm'
+                                                            : 'text-slate-400 hover:text-rose-300'
+                                                    }`}
+                                                >
+                                                    <span className="w-2 h-2 rounded-full bg-rose-300"></span>
+                                                    <span>🔴 Narasi Kritis / Korektif (Oposisi)</span>
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        {/* Modal Context Explanation */}
+                                        <div className={`p-2.5 rounded-lg text-xs leading-relaxed border ${
+                                            modalStance === 'positive'
+                                                ? 'bg-emerald-950/40 border-emerald-800/50 text-emerald-300'
+                                                : 'bg-rose-950/40 border-rose-800/50 text-rose-300'
+                                        }`}>
+                                            {modalStance === 'positive'
+                                                ? '💡 Mode Petahana / Solutif: Menampilkan 5 format naskah yang membingkai isu secara optimis, empati, menghadirkan kepastian aksi nyata lapangan hari ini, dan melegakan hati warga.'
+                                                : '⚡ Mode Oposisi / Penantang: Menampilkan 5 format naskah yang membingkai isu secara kritis, menuntut pertanggungjawaban penguasa, membela jeritan rakyat, dan desak perombakan kebijakan.'}
+                                        </div>
+
                                         <div className="space-y-3">
                                             {PRESS_FORMATS.map((fmt) => (
                                                 <ScriptChannelBox
                                                     key={fmt.id}
                                                     channel={fmt.label.toUpperCase()}
                                                     title={fmt.title}
-                                                    content={getScriptForFormat(selectedFeedForModal.scripts, fmt.id)}
+                                                    content={getScriptForFormat(selectedFeedForModal.scripts, fmt.id, modalStance)}
+                                                    modeLabel={modalStance === 'positive' ? 'Narasi Solutif (Petahana)' : 'Narasi Kritis (Oposisi)'}
+                                                    modeColor={modalStance === 'positive' ? 'emerald' : 'rose'}
                                                 />
                                             ))}
                                         </div>

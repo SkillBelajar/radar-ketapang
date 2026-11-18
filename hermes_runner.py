@@ -105,9 +105,20 @@ Wajib kembalikan format JSON valid MURNI tanpa markdown wrap:
     "dokumen_rujukan": "Dasar hukum / dokumen dinas / perda terkait"
   }},
   "scripts": {{
-    "press_release": "Draf Siaran Pers 5W+1H lengkap...",
-    "spokesperson": "Poin wawancara doorstop wartawan...",
-    "editorial_reply": "Draf Surat Hak Jawab Redaksi UU Pers No. 40/1999..."
+    "positive": {{
+      "candidate_statement": "Kutipan sikap solutif tokoh (koalisi/petahana)...",
+      "social_caption": "Caption media sosial solutif & optimis...",
+      "press_release": "Draf Siaran Pers 5W+1H solutif & berpayung hukum...",
+      "spokesperson": "Poin wawancara doorstop wartawan ramah & menenangkan...",
+      "editorial_reply": "Draf Surat Hak Jawab Redaksi UU Pers No. 40/1999..."
+    }},
+    "negative": {{
+      "candidate_statement": "Kutipan sikap kritis tokoh (oposisi/penantang)...",
+      "social_caption": "Caption media sosial kritik keras & bela rakyat...",
+      "press_release": "Draf Siaran Pers mendesak transparansi & audit...",
+      "spokesperson": "Poin wawancara doorstop wartawan tegas tuntut tanggung jawab...",
+      "editorial_reply": "Draf Surat Hak Jawab Redaksi koreksi kebijakan penguasa..."
+    }}
   }}
 }}
 """

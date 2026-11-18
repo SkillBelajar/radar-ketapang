@@ -32,30 +32,45 @@ export default function StudioIndex({ newsFeeds = [], stats = {}, filters = {}, 
     const [searchQuery, setSearchQuery] = useState('');
     const [copiedKey, setCopiedKey] = useState(null);
     const [expandedFacts, setExpandedFacts] = useState({});
+    const [globalStance, setGlobalStance] = useState('positive');
+    const [feedStances, setFeedStances] = useState({});
+
+    const getEffectiveStance = (feedId) => feedStances[feedId] || globalStance;
+    const setFeedStance = (feedId, stance) => setFeedStances(prev => ({ ...prev, [feedId]: stance }));
 
     const candidateName = targetSetup?.candidate_name || 'Tokoh / Kandidat';
     const politicalRole = targetSetup?.political_role || 'Kandidat Politik';
     const brandingTagline = targetSetup?.branding_tagline || '';
 
-    // Helper extracting scripts with backward compatibility
-    const getScript = (scripts, key) => {
+    // Helper extracting scripts with backward compatibility & dual stance support
+    const getScript = (scripts, key, stance = 'positive') => {
         if (!scripts) return '';
+        let targetObj = scripts;
+        if (scripts[stance] && typeof scripts[stance] === 'object') {
+            targetObj = scripts[stance];
+        } else {
+            const altStance = stance === 'positive' ? 'negative' : 'positive';
+            if (scripts[altStance] && typeof scripts[altStance] === 'object') {
+                targetObj = scripts[altStance];
+            }
+        }
+
         if (key === 'candidate_statement') {
-            return scripts.candidate_statement || scripts.candidate_quote || scripts.spokesperson || '';
+            return targetObj.candidate_statement || targetObj.candidate_quote || targetObj.spokesperson || scripts.candidate_statement || scripts.candidate_quote || '';
         }
         if (key === 'social_caption') {
-            return scripts.social_caption || scripts.instagram || scripts.x || scripts.tiktok || '';
+            return targetObj.social_caption || targetObj.instagram || targetObj.x || targetObj.tiktok || scripts.social_caption || '';
         }
         if (key === 'press_release') {
-            return scripts.press_release || scripts.instagram || '';
+            return targetObj.press_release || targetObj.instagram || scripts.press_release || '';
         }
         if (key === 'spokesperson') {
-            return scripts.spokesperson || scripts.x || '';
+            return targetObj.spokesperson || targetObj.x || scripts.spokesperson || '';
         }
         if (key === 'editorial_reply') {
-            return scripts.editorial_reply || scripts.tiktok || '';
+            return targetObj.editorial_reply || scripts.editorial_reply || scripts.tiktok || '';
         }
-        return scripts[key] || '';
+        return targetObj[key] || scripts[key] || '';
     };
 
     // Copy handler with 2 seconds visual feedback
@@ -364,6 +379,55 @@ export default function StudioIndex({ newsFeeds = [], stats = {}, filters = {}, 
                     </div>
                 </div>
 
+                {/* Global Stance Selector Bar */}
+                <div className="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-lg">
+                    <div className="flex items-center gap-3">
+                        <div className={`p-2 rounded-xl ${globalStance === 'positive' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-rose-500/10 text-rose-400 border border-rose-500/20'}`}>
+                            <Sparkles className="w-5 h-5" />
+                        </div>
+                        <div>
+                            <div className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
+                                <span>Pilihan Sudut Pandang Kepentingan Politik Tokoh</span>
+                                <span className={`text-[10px] px-2 py-0.5 rounded-full font-mono font-bold ${globalStance === 'positive' ? 'bg-emerald-950 text-emerald-300 border border-emerald-700/50' : 'bg-rose-950 text-rose-300 border border-rose-700/50'}`}>
+                                    {globalStance === 'positive' ? 'MODE PETAHANA / SOLUTIF' : 'MODE OPOSISI / PENANTANG'}
+                                </span>
+                            </div>
+                            <p className="text-[11px] text-slate-400 mt-0.5">
+                                {globalStance === 'positive'
+                                    ? '🟢 Narasi Positif: Isu keluhan warga dibingkai solutif, empati, aksi nyata tim teknis hari ini, dan kepemimpinan berdokumen.'
+                                    : '🔴 Narasi Kritis: Isu keluhan warga dijadikan bukti kegagalan birokrasi petahana, membela jeritan rakyat, dan tuntut transparansi.'}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div className="flex items-center gap-1.5 p-1 rounded-xl bg-slate-950 border border-slate-800 shrink-0">
+                        <button
+                            type="button"
+                            onClick={() => setGlobalStance('positive')}
+                            className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-2 ${
+                                globalStance === 'positive'
+                                    ? 'bg-emerald-600 text-white shadow-md'
+                                    : 'text-slate-400 hover:text-emerald-300'
+                            }`}
+                        >
+                            <span className="w-2 h-2 rounded-full bg-emerald-300"></span>
+                            <span>🟢 Narasi Positif (Petahana)</span>
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => setGlobalStance('negative')}
+                            className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-2 ${
+                                globalStance === 'negative'
+                                    ? 'bg-rose-600 text-white shadow-md'
+                                    : 'text-slate-400 hover:text-rose-300'
+                            }`}
+                        >
+                            <span className="w-2 h-2 rounded-full bg-rose-300"></span>
+                            <span>🔴 Narasi Kritis (Oposisi)</span>
+                        </button>
+                    </div>
+                </div>
+
                 {/* News Feeds with Script Dispatcher */}
                 {filteredFeeds.length === 0 ? (
                     <div className="p-12 text-center rounded-2xl bg-slate-900/40 border border-slate-800 font-mono">
@@ -381,14 +445,16 @@ export default function StudioIndex({ newsFeeds = [], stats = {}, filters = {}, 
                             const velocity = getVelocityBadge(feed.velocity_score);
                             const isFactOpen = expandedFacts[feed.id];
 
-                            const candidateScript = getScript(scripts, 'candidate_statement');
-                            const socialScript = getScript(scripts, 'social_caption');
-                            const pressScript = getScript(scripts, 'press_release');
-                            const spokesScript = getScript(scripts, 'spokesperson');
-                            const replyScript = getScript(scripts, 'editorial_reply');
+                            const effectiveStance = getEffectiveStance(feed.id);
+                            const candidateScript = getScript(scripts, 'candidate_statement', effectiveStance);
+                            const socialScript = getScript(scripts, 'social_caption', effectiveStance);
+                            const pressScript = getScript(scripts, 'press_release', effectiveStance);
+                            const spokesScript = getScript(scripts, 'spokesperson', effectiveStance);
+                            const replyScript = getScript(scripts, 'editorial_reply', effectiveStance);
 
                             // Text for Copy All (5 Formats)
-                            const combinedText = `=== PAKET NARASI PERSONAL BRANDING & MEDIA ===\nTOKOH: ${candidateName} (${politicalRole})\nISU: ${feed.title}\nPORTAL SUMBER: ${feed.source} (${feed.url})\n\n[1. PERNYATAAN SIKAP TOKOH]\n${candidateScript}\n\n[2. KONTEN MEDIA SOSIAL PERSONAL BRANDING]\n${socialScript}\n\n[3. SIARAN PERS RESMI MEDIA CENTER]\n${pressScript}\n\n[4. POIN BICARA JURU BICARA / TIMSES]\n${spokesScript}\n\n[5. LEMBAR HAK JAWAB REDAKSI (UU PERS NO. 40/1999)]\n${replyScript}`;
+                            const stanceLabel = effectiveStance === 'positive' ? 'NARASI POSITIF / SOLUTIF (PETAHANA)' : 'NARASI KRITIS / OPOSISI (PENANTANG)';
+                            const combinedText = `=== PAKET NARASI PERSONAL BRANDING & MEDIA (${stanceLabel}) ===\nTOKOH: ${candidateName} (${politicalRole})\nISU: ${feed.title}\nPORTAL SUMBER: ${feed.source} (${feed.url})\nSUDUT PANDANG: ${stanceLabel}\n\n[1. PERNYATAAN SIKAP TOKOH]\n${candidateScript}\n\n[2. KONTEN MEDIA SOSIAL PERSONAL BRANDING]\n${socialScript}\n\n[3. SIARAN PERS RESMI MEDIA CENTER]\n${pressScript}\n\n[4. POIN BICARA JURU BICARA / TIMSES]\n${spokesScript}\n\n[5. LEMBAR HAK JAWAB REDAKSI (UU PERS NO. 40/1999)]\n${replyScript}`;
 
                             return (
                                 <div
@@ -440,8 +506,36 @@ export default function StudioIndex({ newsFeeds = [], stats = {}, filters = {}, 
                                                 </div>
                                             </div>
 
-                                            {/* Action Header: Open Link, Toggle Fact & Copy All */}
+                                            {/* Action Header: Open Link, Toggle Fact, Card Stance & Copy All */}
                                             <div className="flex flex-wrap items-center gap-2 self-start lg:self-center text-xs">
+                                                {/* Card Stance Switcher */}
+                                                <div className="flex items-center gap-1 p-0.5 rounded-lg bg-slate-950 border border-slate-800">
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => setFeedStance(feed.id, 'positive')}
+                                                        className={`px-2 py-1 rounded text-[10px] font-bold transition-all cursor-pointer flex items-center gap-1 ${
+                                                            effectiveStance === 'positive'
+                                                                ? 'bg-emerald-600 text-white shadow-sm'
+                                                                : 'text-slate-400 hover:text-emerald-300'
+                                                        }`}
+                                                        title="Beralih ke Narasi Positif / Solutif (Petahana)"
+                                                    >
+                                                        <span>🟢 Positif</span>
+                                                    </button>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => setFeedStance(feed.id, 'negative')}
+                                                        className={`px-2 py-1 rounded text-[10px] font-bold transition-all cursor-pointer flex items-center gap-1 ${
+                                                            effectiveStance === 'negative'
+                                                                ? 'bg-rose-600 text-white shadow-sm'
+                                                                : 'text-slate-400 hover:text-rose-300'
+                                                        }`}
+                                                        title="Beralih ke Narasi Kritis / Korektif (Oposisi)"
+                                                    >
+                                                        <span>🔴 Oposisi</span>
+                                                    </button>
+                                                </div>
+
                                                 <a
                                                     href={feed.url}
                                                     target="_blank"

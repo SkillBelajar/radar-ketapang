@@ -104,7 +104,7 @@ class HermesGatewayController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Validasi payload webhook Hermes gagal.',
+                'message' => 'Validasi payload webhook Radar gagal.',
                 'errors' => $validator->errors(),
             ], 422);
         }
@@ -132,7 +132,7 @@ class HermesGatewayController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Hasil pemikiran Hermes Agent berhasil diperbarui ke database.',
+            'message' => 'Hasil pemikiran Radar AI berhasil diperbarui ke database.',
             'data' => [
                 'news_id' => $newsFeed->id,
                 'title' => $newsFeed->title,
@@ -188,7 +188,7 @@ class HermesGatewayController extends Controller
             'existing_titles' => $existingTitles,
             'total_existing_news' => $totalNews,
             'instructions' => [
-                'role' => 'Hermes bertindak sebagai Konsultan Intelijen Media & Personal Branding Politik Strategis.',
+                'role' => 'Radar bertindak sebagai Konsultan Intelijen Media & Personal Branding Politik Strategis.',
                 'crontab_schedule' => 'Jalankan otomatis setiap hari pukul 05:00 WIB (0 5 * * *).',
                 'anti_duplication' => 'WAJIB: Periksa existing_urls dan existing_titles. JANGAN PERNAH mengambil ulang berita yang sudah ada di sistem.',
                 'freshness_rule' => 'Ambil HANYA berita terbaru (terbit 24-48 jam terakhir). Jangan ambil berita basi.',
@@ -196,12 +196,12 @@ class HermesGatewayController extends Controller
                 'personal_branding_mission' => 'Konversi setiap isu daerah menjadi momentum panggung kepemimpinan tokoh. Tampilkan tokoh sebagai figur merakyat yang cepat tanggap, membela hak wong cilik, dan menawarkan solusi konkret terpercaya.',
                 'identity_framing' => 'Susun naskah dengan empati mendalam (Identity Framing Warga), gaya tutur santun & merakyat ala Feynman, serta kepastian solusi nyata yang memuaskan masyarakat pemilih.',
                 'task' => 'Cari berita harian berdasarkan kata kunci & profil kandidat di atas, eliminasi berita lama & duplikat, lakukan analisis mendalam, lalu kirimkan 9 paket berita lengkap ke push_endpoint.',
-                'push_endpoint' => url('/api/v1/hermes/push-news'),
+                'push_endpoint' => url('/api/v1/radar/push-news'),
                 'scoring_rules' => [
                     'sentiment' => 'positive, neutral, negative',
                     'velocity_score' => '0 (tenang) hingga 100 (krisis viral)',
                     'fact_anchor' => 'petakan tuduhan vs fakta lapangan vs dokumen rujukan vs sudut pandang branding tokoh',
-                    'scripts' => 'susun naskah lengkap: social_caption, candidate_statement, spokesperson, press_release, editorial_reply',
+                    'scripts' => 'susun 2 cabang narasi: positive (solutif/petahana) dan negative (kritis/oposisi) untuk kelima format: candidate_statement, social_caption, press_release, spokesperson, editorial_reply',
                 ],
             ],
         ], 200);
@@ -311,7 +311,7 @@ class HermesGatewayController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => "Berhasil memproses kiriman berita dari Hermes Agent: {$savedCount} berita baru disimpan, {$updatedCount} berita diperbarui.",
+            'message' => "Berhasil memproses kiriman berita dari Radar AI: {$savedCount} berita baru disimpan, {$updatedCount} berita diperbarui.",
             'total_received' => count($articles),
             'new_saved' => $savedCount,
             'updated' => $updatedCount,

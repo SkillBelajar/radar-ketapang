@@ -100,14 +100,6 @@ export default function Welcome({ appVersion = '1.0 (Release Candidate)' }) {
                                 <span>Masuk ke Aplikasi Sekarang</span>
                                 <ArrowRight className="w-4 h-4" />
                             </Link>
-
-                            <Link
-                                href="/checklist"
-                                className="w-full sm:w-auto px-5 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 text-sm font-medium flex items-center justify-center gap-2 transition-all"
-                            >
-                                <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                                <span>Coba Langkah Pengujian (UAT)</span>
-                            </Link>
                         </div>
                     </div>
 

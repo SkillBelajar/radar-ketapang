@@ -220,7 +220,7 @@ export default function TargetSetupIndex({ targetSetup, recentFeeds = [], totalF
                                     </h2>
                                 </div>
                                 <span className="text-[11px] px-2.5 py-1 rounded-full bg-cyan-950/80 border border-cyan-500/40 text-cyan-300 font-medium">
-                                    Otomasi Hermes 05:00 WIB
+                                    Otomasi Radar 05:00 WIB
                                 </span>
                             </div>
 
@@ -328,7 +328,7 @@ export default function TargetSetupIndex({ targetSetup, recentFeeds = [], totalF
                                         </span>
                                     </div>
                                     <p className="text-[11px] text-slate-400">
-                                        Setiap kali ada berita terkait isu di bawah, narasi Hermes akan otomatis mengaitkannya sebagai komitmen perjuangan tokoh Anda:
+                                        Setiap kali ada berita terkait isu di bawah, narasi Radar AI akan otomatis mengaitkannya sebagai komitmen perjuangan tokoh Anda:
                                     </p>
 
                                     <div className="p-3 rounded-xl bg-slate-900 border border-slate-800/90 focus-within:border-amber-500/60 transition-colors">
@@ -408,7 +408,7 @@ export default function TargetSetupIndex({ targetSetup, recentFeeds = [], totalF
                                     </span>
                                 </div>
                                 <p className="text-[11px] text-slate-300">
-                                    Hermes akan menelusuri artikel berita online yang menyebutkan kata kunci daerah atau topik berikut:
+                                    Radar AI akan menelusuri artikel berita online yang menyebutkan kata kunci daerah atau topik berikut:
                                 </p>
 
                                 {/* Interactive Tag Box */}
@@ -570,7 +570,7 @@ export default function TargetSetupIndex({ targetSetup, recentFeeds = [], totalF
                             <div className="pt-2 flex items-center justify-between">
                                 <div className="text-[11px] text-slate-400 flex items-center gap-1.5">
                                     <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                                    <span>Berlaku otomatis ke API Hermes 05:00 WIB</span>
+                                    <span>Berlaku otomatis ke API Radar 05:00 WIB</span>
                                 </div>
                                 <button
                                     type="submit"
@@ -614,15 +614,15 @@ export default function TargetSetupIndex({ targetSetup, recentFeeds = [], totalF
                             </div>
 
                             <p className="text-xs text-slate-300 leading-relaxed">
-                                Kumpulan berita resmi dari media online terpercaya di daerah. Agen mandiri Hermes memindai portal pers regional setiap fajar jam 05:00 WIB untuk menyiapkan strategi reputasi Anda.
+                                Kumpulan berita resmi dari media online terpercaya di daerah. Agen mandiri Radar memindai portal pers regional setiap fajar jam 05:00 WIB untuk menyiapkan strategi reputasi Anda.
                             </p>
 
-                            {/* Hermes Agent AI Autonomous Engine Banner */}
+                            {/* Radar Agent AI Autonomous Engine Banner */}
                             <div className="p-4 rounded-xl bg-gradient-to-r from-amber-950/40 via-cyan-950/40 to-slate-950 border border-cyan-500/40 space-y-3">
                                 <div className="flex items-center justify-between text-xs">
                                     <span className="text-cyan-300 font-bold flex items-center gap-1.5">
                                         <Cpu className="w-3.5 h-3.5 text-cyan-400" />
-                                        Mesin Intelijen Hermes Agent
+                                        Mesin Intelijen Radar AI Agent
                                     </span>
                                     <span className="text-[10px] bg-cyan-900/60 text-cyan-200 px-2 py-0.5 rounded border border-cyan-500/30">
                                         Push-Only Subuh
@@ -633,7 +633,7 @@ export default function TargetSetupIndex({ targetSetup, recentFeeds = [], totalF
                                 </p>
                                 <div className="pt-1">
                                     <a
-                                        href="/user-guide?tab=hermes"
+                                        href="/user-guide?tab=radar"
                                         className="inline-flex items-center gap-1.5 text-xs text-amber-300 hover:text-amber-200 font-medium transition-colors"
                                     >
                                         <BookOpen className="w-3.5 h-3.5" />
@@ -655,7 +655,7 @@ export default function TargetSetupIndex({ targetSetup, recentFeeds = [], totalF
                                         <Database className="w-8 h-8 text-slate-600 mx-auto" />
                                         <div className="text-xs font-bold text-slate-300">Belum Ada Berita Masuk</div>
                                         <p className="text-[11px] text-slate-500">
-                                            Jalankan skrip patroli fajar Hermes atau tunggu eksekusi otomatis jam 05:00 WIB.
+                                            Jalankan skrip patroli fajar Radar atau tunggu eksekusi otomatis jam 05:00 WIB.
                                         </p>
                                     </div>
                                 ) : (

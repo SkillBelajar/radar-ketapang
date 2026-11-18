@@ -96,14 +96,6 @@ export default function Forbidden({ auth, status = 403, module = 'Pengaturan Sas
                                 <span>Buka Ruang Media & Pers</span>
                             </Link>
 
-                            <Link
-                                href="/checklist"
-                                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-950/80 hover:bg-emerald-900 border border-emerald-500/60 text-emerald-300 text-xs font-bold transition cursor-pointer"
-                            >
-                                <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                                <span>Kembali ke Lembar Pengujian (UAT)</span>
-                            </Link>
-
                             <button
                                 type="button"
                                 onClick={handleLogout}
@@ -116,17 +108,17 @@ export default function Forbidden({ auth, status = 403, module = 'Pengaturan Sas
                     </div>
                 </div>
 
-                {/* Info Card for Testing */}
+                {/* Security Access Notice */}
                 <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800 flex items-center justify-between text-xs text-slate-400">
                     <div className="flex items-center gap-2">
-                        <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-                        <span>Hasil Pengujian RBAC: <strong className="text-emerald-300">BERHASIL DIBATASI (403)</strong>. Anda dapat menandai Checklist Langkah 1 selesai.</span>
+                        <span className="w-2 h-2 rounded-full bg-cyan-400"></span>
+                        <span>Kebijakan Hak Akses: Akun Tim Media khusus bertugas memantau berita dan menyusun materi publikasi.</span>
                     </div>
                     <Link
-                        href="/checklist"
+                        href="/dashboard"
                         className="text-cyan-400 hover:text-cyan-300 font-bold underline underline-offset-2"
                     >
-                        Ke Lembar UAT &rarr;
+                        Ke Papan Berita &rarr;
                     </Link>
                 </div>
             </div>
